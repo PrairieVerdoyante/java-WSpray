@@ -1,0 +1,48 @@
+###################
+# java
+###################
+#project
+*/bin/
+*.class
+
+###################
+# eclipse
+###################
+
+*.lock
+
+# Commenter ou non les lignes ci-dessous, selon si vous voulez
+# commiter tout le workspace (y compris la configuration eclipse
+# du workspace et des projets), ou au contraire seulment les sources
+# Conseil :
+# (C1) si vous travaillez tout seul, commiter tout
+# le workspace, y compris les configs eclipse
+#
+# (C2) Si vous travaillez en groupe, uniquement , commiter
+# uniquement les src évidemment, donc laisser active
+# toutes les lignes ci-dessous !
+
+#workspace
+.metadata
+.recommenders
+#project
+.classpath
+.project
+.settings
+
+###################
+# OS
+###################
+
+.DS_Store
+.DS_Store?
+
+.Spotlight-V100
+.Trashes
+
+ehthumbs.db
+Thumbs.db
+
+###################
+# end
+###################
