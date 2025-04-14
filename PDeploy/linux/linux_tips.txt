@@ -1,0 +1,41 @@
+
+# -------------------------------------------
+# Tip1 : droit d'execution
+# -------------------------------------------
+
+#executable pour le user
+
+	chmod u+x ./myFile.sh
+
+#executable pour tous
+
+	chmod a+x ./myFile.sh
+
+# -------------------------------------------
+# Tip2 : LineFeed (passage win to linux)
+# -------------------------------------------
+
+#------------
+# Version 1 :
+#------------
+
+	sed --in-place 's/\r//g' ./myFile.sh
+
+#------------
+# Version 2 : 
+#------------
+
+# Installer une fois dos2unix:
+
+	sudo apt-get update
+	sudo apt-get install dos2unix -y
+	
+# puis:
+
+	dos2unix ./myFile.sh
+	
+# -------------------------------------------
+# End
+# -------------------------------------------
+
+									

@@ -1,0 +1,98 @@
+
+-----------------------------------
+Commandes
+-----------------------------------
+
+sysout
+syserr
+sysexit
+
+-----------------------------------
+Instructions
+-----------------------------------
+
+fori0
+fori1
+
+forj0
+forj1
+
+forij0
+forij1
+
+whilec
+
+ife
+
+switch
+switch_return
+
+-----------------------------------
+Methodes
+-----------------------------------
+
+cmain
+cseria
+cclasse
+
+clone
+equals
+
+-----------------------------------
+Assertions
+-----------------------------------
+
+asf
+ast
+ase
+asae
+
+-----------------------------------
+Canvas Full
+-----------------------------------
+
+cjunit
+cjunitp
+cjunitps
+
+cjframe
+cjpanel
+cboxv
+cboxh
+
+cjdessin
+cdessin
+
+csingleton
+csingleton_init
+
+-----------------------------------
+Canvas Atome
+-----------------------------------
+
+cc		Constructeur
+cmpu	methode publique
+cmpr	methode private
+ca		attribut
+
+cma		methode abstraite
+
+cg		get
+cs		set
+ci		is
+
+csa		static
+
+cxx			custom
+cxx_small	custom small
+
+-----------------------------------
+run cmd sh
+-----------------------------------
+
+crunwin
+crunlinux
+
+-----------------------------------
+end
+-----------------------------------
