@@ -2,7 +2,7 @@
 ## Récupérer le projet
 * Récupérer le .ZIP
 * `git init`
-* `git add origin http://157.26.83.31:3000/USERNAME/WXXX.git` (remplacer l'adresse par celle présente sur le serveur (ssh))
+* `git remote add origin http://157.26.83.31:3000/USERNAME/WXXX.git` (remplacer l'adresse par celle présente sur le serveur (ssh))
 
 ## Informations générales
 Création d'un programme de dessin qui proposera différentes fonctionnalités, qui seront choisies de manière "freestyle" tout en utilisant les notions vues en cours.
