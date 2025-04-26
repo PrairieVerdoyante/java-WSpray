@@ -1,7 +1,11 @@
 
-package ch.hearc.xxx;
+package ch.hearc.gui;
 
-public class UseHello
+import javax.swing.JFrame;
+
+import ch.hearc.c_gui.z_tools.decorator.JFrameSimple;
+
+public class UseJApp extends JFrame
 	{
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
@@ -14,12 +18,11 @@ public class UseHello
 
 	public static void main()
 		{
-		System.out.println("Hello");
+		new JFrameSimple(new JApp(), "Spray App");
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/
-
 
 	}
