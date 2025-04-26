@@ -36,8 +36,7 @@ public class JApp extends JPanel
 
 	private void geometry()
 		{
-		// TODO: singleton
-		this.jDisplay = new JDisplay();
+		this.jDisplay = JDisplay.getInstance();
 		this.jControl = new JControl(this.jDisplay);
 
 		setLayout(new BorderLayout());
