@@ -26,7 +26,7 @@ public class JCalques extends Box
 
 	public JCalques(Display_I display)
 		{
-		super(BoxLayout.Y_AXIS);
+		super(BoxLayout.X_AXIS);
 
 		this.display = display;
 
@@ -56,11 +56,15 @@ public class JCalques extends Box
 		this.buttonAdd = new JButton("+");
 		this.buttonRemove = new JButton("-");
 
+		this.panelCheckBoxes = new Box(BoxLayout.Y_AXIS);
+
+		add(Box.createHorizontalStrut(10));
+
 		this.panelBoutons.add(buttonAdd);
 		this.panelBoutons.add(buttonRemove);
 
+		add(this.panelCheckBoxes);
 		add(this.panelBoutons);
-		add(Box.createVerticalStrut(19));
 
 		}
 
@@ -111,7 +115,7 @@ public class JCalques extends Box
 				}
 			});
 
-		add(cb);
+		this.panelCheckBoxes.add(cb);
 
 		// mettre a jour le nb de calques
 		display.setCalques(this.calqueCounter);
@@ -130,7 +134,7 @@ public class JCalques extends Box
 				System.out.println(cb.getText() + "Déselectionné");
 				}
 
-			remove(cb);
+			this.panelCheckBoxes.remove(cb);
 
 			// mettre a jour le nb de calques
 			display.setCalques(calqueCounter);
@@ -160,6 +164,7 @@ public class JCalques extends Box
 	// Tools
 	private List<JCheckBox> calqueCheckBoxes;
 	private JPanel panelBoutons;
+	private Box panelCheckBoxes;
 	private JButton buttonAdd;
 	private JButton buttonRemove;
 
