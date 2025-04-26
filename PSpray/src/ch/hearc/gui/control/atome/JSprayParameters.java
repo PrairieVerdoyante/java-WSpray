@@ -35,11 +35,6 @@ public class JSprayParameters extends Box
 
 	private void geometry()
 		{
-		// Taille des gouttelettes
-		this.sliderTaille = new JSlider(1, 100, 10); // min 1, max 100, initial 10
-		this.add(new JLabel("Taille des gouttelettes"));
-		this.add(sliderTaille);
-
 		// Surface de sprayage
 		this.radioCercle = new JRadioButton("Cercle");
 		this.radioRectangle = new JRadioButton("Rectangle");
@@ -52,6 +47,11 @@ public class JSprayParameters extends Box
 		this.add(radioCercle);
 		this.add(radioRectangle);
 
+		// Taille des gouttelettes
+		this.sliderTaille = new JSlider(1, 100, 10); // min 1, max 100, initial 10
+		this.add(new JLabel("Taille des gouttelettes"));
+		this.add(sliderTaille);
+
 		// Nombre de gouttelettes
 		this.sliderNbGouttes = new JSlider(1, 500, 50); // min 1, max 500, initial 50
 		this.add(new JLabel("Nombre de gouttelettes"));
@@ -60,7 +60,6 @@ public class JSprayParameters extends Box
 
 	private void control()
 		{
-		// Exemple de control possible
 		this.sliderTaille.addChangeListener(new ChangeListener()
 			{
 
