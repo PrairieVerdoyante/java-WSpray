@@ -1,6 +1,7 @@
 
 package ch.hearc.gui.control.atome;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -143,6 +144,10 @@ public class JCalques extends Box
 	private void appearance()
 		{
 		setBorder(BorderFactory.createTitledBorder("Calques"));
+
+		// debug
+		setOpaque(true);
+		setBackground(Color.GREEN);
 		}
 
 	/*------------------------------------------------------------------*\

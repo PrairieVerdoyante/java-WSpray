@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import ch.hearc.gui.control.JControl;
+import ch.hearc.gui.display.JDisplay;
 
 public class JApp extends JPanel
 	{
@@ -34,7 +35,7 @@ public class JApp extends JPanel
 
 	private void geometry()
 		{
-		this.jControl = new JControl();
+		this.jControl = new JControl(this.jDisplay);
 
 		setLayout(new BorderLayout());
 
@@ -59,5 +60,6 @@ public class JApp extends JPanel
 
 	// Tools
 	private JControl jControl;
+	private JDisplay jDisplay;
 
 	}
