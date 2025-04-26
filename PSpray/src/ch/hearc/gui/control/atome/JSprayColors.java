@@ -16,6 +16,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 public class JSprayColors extends Box
 	{
@@ -41,6 +42,7 @@ public class JSprayColors extends Box
 		{
 		// Panel pour disposer en grille (ajouté un nombre de colonnes et lignes optimisé)
 		JPanel panelColors = new JPanel(new GridLayout(2, 6, 5, 5)); // 2 lignes, 6 colonnes, marges de 5px
+		panelColors.setOpaque(false);
 
 		// Création des boutons avec des couleurs supplémentaires
 		this.buttonRouge = createColorButton(Color.RED);
@@ -149,11 +151,11 @@ public class JSprayColors extends Box
 
 	private void appearance()
 		{
-		setBorder(BorderFactory.createTitledBorder("Couleur du Spray"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Couleur du Spray", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
 
 		// debug
 		setOpaque(true);
-		setBackground(Color.RED);
+		setBackground(new Color(71, 71, 71, 255));
 		}
 
 	/*------------------------------------------------------------------*\

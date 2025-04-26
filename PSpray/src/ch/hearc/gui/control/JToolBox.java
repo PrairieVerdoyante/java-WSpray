@@ -2,6 +2,7 @@ package ch.hearc.gui.control;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -9,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
+import javax.swing.border.TitledBorder;
 
 public class JToolBox extends Box
     {
@@ -75,11 +77,11 @@ public class JToolBox extends Box
 
     private void appearance()
         {
-        setBorder(BorderFactory.createTitledBorder("Outils"));
+        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Outils", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
 
         // debug
         setOpaque(true);
-        setBackground(Color.ORANGE);
+        setBackground(new Color(50, 50, 50, 255));
         }
 
     /*------------------------------------------------------------------*\

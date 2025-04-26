@@ -57,7 +57,7 @@ public class JControl extends Box
 		{
 		// debug
 		setOpaque(true);
-		setBackground(Color.YELLOW);
+		setBackground(new Color(50, 50, 50, 255));
 		}
 
 	/*------------------------------------------------------------------*\

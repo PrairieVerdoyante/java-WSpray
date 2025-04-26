@@ -3,6 +3,7 @@ package ch.hearc.gui.control.atome;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import ch.hearc.gui.display.Display_I;
 
@@ -96,6 +98,8 @@ public class JCalques extends Box
 	private void addNewCalque()
 		{
 		JCheckBox cb = new JCheckBox("Calque " + this.calqueCounter++);
+		cb.setOpaque(false);
+		cb.setForeground(Color.WHITE);
 		this.calqueCheckBoxes.add(cb);
 
 		cb.addActionListener(new ActionListener()
@@ -147,11 +151,14 @@ public class JCalques extends Box
 
 	private void appearance()
 		{
-		setBorder(BorderFactory.createTitledBorder("Calques"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Calques", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
 
 		// debug
 		setOpaque(true);
-		setBackground(Color.GREEN);
+		setBackground(new Color(71, 71, 71, 255));
+
+		panelCheckBoxes.setOpaque(false);
+	    panelBoutons.setOpaque(false);
 		}
 
 	/*------------------------------------------------------------------*\
