@@ -1,8 +1,19 @@
 
 package ch.hearc.gui.control.atome;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.border.TitledBorder;
+
+import ch.hearc.c_gui.b_layout.b_composition.d_final.display.Display_I;
 
 public class JCalques extends Box
 	{
@@ -13,7 +24,7 @@ public class JCalques extends Box
 
 	public JCalques()
 		{
-		super(BoxLayout.X_AXIS);
+		super(BoxLayout.Y_AXIS);
 
 		geometry();
 		control();
@@ -34,17 +45,63 @@ public class JCalques extends Box
 
 	private void geometry()
 		{
-		// TODO
+		this.add(this.labelCalques);
+		this.calqueCheckBoxes = new ArrayList<>();
+
+		// Imaginons une liste de noms de calques
+		List<String> calques = List.of("Calque 1", "Calque 2", "Calque 3", "Calque 4");
+
+		for(String nomCalque:calques)
+			{
+			JCheckBox cb = new JCheckBox(nomCalque);
+			this.calqueCheckBoxes.add(cb);
+			this.add(cb);
+			}
 		}
 
 	private void control()
 		{
-		// rien
+
+		for(JCheckBox cb:this.calqueCheckBoxes)
+			{
+			cb.addActionListener(new ActionListener()
+				{
+
+				@Override
+				public void actionPerformed(ActionEvent e)
+					{
+					if (cb.isSelected())
+						{
+						System.out.println(cb.getText() + " sélectionné");
+						}
+					else
+						{
+						System.out.println(cb.getText() + " désélectionné");
+						}
+					}
+				});
+			}
+
 		}
 
 	private void appearance()
 		{
-		// rien
+		TitledBorder titledBorder = BorderFactory.createTitledBorder("Calques");
+		setBorder(titledBorder);
+		}
+
+	// TODO deplacer dans une interface
+	public List<String> getSelectedCalques()
+		{
+		List<String> selected = new ArrayList<>();
+		for(JCheckBox cb:calqueCheckBoxes)
+			{
+			if (cb.isSelected())
+				{
+				selected.add(cb.getText());
+				}
+			}
+		return selected;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -52,7 +109,10 @@ public class JCalques extends Box
 	\*------------------------------------------------------------------*/
 
 	// Inputs
+	private Display_I display;
 
 	// Tools
+	JLabel labelCalques;
+	private List<JCheckBox> calqueCheckBoxes;
 
 	}
