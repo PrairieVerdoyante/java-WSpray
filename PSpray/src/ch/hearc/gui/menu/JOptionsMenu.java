@@ -35,7 +35,11 @@ public class JOptionsMenu extends Box
 
 	private void geometry()
 		{
-		// TODO
+		this.menu = new JMenu("Menu");
+		this.fichier = new JMenu("Fichier");
+
+		add(this.menu);
+		add(this.fichier);
 		}
 
 	private void control()
@@ -55,6 +59,7 @@ public class JOptionsMenu extends Box
 	// Inputs
 
 	// Tools
-	JMenu menu;
+	private JMenu menu;
+	private JMenu fichier;
 
 	}
