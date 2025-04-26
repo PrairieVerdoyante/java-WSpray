@@ -1,3 +1,4 @@
+
 package ch.hearc.gui;
 
 import java.awt.BorderLayout;
@@ -35,6 +36,8 @@ public class JApp extends JPanel
 
 	private void geometry()
 		{
+		// TODO: singleton
+		this.jDisplay = new JDisplay();
 		this.jControl = new JControl(this.jDisplay);
 
 		setLayout(new BorderLayout());
