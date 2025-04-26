@@ -3,12 +3,12 @@ package ch.hearc.gui;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JMenu;
 import javax.swing.JPanel;
 
 import ch.hearc.gui.control.JControl;
 import ch.hearc.gui.control.JToolBox;
 import ch.hearc.gui.display.JDisplay;
+import ch.hearc.gui.menu.JOptionsMenu;
 
 public class JApp extends JPanel
 	{
@@ -41,10 +41,11 @@ public class JApp extends JPanel
 		this.jDisplay = JDisplay.getInstance();
 		this.jControl = new JControl(this.jDisplay);
 		this.jToolBox = new JToolBox();
-		this.jOptionsMenu = new JMenu();
+		this.jOptionsMenu = new JOptionsMenu();
 
 		setLayout(new BorderLayout());
 
+		add(this.jDisplay, BorderLayout.CENTER);
 		add(this.jOptionsMenu, BorderLayout.NORTH);
 		add(this.jControl, BorderLayout.EAST);
 		add(this.jToolBox, BorderLayout.WEST);
@@ -71,6 +72,6 @@ public class JApp extends JPanel
 	private JControl jControl;
 	private JToolBox jToolBox;
 	private JDisplay jDisplay;
-	private JMenu jOptionsMenu;
+	private JOptionsMenu jOptionsMenu;
 
 	}
