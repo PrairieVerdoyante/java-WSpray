@@ -3,6 +3,7 @@ package ch.hearc.gui.control.atome;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 
 public class JSprayColors extends Box
 	{
@@ -93,6 +95,17 @@ public class JSprayColors extends Box
 		button.setMinimumSize(new Dimension(40, 40));
 		button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 		button.setFocusPainted(false);
+
+		// Ajout du "+" si c'est la couleur personnalisée
+	    if (color.equals(Color.GRAY))
+	    {
+	        button.setText("+");
+	        button.setFont(new Font("Arial", Font.BOLD, 40)); // Optionnel : grosse police pour bien voir le +
+	        button.setForeground(Color.BLACK);                // Couleur du texte
+	        button.setHorizontalTextPosition(SwingConstants.CENTER);
+	        button.setVerticalTextPosition(SwingConstants.CENTER);
+	    }
+
 		return button;
 		}
 
