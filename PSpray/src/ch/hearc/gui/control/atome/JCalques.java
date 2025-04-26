@@ -1,6 +1,7 @@
 
 package ch.hearc.gui.control.atome;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -9,11 +10,11 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.border.TitledBorder;
+import javax.swing.JPanel;
 
-import ch.hearc.c_gui.b_layout.b_composition.d_final.display.Display_I;
+import ch.hearc.gui.display.Display_I;
 
 public class JCalques extends Box
 	{
@@ -22,9 +23,11 @@ public class JCalques extends Box
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public JCalques()
+	public JCalques(Display_I display)
 		{
 		super(BoxLayout.Y_AXIS);
+
+		this.display = display;
 
 		geometry();
 		control();
@@ -45,63 +48,101 @@ public class JCalques extends Box
 
 	private void geometry()
 		{
-		this.add(this.labelCalques);
 		this.calqueCheckBoxes = new ArrayList<>();
+		this.calqueCounter = 1;
 
-		// Imaginons une liste de noms de calques
-		List<String> calques = List.of("Calque 1", "Calque 2", "Calque 3", "Calque 4");
+		this.panelBoutons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		this.buttonAdd = new JButton("+");
+		this.buttonRemove = new JButton("-");
 
-		for(String nomCalque:calques)
-			{
-			JCheckBox cb = new JCheckBox(nomCalque);
-			this.calqueCheckBoxes.add(cb);
-			this.add(cb);
-			}
+		this.panelBoutons.add(buttonAdd);
+		this.panelBoutons.add(buttonRemove);
+
+		add(this.panelBoutons);
+		add(Box.createVerticalStrut(19));
+
 		}
 
 	private void control()
 		{
 
-		for(JCheckBox cb:this.calqueCheckBoxes)
+		this.buttonAdd.addActionListener(new ActionListener()
 			{
-			cb.addActionListener(new ActionListener()
+
+			@Override
+			public void actionPerformed(ActionEvent e)
 				{
+				addNewCalque();
+				}
+			});
 
-				@Override
-				public void actionPerformed(ActionEvent e)
+		this.buttonRemove.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				removeLastCalque();
+				}
+			});
+
+		}
+
+	private void addNewCalque()
+		{
+		JCheckBox cb = new JCheckBox("Calque " + this.calqueCounter++);
+		this.calqueCheckBoxes.add(cb);
+
+		cb.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				if (cb.isSelected())
 					{
-					if (cb.isSelected())
-						{
-						System.out.println(cb.getText() + " sélectionné");
-						}
-					else
-						{
-						System.out.println(cb.getText() + " désélectionné");
-						}
+					System.out.println(cb.getText() + " sélectionné");
 					}
-				});
-			}
+				else
+					{
+					System.out.println(cb.getText() + " désélectionné");
+					}
+				}
+			});
 
+		add(cb);
+
+		// mettre a jour le nb de calques
+		display.setCalques(this.calqueCounter);
+		revalidate();
+		repaint();
+		}
+
+	private void removeLastCalque()
+		{
+		if (!this.calqueCheckBoxes.isEmpty())
+			{
+			JCheckBox cb = this.calqueCheckBoxes.remove(this.calqueCheckBoxes.size() - 1);
+
+			if (cb.isSelected())
+				{
+				System.out.println(cb.getText() + "Déselectionné");
+				}
+
+			remove(cb);
+
+			// mettre a jour le nb de calques
+			display.setCalques(calqueCounter);
+			revalidate();
+			repaint();
+
+			this.calqueCounter--;
+			}
 		}
 
 	private void appearance()
 		{
-		TitledBorder titledBorder = BorderFactory.createTitledBorder("Calques");
-		setBorder(titledBorder);
-		}
-
-	// TODO deplacer dans une interface
-	public List<String> getSelectedCalques()
-		{
-		List<String> selected = new ArrayList<>();
-		for(JCheckBox cb:calqueCheckBoxes)
-			{
-			if (cb.isSelected())
-				{
-				selected.add(cb.getText());
-				}
-			}
-		return selected;
+		setBorder(BorderFactory.createTitledBorder("Calques"));
 		}
 
 	/*------------------------------------------------------------------*\
@@ -112,7 +153,11 @@ public class JCalques extends Box
 	private Display_I display;
 
 	// Tools
-	JLabel labelCalques;
 	private List<JCheckBox> calqueCheckBoxes;
+	private JPanel panelBoutons;
+	private JButton buttonAdd;
+	private JButton buttonRemove;
+
+	private int calqueCounter;
 
 	}
