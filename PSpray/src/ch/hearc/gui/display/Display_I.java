@@ -4,12 +4,18 @@ package ch.hearc.gui.display;
 import java.awt.Color;
 import java.util.List;
 
+import ch.hearc.gui.utils.SprayShape;
+
 public interface Display_I
 	{
 
-	public void setBrushColor(Color color);
+	public void setColor(Color color);
 
-	public void setBackgroundColor(Color color);
+	public void setNbGouttes(int nbGouttes);
+
+	public void setTaille(int taille);
+
+	public void setForme(SprayShape shape);
 
 	public void setCalques(int n);
 

@@ -35,8 +35,8 @@ public class JControl extends Box
 
 	private void geometry()
 		{
-		this.jSprayParameters = new JSprayParameters();
-		this.jSprayColors = new JSprayColors();
+		this.jSprayParameters = new JSprayParameters(this.display);
+		this.jSprayColors = new JSprayColors(this.display);
 		this.jCalques = new JCalques(this.display);
 
 		add(createVerticalGlue());

@@ -1,4 +1,3 @@
-
 package ch.hearc.gui.control.atome;
 
 import java.awt.Color;
@@ -18,6 +17,8 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
+import ch.hearc.gui.display.Display_I;
+
 public class JSprayColors extends Box
 	{
 
@@ -25,9 +26,11 @@ public class JSprayColors extends Box
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public JSprayColors()
+	public JSprayColors(Display_I display)
 		{
 		super(BoxLayout.Y_AXIS);
+
+		this.display = display;
 
 		geometry();
 		control();
@@ -119,20 +122,24 @@ public class JSprayColors extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
+				Color couleur = null;
+
 				if (e.getSource() == buttonPersonnalisee)
-					{
-					Color couleur = JColorChooser.showDialog(null, "Choisissez votre couleur", Color.WHITE);
-					if (couleur != null)
-						{
-						couleurPersonnalisee = couleur;
-						buttonPersonnalisee.setBackground(couleur);
-						System.out.println("Couleur personnalisée choisie : " + couleur);
-						}
-					}
+				{
+				    couleur = JColorChooser.showDialog(null, "Choisissez votre couleur", Color.WHITE);
+				    if (couleur != null)
+				    {
+				        couleurPersonnalisee = couleur;
+				        buttonPersonnalisee.setBackground(couleur);
+				    }
+				}
 				else
-					{
-					System.out.println("Couleur standard sélectionnée");
-					}
+				{
+				    couleur = getSelectedColor();
+				}
+
+				updateDisplayColor(couleur);
+
 				}
 			};
 
@@ -190,9 +197,21 @@ public class JSprayColors extends Box
 		return Color.BLACK; // défaut
 		}
 
+	private void updateDisplayColor(Color couleur)
+{
+    if (couleur != null)
+    {
+        display.setColor(couleur);
+        System.out.println("Couleur mise à jour : " + couleur);
+    }
+}
+
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
+
+	// Inputs
+	private Display_I display;
 
 	// Tools
 	private JToggleButton buttonRouge;

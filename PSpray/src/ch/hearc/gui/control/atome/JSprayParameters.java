@@ -1,3 +1,4 @@
+
 package ch.hearc.gui.control.atome;
 
 import java.awt.Color;
@@ -17,6 +18,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ch.hearc.gui.display.Display_I;
+import ch.hearc.gui.utils.SprayShape;
+
 public class JSprayParameters extends Box
 	{
 
@@ -24,9 +28,11 @@ public class JSprayParameters extends Box
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public JSprayParameters()
+	public JSprayParameters(Display_I display)
 		{
 		super(BoxLayout.Y_AXIS);
+
+		this.display = display;
 
 		geometry();
 		control();
@@ -38,51 +44,51 @@ public class JSprayParameters extends Box
 	\*------------------------------------------------------------------*/
 
 	private void geometry()
-	{
-	    // Surface de sprayage
-	    this.buttonCercle = createToolButton("cercle.png");
-	    this.buttonRectangle = createToolButton("carre.png");
+		{
+		// Surface de sprayage
+		this.buttonCercle = createToolButton("cercle.png");
+		this.buttonCarre = createToolButton("carre.png");
 
-	    // Groupement exclusif des boutons
-	    ButtonGroup groupForme = new ButtonGroup();
-	    groupForme.add(buttonCercle);
-	    groupForme.add(buttonRectangle);
+		// Groupement exclusif des boutons
+		ButtonGroup groupForme = new ButtonGroup();
+		groupForme.add(buttonCercle);
+		groupForme.add(buttonCarre);
 
-	    // Panel pour aligner les boutons sur la même ligne
-	    JPanel panelButtons = new JPanel();
-	    panelButtons.setLayout(new BoxLayout(panelButtons, BoxLayout.X_AXIS));
-	    panelButtons.setOpaque(false); // Rendre le panel transparent
-	    panelButtons.add(buttonCercle);
-	    panelButtons.add(Box.createHorizontalStrut(10)); // Espacement horizontal de 10px
-	    panelButtons.add(buttonRectangle);
+		// Panel pour aligner les boutons sur la même ligne
+		JPanel panelButtons = new JPanel();
+		panelButtons.setLayout(new BoxLayout(panelButtons, BoxLayout.X_AXIS));
+		panelButtons.setOpaque(false); // Rendre le panel transparent
+		panelButtons.add(buttonCercle);
+		panelButtons.add(Box.createHorizontalStrut(10)); // Espacement horizontal de 10px
+		panelButtons.add(buttonCarre);
 
-	    // Label pour la forme de sprayage
-	    JLabel labelForme = new JLabel("Forme de sprayage");
-	    labelForme.setOpaque(false);
-	    labelForme.setForeground(Color.WHITE);
-	    this.add(labelForme);
+		// Label pour la forme de sprayage
+		JLabel labelForme = new JLabel("Forme de sprayage");
+		labelForme.setOpaque(false);
+		labelForme.setForeground(Color.WHITE);
+		this.add(labelForme);
 
-	    // Ajout du panel contenant les boutons
-	    this.add(panelButtons);
+		// Ajout du panel contenant les boutons
+		this.add(panelButtons);
 
-	    // Taille des gouttelettes
-	    this.sliderTaille = new JSlider(1, 100, 10); // min 1, max 100, initial 10
-	    sliderTaille.setOpaque(false);
-	    JLabel labelTaille = new JLabel("Taille des gouttelettes");
-	    labelTaille.setOpaque(false);
-	    labelTaille.setForeground(Color.WHITE);
-	    this.add(labelTaille);
-	    this.add(sliderTaille);
+		// Taille des gouttelettes
+		this.sliderTaille = new JSlider(1, 100, 10); // min 1, max 100, initial 10
+		sliderTaille.setOpaque(false);
+		JLabel labelTaille = new JLabel("Taille des gouttelettes");
+		labelTaille.setOpaque(false);
+		labelTaille.setForeground(Color.WHITE);
+		this.add(labelTaille);
+		this.add(sliderTaille);
 
-	    // Nombre de gouttelettes
-	    this.sliderNbGouttes = new JSlider(1, 500, 50); // min 1, max 500, initial 50
-	    sliderNbGouttes.setOpaque(false);
-	    JLabel labelNbGouttes = new JLabel("Nombre de gouttelettes");
-	    labelNbGouttes.setOpaque(false);
-	    labelNbGouttes.setForeground(Color.WHITE);
-	    this.add(labelNbGouttes);
-	    this.add(sliderNbGouttes);
-	}
+		// Nombre de gouttelettes
+		this.sliderNbGouttes = new JSlider(1, 500, 50); // min 1, max 500, initial 50
+		sliderNbGouttes.setOpaque(false);
+		JLabel labelNbGouttes = new JLabel("Nombre de gouttelettes");
+		labelNbGouttes.setOpaque(false);
+		labelNbGouttes.setForeground(Color.WHITE);
+		this.add(labelNbGouttes);
+		this.add(sliderNbGouttes);
+		}
 
 	private void control()
 		{
@@ -93,12 +99,20 @@ public class JSprayParameters extends Box
 			public void stateChanged(ChangeEvent e)
 				{
 				int taille = sliderTaille.getValue();
+				display.setTaille(taille);
 				System.out.println("Nouvelle taille de gouttelette : " + taille);
 				}
 			});
 
-		this.buttonCercle.addActionListener(e -> System.out.println("Spray en cercle sélectionné"));
-		this.buttonRectangle.addActionListener(e -> System.out.println("Spray en rectangle sélectionné"));
+		this.buttonCercle.addActionListener(e -> {
+			display.setForme(SprayShape.CERCLE);
+			System.out.println("Spray en cercle sélectionné");
+		});
+
+		this.buttonCarre.addActionListener(e -> {
+			display.setForme(SprayShape.CARRE);
+			System.out.println("Spray en carre sélectionné");
+		});
 
 		this.sliderNbGouttes.addChangeListener(new ChangeListener()
 			{
@@ -107,6 +121,7 @@ public class JSprayParameters extends Box
 			public void stateChanged(ChangeEvent e)
 				{
 				int nb = sliderNbGouttes.getValue();
+				display.setNbGouttes(nb);
 				System.out.println("Nouveau nombre de gouttelettes : " + nb);
 				}
 			});
@@ -141,9 +156,12 @@ public class JSprayParameters extends Box
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
+	// Inputs
+	private Display_I display;
+
 	// Tools
 	private JSlider sliderTaille;
 	private JSlider sliderNbGouttes;
 	private JToggleButton buttonCercle;
-	private JToggleButton buttonRectangle;
+	private JToggleButton buttonCarre;
 	}

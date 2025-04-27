@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import ch.hearc.gui.utils.SprayShape;
+
 /**
  * singleton
  */
@@ -21,14 +23,28 @@ public class JDisplay extends JPanel implements Display_I
 	\*------------------------------------------------------------------*/
 
 	@Override
-	public void setBrushColor(Color color)
+	public void setColor(Color color)
 		{
 		// TODO Auto-generated method stub
 
 		}
 
 	@Override
-	public void setBackgroundColor(Color color)
+	public void setNbGouttes(int nbGouttes)
+		{
+		// TODO Auto-generated method stub
+
+		}
+
+	@Override
+	public void setTaille(int taille)
+		{
+		// TODO Auto-generated method stub
+
+		}
+
+	@Override
+	public void setForme(SprayShape shape)
 		{
 		// TODO Auto-generated method stub
 
@@ -41,6 +57,7 @@ public class JDisplay extends JPanel implements Display_I
 
 		}
 
+	@Override
 	public List<String> getSelectedCalques()
 		{
 		// TODO
