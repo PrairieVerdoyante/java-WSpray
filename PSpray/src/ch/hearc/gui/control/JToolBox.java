@@ -59,7 +59,7 @@ public class JToolBox extends Box
         JToggleButton button = new JToggleButton();
 
         // Chargement de l'image
-        ImageIcon icon = new ImageIcon(getClass().getResource("/resources/icons/" + imageName));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/" + imageName));
 
         button.setIcon(icon); // Affectation de l'icône
         button.setPreferredSize(new Dimension(50, 50)); // Taille des boutons
