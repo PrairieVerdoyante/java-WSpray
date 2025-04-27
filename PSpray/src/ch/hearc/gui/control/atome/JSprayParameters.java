@@ -71,6 +71,15 @@ public class JSprayParameters extends Box
 		// Ajout du panel contenant les boutons
 		this.add(panelButtons);
 
+		// Dimension de la Forme
+		this.sliderDimension = new JSlider(1, 100, 10); // min 1, max 100, initial 10
+		sliderDimension.setOpaque(false);
+		JLabel labelDimension = new JLabel("Dimension de la forme");
+		labelDimension.setOpaque(false);
+		labelDimension.setForeground(Color.WHITE);
+		this.add(labelDimension);
+		this.add(sliderDimension);
+
 		// Taille des gouttelettes
 		this.sliderTaille = new JSlider(1, 100, 10); // min 1, max 100, initial 10
 		sliderTaille.setOpaque(false);
@@ -105,13 +114,13 @@ public class JSprayParameters extends Box
 			});
 
 		this.buttonCercle.addActionListener(e -> {
-			display.setForme(SprayShape.CERCLE);
-			System.out.println("Spray en cercle sélectionné");
+		display.setForme(SprayShape.CERCLE);
+		System.out.println("Spray en cercle sélectionné");
 		});
 
 		this.buttonCarre.addActionListener(e -> {
-			display.setForme(SprayShape.CARRE);
-			System.out.println("Spray en carre sélectionné");
+		display.setForme(SprayShape.CARRE);
+		System.out.println("Spray en carre sélectionné");
 		});
 
 		this.sliderNbGouttes.addChangeListener(new ChangeListener()
@@ -123,6 +132,18 @@ public class JSprayParameters extends Box
 				int nb = sliderNbGouttes.getValue();
 				display.setNbGouttes(nb);
 				System.out.println("Nouveau nombre de gouttelettes : " + nb);
+				}
+			});
+
+		this.sliderDimension.addChangeListener(new ChangeListener()
+			{
+
+			@Override
+			public void stateChanged(ChangeEvent e)
+				{
+				int dimension = sliderDimension.getValue();
+				display.setDimension(dimension);
+				System.out.println("Nouvelle dimension de la forme : " + dimension);
 				}
 			});
 		}
@@ -160,6 +181,7 @@ public class JSprayParameters extends Box
 	private Display_I display;
 
 	// Tools
+	private JSlider sliderDimension;
 	private JSlider sliderTaille;
 	private JSlider sliderNbGouttes;
 	private JToggleButton buttonCercle;

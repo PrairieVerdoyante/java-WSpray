@@ -13,6 +13,8 @@ public interface Display_I
 
 	public void setNbGouttes(int nbGouttes);
 
+	public void setDimension(int dimension);
+
 	public void setTaille(int taille);
 
 	public void setForme(SprayShape shape);
