@@ -4,7 +4,6 @@ package ch.hearc.gui.display;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.utils.Spray;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -24,6 +24,7 @@ public class JDisplay extends JPanel implements Display_I
 
 	private JDisplay()
 		{
+		this.calques = new ArrayList<>();
 		geometry();
 		control();
 		appearance();
@@ -32,6 +33,18 @@ public class JDisplay extends JPanel implements Display_I
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
 	\*------------------------------------------------------------------*/
+
+	@Override
+	protected void paintComponent(Graphics g)
+		{
+		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D)g;
+
+		for(DCalque calque:calques)
+			{
+			calque.draw(g2d);
+			}
+		}
 
 	@Override
 	public void setColor(Color color)
@@ -64,12 +77,6 @@ public class JDisplay extends JPanel implements Display_I
 		}
 
 	@Override
-	public void setCalques(int n)
-		{
-		// Pas encore
-		}
-
-	@Override
 	public List<String> getSelectedCalques()
 		{
 		// Pas encore
@@ -77,17 +84,37 @@ public class JDisplay extends JPanel implements Display_I
 		}
 
 	@Override
-	protected void paintComponent(Graphics g)
+	public void addCalque(String name)
 		{
-		super.paintComponent(g);
+		DCalque calque = new DCalque(name);
+		this.calques.add(calque);
+		this.currentCalque = calque;
+		}
 
-		Graphics2D g2d = (Graphics2D)g;
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		for(Spray spray:sprays)
+	@Override
+	public void removeLastCalque()
+		{
+		if (calques.size() > 1)
 			{
-			spray.draw(g2d);
+			calques.remove(calques.size() - 1);
+			currentCalque = calques.get(calques.size() - 1);
+			repaint();
 			}
+		}
+
+	@Override
+	public void setCalqueVisible(String name, boolean visible)
+		{
+		for(DCalque calque:calques)
+			{
+			if (calque.getName().equals(name))
+				{
+				calque.setVisible(visible);
+				repaint();
+				break;
+				}
+			}
+
 		}
 
 	/*------------------------------*\
@@ -110,7 +137,7 @@ public class JDisplay extends JPanel implements Display_I
 
 	private void geometry()
 		{
-		this.sprays = new ArrayList<>();
+		addCalque("Calque 1");
 		}
 
 	private void control()
@@ -143,20 +170,24 @@ public class JDisplay extends JPanel implements Display_I
 
 	private void addSprayAt(int x, int y)
 		{
-		// Quand on clique : créer un nouveau spray à l'endroit cliqué
-		Spray spray = new Spray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
-		sprays.add(spray);
-		repaint();
+		if (currentCalque != null)
+			{
+			Spray spray = new Spray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
+			currentCalque.addSpray(spray);
+			repaint();
+			}
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
+	// inputs
 	private static JDisplay instance = null;
 
-	private List<Spray> sprays;
-
+	// tools
+	private List<DCalque> calques;
+	private DCalque currentCalque;
 	// Paramètres courants
 	private Color currentColor = Color.BLACK;
 	private int currentNbGouttes = 100;

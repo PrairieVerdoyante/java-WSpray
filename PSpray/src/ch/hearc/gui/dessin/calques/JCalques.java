@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.control.atome;
+package ch.hearc.gui.dessin.calques;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -38,21 +38,13 @@ public class JCalques extends Box
 		}
 
 	/*------------------------------------------------------------------*\
-	|*							Methods Public							*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
-	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/
 
 	private void geometry()
 		{
 		this.calqueCheckBoxes = new ArrayList<>();
-		this.calqueCounter = 1;
+		this.calqueCounter = 0;
 
 		this.panelBoutons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		this.buttonAdd = new JButton("+");
@@ -67,6 +59,9 @@ public class JCalques extends Box
 
 		add(this.panelCheckBoxes);
 		add(this.panelBoutons);
+
+		// adding a base calque
+		addNewCalque();
 
 		}
 
@@ -97,10 +92,17 @@ public class JCalques extends Box
 
 	private void addNewCalque()
 		{
-		JCheckBox cb = new JCheckBox("Calque " + this.calqueCounter++);
+		// incrémenter le numéro du calque avant de l'utiliser
+		this.calqueCounter++;
+
+		String name = "Calque " + this.calqueCounter;
+
+		JCheckBox cb = new JCheckBox(name);
 		cb.setOpaque(false);
 		cb.setForeground(Color.WHITE);
 		this.calqueCheckBoxes.add(cb);
+
+		display.addCalque(name);
 
 		cb.addActionListener(new ActionListener()
 			{
@@ -108,40 +110,27 @@ public class JCalques extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				if (cb.isSelected())
-					{
-					System.out.println(cb.getText() + " sélectionné");
-					}
-				else
-					{
-					System.out.println(cb.getText() + " désélectionné");
-					}
+				display.setCalqueVisible(name, cb.isSelected());
 				}
 			});
 
+		cb.setSelected(true);
 		this.panelCheckBoxes.add(cb);
 
-		// mettre a jour le nb de calques
-		display.setCalques(this.calqueCounter);
 		revalidate();
 		repaint();
 		}
 
 	private void removeLastCalque()
 		{
-		if (!this.calqueCheckBoxes.isEmpty())
+		if (!this.calqueCheckBoxes.isEmpty() && this.calqueCounter > 1)
 			{
 			JCheckBox cb = this.calqueCheckBoxes.remove(this.calqueCheckBoxes.size() - 1);
 
-			if (cb.isSelected())
-				{
-				System.out.println(cb.getText() + "Déselectionné");
-				}
-
+			// remove calque
 			this.panelCheckBoxes.remove(cb);
+			display.removeLastCalque();
 
-			// mettre a jour le nb de calques
-			display.setCalques(calqueCounter);
 			revalidate();
 			repaint();
 
@@ -158,7 +147,7 @@ public class JCalques extends Box
 		setBackground(new Color(71, 71, 71, 255));
 
 		panelCheckBoxes.setOpaque(false);
-	    panelBoutons.setOpaque(false);
+		panelBoutons.setOpaque(false);
 		}
 
 	/*------------------------------------------------------------------*\

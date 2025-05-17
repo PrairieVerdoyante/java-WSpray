@@ -19,8 +19,12 @@ public interface Display_I
 
 	public void setForme(SprayShape shape);
 
-	public void setCalques(int n);
-
 	public List<String> getSelectedCalques();
+
+	public void addCalque(String name);
+
+	public void removeLastCalque();
+
+	public void setCalqueVisible(String name, boolean visible);
 
 	}
