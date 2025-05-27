@@ -4,6 +4,8 @@ package ch.hearc.gui.display;
 import java.awt.Color;
 import java.util.List;
 
+import ch.hearc.gui.dessin.calques.DCalque;
+import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.utils.SprayShape;
 
 public interface Display_I
@@ -19,7 +21,7 @@ public interface Display_I
 
 	public void setForme(SprayShape shape);
 
-	public List<String> getSelectedCalques();
+	public List<DCalque> getSelectedCalques();
 
 	public void addCalque(String name);
 
@@ -27,4 +29,11 @@ public interface Display_I
 
 	public void setCalqueVisible(String name, boolean visible);
 
+	public void setCalques(List<DCalque> newCalques);
+
+	public List<DCalque> getCalques();
+
+	public void reset();
+
+	public void setJCalques(JCalques jCalques);
 	}

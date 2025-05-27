@@ -60,7 +60,7 @@ public class JCalques extends Box
 		add(this.panelCheckBoxes);
 		add(this.panelBoutons);
 
-		// adding a base calque
+		// add a base calque
 		addNewCalque();
 
 		}
@@ -90,9 +90,21 @@ public class JCalques extends Box
 
 		}
 
+	private void appearance()
+		{
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Calques", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+
+		// debug
+		setOpaque(true);
+		setBackground(new Color(71, 71, 71, 255));
+
+		panelCheckBoxes.setOpaque(false);
+		panelBoutons.setOpaque(false);
+		}
+
 	private void addNewCalque()
 		{
-		// incrémenter le numéro du calque avant de l'utiliser
+		// adds the first default layer
 		this.calqueCounter++;
 
 		String name = "Calque " + this.calqueCounter;
@@ -138,16 +150,44 @@ public class JCalques extends Box
 			}
 		}
 
-	private void appearance()
+	/*------------------------------------------------------------------*\
+	|*							Methods Public							*|
+	\*------------------------------------------------------------------*/
+
+	public void resetCalques()
 		{
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Calques", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+		this.removeAll(); // remove everything including buttons, layout
+		this.panelCheckBoxes.removeAll();
+		this.calqueCheckBoxes.clear();
+		this.calqueCounter = 0;
 
-		// debug
-		setOpaque(true);
-		setBackground(new Color(71, 71, 71, 255));
+		// Rebuild layout structure (just like geometry())
+		add(Box.createHorizontalStrut(10));
+		add(this.panelCheckBoxes);
+		add(this.panelBoutons);
 
-		panelCheckBoxes.setOpaque(false);
-		panelBoutons.setOpaque(false);
+		// Rebuild checkboxes from display's calques
+		List<DCalque> calques = display.getCalques();
+
+		for(DCalque calque:calques)
+			{
+			String name = calque.getName();
+
+			JCheckBox cb = new JCheckBox(name);
+			cb.setOpaque(false);
+			cb.setForeground(Color.WHITE);
+			cb.setSelected(calque.isVisible());
+
+			cb.addActionListener(e -> display.setCalqueVisible(name, cb.isSelected()));
+
+			this.calqueCheckBoxes.add(cb);
+			this.panelCheckBoxes.add(cb);
+
+			this.calqueCounter++;
+			}
+
+		revalidate();
+		repaint();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -165,5 +205,6 @@ public class JCalques extends Box
 	private JButton buttonRemove;
 
 	private int calqueCounter;
+	private JCalques calques; // Add this field
 
 	}

@@ -12,6 +12,8 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import ch.hearc.gui.dessin.calques.DCalque;
+import ch.hearc.gui.dessin.calques.JCalques;
+import ch.hearc.gui.dessin.composition.DComposition;
 import ch.hearc.gui.utils.Spray;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -23,8 +25,13 @@ public class JDisplay extends JPanel implements Display_I
 	\*------------------------------------------------------------------*/
 
 	private JDisplay()
+
 		{
-		this.calques = new ArrayList<>();
+		//		this.calques = new ArrayList<>();
+		//		this.dComposition = new DComposition(this);
+		//		this.dComposition.setCalques(this.calques);
+		reset(); // sets the default parameters
+
 		geometry();
 		control();
 		appearance();
@@ -40,10 +47,7 @@ public class JDisplay extends JPanel implements Display_I
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D)g;
 
-		for(DCalque calque:calques)
-			{
-			calque.draw(g2d);
-			}
+		this.dComposition.draw(g2d, currentDimension, currentDimension);
 		}
 
 	@Override
@@ -77,7 +81,7 @@ public class JDisplay extends JPanel implements Display_I
 		}
 
 	@Override
-	public List<String> getSelectedCalques()
+	public List<DCalque> getSelectedCalques()
 		{
 		// Pas encore
 		return null;
@@ -114,7 +118,67 @@ public class JDisplay extends JPanel implements Display_I
 				break;
 				}
 			}
+		}
 
+	/**
+	 * Restores JDisplay to default parameters.
+	 */
+	@Override
+	public void reset()
+		{
+		this.currentColor = Color.BLACK;
+		this.currentNbGouttes = 100;
+		this.currentDimension = 10;
+		this.currentShape = SprayShape.CERCLE;
+		this.currentTaille = 10;
+
+		this.calques = new ArrayList<>();
+		this.dComposition = new DComposition(this);
+		this.dComposition.setCalques(this.calques);
+
+		addCalque("Calque 1");
+
+		if (!this.calques.isEmpty())
+			{
+			this.currentCalque = this.calques.get(this.calques.size() - 1);
+			}
+		else
+			{
+			this.currentCalque = null;
+			}
+
+		// reset calques
+		if (jCalques != null)
+			{
+			jCalques.resetCalques();
+
+			repaint();
+			}
+		}
+
+	@Override
+	public void setCalques(List<DCalque> calques)
+		{
+		this.calques = calques != null ? calques : new ArrayList<>();
+		this.dComposition.setCalques(this.calques);
+
+		// Always reset currentCalque to a valid one if possible
+		if (!this.calques.isEmpty())
+			{
+			this.currentCalque = this.calques.get(this.calques.size() - 1);
+			}
+		else
+			{
+			this.currentCalque = null;
+			}
+
+		repaint();
+		}
+
+	@Override
+	public List<DCalque> getCalques()
+		{
+		return this.calques;
 		}
 
 	/*------------------------------*\
@@ -125,10 +189,24 @@ public class JDisplay extends JPanel implements Display_I
 		{
 		if (instance == null)
 			{
-			instance = new JDisplay();
+			try
+				{
+				instance = new JDisplay();
+				}
+			catch (Exception e)
+				{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
 			}
 
 		return instance;
+		}
+
+	@Override
+	public void setJCalques(JCalques jCalques)
+		{
+		this.jCalques = jCalques;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -137,7 +215,7 @@ public class JDisplay extends JPanel implements Display_I
 
 	private void geometry()
 		{
-		addCalque("Calque 1");
+		// rien
 		}
 
 	private void control()
@@ -168,6 +246,11 @@ public class JDisplay extends JPanel implements Display_I
 		setBackground(Color.WHITE);
 		}
 
+	/**
+	 * Adds a spray to the selected calque.
+	 * @param x coordinate of the spray position
+	 * @param y coordinate of the spray position
+	 */
 	private void addSprayAt(int x, int y)
 		{
 		if (currentCalque != null)
@@ -188,10 +271,13 @@ public class JDisplay extends JPanel implements Display_I
 	// tools
 	private List<DCalque> calques;
 	private DCalque currentCalque;
+	private DComposition dComposition;
+	private JCalques jCalques;
 	// Paramètres courants
-	private Color currentColor = Color.BLACK;
-	private int currentNbGouttes = 100;
-	private int currentTaille = 10;
-	private int currentDimension = 10;
-	private SprayShape currentShape = SprayShape.CERCLE;
+	private Color currentColor;
+	private int currentNbGouttes;
+	private int currentTaille;
+	private int currentDimension;
+	private SprayShape currentShape;
+
 	}

@@ -1,11 +1,18 @@
 
 package ch.hearc.gui.menu;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import ch.hearc.gui.dessin.calques.JCalques;
+import ch.hearc.gui.display.JDisplay;
 
 public class JOptionsMenu extends Box
 	{
@@ -86,12 +93,54 @@ public class JOptionsMenu extends Box
 
 	private void control()
 		{
-		// rien
+		this.fileNew.addActionListener(createNewDrawingListener());
+		this.fileSave.addActionListener(SaveFileListener());
 		}
 
 	private void appearance()
 		{
 		// rien
+		}
+
+	private ActionListener createNewDrawingListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				int result = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment créer un nouveau dessin ? Les calques existants seront supprimés.", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+				if (result == JOptionPane.YES_OPTION)
+					{
+					JDisplay.getInstance().reset();
+					}
+				else {
+				System.out.println("non");
+				}
+				}
+			};
+		}
+
+	private ActionListener SaveFileListener()
+		{
+		return new ActionListener()
+			{
+			// TODO: file stream
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				/*
+				for(DCalque calque:JDisplay.getInstance().getSelectedCalques())
+					{
+					// calque.getSprays();
+					}
+
+				}*/
+				}
+			};
 		}
 
 	/*------------------------------------------------------------------*\
@@ -121,5 +170,7 @@ public class JOptionsMenu extends Box
 
 	private JMenuItem toolsUndo;
 	private JMenuItem toolsRedo;
+
+	private JCalques jCalques;
 
 	}

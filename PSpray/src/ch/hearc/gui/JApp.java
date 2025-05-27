@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import ch.hearc.gui.control.JControl;
 import ch.hearc.gui.control.JToolBox;
+import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.display.JDisplay;
 import ch.hearc.gui.menu.JOptionsMenu;
 
@@ -43,6 +44,10 @@ public class JApp extends JPanel
 		this.jToolBox = new JToolBox();
 		this.jOptionsMenu = new JOptionsMenu();
 
+		this.jCalques = this.jControl.getJCalques();
+		this.jDisplay.reset(); // call reset once to init jDisplay
+		this.jDisplay.setJCalques(jCalques);
+
 		setLayout(new BorderLayout());
 
 		add(this.jDisplay, BorderLayout.CENTER);
@@ -70,6 +75,7 @@ public class JApp extends JPanel
 
 	// Tools
 	private JControl jControl;
+	private JCalques jCalques;
 	private JToolBox jToolBox;
 	private JDisplay jDisplay;
 	private JOptionsMenu jOptionsMenu;
