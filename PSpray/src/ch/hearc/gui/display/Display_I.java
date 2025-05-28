@@ -4,13 +4,13 @@ package ch.hearc.gui.display;
 import java.awt.Color;
 import java.util.List;
 
+import ch.hearc.gui.dessin.actions.UndoRedo;
 import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.utils.SprayShape;
 
 public interface Display_I
 	{
-
 	public void setColor(Color color);
 
 	public void setNbGouttes(int nbGouttes);
@@ -21,8 +21,6 @@ public interface Display_I
 
 	public void setForme(SprayShape shape);
 
-	public List<DCalque> getSelectedCalques();
-
 	public void addCalque(String name);
 
 	public void removeLastCalque();
@@ -31,9 +29,14 @@ public interface Display_I
 
 	public void setCalques(List<DCalque> newCalques);
 
-	public List<DCalque> getCalques();
-
 	public void reset();
 
 	public void setJCalques(JCalques jCalques);
+
+	public List<DCalque> getCalques();
+
+	public List<DCalque> getSelectedCalques();
+
+	public UndoRedo getHistory();
+
 	}

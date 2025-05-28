@@ -25,12 +25,6 @@ public class DCalque implements DCalque_I
 	\*------------------------------------------------------------------*/
 
 	@Override
-	public void addSpray(Spray spray)
-		{
-		sprays.add(spray);
-		}
-
-	@Override
 	public void draw(Graphics2D g2d)
 		{
 		if (visible)
@@ -64,6 +58,24 @@ public class DCalque implements DCalque_I
 	public void draw(Graphics2D g2d, int arg1, int arg2)
 		{
 		this.draw(g2d);
+		}
+
+	@Override
+	public void addSpray(Spray spray)
+		{
+		sprays.add(spray);
+		}
+
+	@Override
+	public void removeSpray(Spray spray)
+		{
+		sprays.remove(spray);
+		}
+
+	@Override
+	public List<Spray> getSprays()
+		{
+		return this.sprays;
 		}
 
 	@Override

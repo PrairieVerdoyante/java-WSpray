@@ -1,8 +1,11 @@
+
 package ch.hearc.gui.control;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -13,83 +16,124 @@ import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
 public class JToolBox extends Box
-    {
+	{
 
-    /*------------------------------------------------------------------*\
-    |*                           Constructors                           *|
-    \*------------------------------------------------------------------*/
+	/*------------------------------------------------------------------*\
+	|*                           Constructors                           *|
+	\*------------------------------------------------------------------*/
 
-    public JToolBox()
-        {
-        super(BoxLayout.Y_AXIS);
+	public JToolBox()
+		{
+		super(BoxLayout.Y_AXIS);
 
-        geometry();
-        control();
-        appearance();
-        }
+		geometry();
+		control();
+		appearance();
 
-    /*------------------------------------------------------------------*\
-    |*                           Methods Private                        *|
-    \*------------------------------------------------------------------*/
+		buttonSpray.setSelected(true); // init
+		}
 
-    private void geometry()
-        {
-        // Chargement des images comme icônes
-        buttonSpray = createToolButton("spray.png");   // Image pour le spray
-        buttonGomme = createToolButton("gomme.png");   // Image pour la gomme
-        buttonSelectionner = createToolButton("selectionner.png"); // Image pour sélectionner
-        buttonDeplacer = createToolButton("deplacer.png"); // Image pour déplacer
+	/*------------------------------------------------------------------*\
+	|*                           Methods Private                        *|
+	\*------------------------------------------------------------------*/
 
-        // Groupe exclusif (un seul outil sélectionné à la fois)
-        ButtonGroup groupTools = new ButtonGroup();
-        groupTools.add(buttonSpray);
-        groupTools.add(buttonGomme);
-        groupTools.add(buttonSelectionner);
-        groupTools.add(buttonDeplacer);
+	private void geometry()
+		{
+		// Chargement des images comme icônes
+		buttonSpray = createToolButton("spray.png"); // Image pour le spray
+		buttonGomme = createToolButton("gomme.png"); // Image pour la gomme
+		buttonSelectionner = createToolButton("selectionner.png"); // Image pour sélectionner
+		buttonDeplacer = createToolButton("deplacer.png"); // Image pour déplacer
 
-        // Ajout dans la colonne
-        this.add(buttonSpray);
-        this.add(buttonGomme);
-        this.add(buttonSelectionner);
-        this.add(buttonDeplacer);
-        }
+		// Groupe exclusif (un seul outil sélectionné à la fois)
+		ButtonGroup groupTools = new ButtonGroup();
+		groupTools.add(buttonSpray);
+		groupTools.add(buttonGomme);
+		groupTools.add(buttonSelectionner);
+		groupTools.add(buttonDeplacer);
 
-    private JToggleButton createToolButton(String imageName)
-        {
-        JToggleButton button = new JToggleButton();
+		// Ajout dans la colonne
+		this.add(buttonSpray);
+		this.add(buttonGomme);
+		this.add(buttonSelectionner);
+		this.add(buttonDeplacer);
+		}
 
-        // Chargement de l'image
-        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/" + imageName));
+	private JToggleButton createToolButton(String imageName)
+		{
+		JToggleButton button = new JToggleButton();
 
-        button.setIcon(icon); // Affectation de l'icône
-        button.setPreferredSize(new Dimension(50, 50)); // Taille des boutons
-        button.setMaximumSize(new Dimension(50, 50));
-        button.setMinimumSize(new Dimension(50, 50));
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        return button;
-        }
+		// Chargement de l'image
+		ImageIcon icon = new ImageIcon(getClass().getResource("/icons/" + imageName));
 
-    private void control()
-        {
-        // Tu peux ajouter des listeners ici pour détecter quel outil est choisi
-        }
+		button.setIcon(icon); // Affectation de l'icône
+		button.setPreferredSize(new Dimension(50, 50)); // Taille des boutons
+		button.setMaximumSize(new Dimension(50, 50));
+		button.setMinimumSize(new Dimension(50, 50));
+		button.setFocusPainted(false);
+		button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+		return button;
+		}
 
-    private void appearance()
-        {
-        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Outils", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+	private void control()
+		{
+		buttonSpray.addActionListener(new ActionListener()
+			{
 
-        // debug
-        setOpaque(true);
-        setBackground(new Color(50, 50, 50, 255));
-        }
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				System.out.println("Spray sélectionné");
+				}
+			});
 
-    /*------------------------------------------------------------------*\
-    |*                           Attributs Private                      *|
-    \*------------------------------------------------------------------*/
+		buttonGomme.addActionListener(new ActionListener()
+			{
 
-    private JToggleButton buttonSpray;
-    private JToggleButton buttonGomme;
-    private JToggleButton buttonSelectionner;
-    private JToggleButton buttonDeplacer;
-    }
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				System.out.println("Gomme sélectionnée");
+				}
+			});
+
+		buttonSelectionner.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				System.out.println("Sélectionner activé");
+
+				}
+			});
+
+		buttonDeplacer.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				System.out.println("Déplacer activé");
+				}
+			});
+		}
+
+	private void appearance()
+		{
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Outils", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+
+		// debug
+		setOpaque(true);
+		setBackground(new Color(50, 50, 50, 255));
+		}
+
+	/*------------------------------------------------------------------*\
+	|*                           Attributs Private                      *|
+	\*------------------------------------------------------------------*/
+
+	private JToggleButton buttonSpray;
+	private JToggleButton buttonGomme;
+	private JToggleButton buttonSelectionner;
+	private JToggleButton buttonDeplacer;
+	}

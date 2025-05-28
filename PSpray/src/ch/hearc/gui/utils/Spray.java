@@ -29,7 +29,7 @@ public class Spray
 
 		if (shape == SprayShape.CERCLE)
 			{
-			for (int i = 0; i < nbGouttes; i++)
+			for(int i = 0; i < nbGouttes; i++)
 				{
 				double angle = 2 * Math.PI * random.nextDouble();
 				double radius = dimension * Math.sqrt(random.nextDouble());
@@ -40,10 +40,10 @@ public class Spray
 			}
 		else if (shape == SprayShape.CARRE)
 			{
-			for (int i = 0; i < nbGouttes; i++)
+			for(int i = 0; i < nbGouttes; i++)
 				{
-				int px = x - dimension/2 + random.nextInt(dimension);
-				int py = y - dimension/2 + random.nextInt(dimension);
+				int px = x - dimension / 2 + random.nextInt(dimension);
+				int py = y - dimension / 2 + random.nextInt(dimension);
 				points.add(new Point(px, py));
 				}
 			}
@@ -56,10 +56,10 @@ public class Spray
 	public void draw(Graphics2D g2d)
 		{
 		g2d.setColor(color);
-		for (Point p : points)
+		for(Point p:points)
 			{
 			int r = taille;
-			g2d.fillOval(p.x - r/2, p.y - r/2, r, r);
+			g2d.fillOval(p.x - r / 2, p.y - r / 2, r, r);
 			}
 		}
 
@@ -67,6 +67,40 @@ public class Spray
 	|*				Get				*|
 	\*------------------------------*/
 
+	public int getX()
+		{
+		return this.x;
+		}
+
+	public int getY()
+		{
+		return this.y;
+		}
+
+	public Color getColor()
+		{
+		return this.color;
+		}
+
+	public int getNbGouttes()
+		{
+		return this.nbGouttes;
+		}
+
+	public int getTaille()
+		{
+		return this.taille;
+		}
+
+	public SprayShape getShape()
+		{
+		return this.shape;
+		}
+
+	public int getDimension()
+		{
+		return this.dimension;
+		}
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/
@@ -83,5 +117,6 @@ public class Spray
 	private SprayShape shape;
 
 	private List<Point> points;
-	}
 
+
+	}

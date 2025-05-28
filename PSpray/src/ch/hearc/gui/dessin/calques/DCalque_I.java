@@ -2,6 +2,7 @@
 package ch.hearc.gui.dessin.calques;
 
 import java.awt.Graphics2D;
+import java.util.List;
 
 import ch.hearc.c_gui.z_tools.DessinAnimable;
 import ch.hearc.gui.utils.Spray;
@@ -16,5 +17,10 @@ public interface DCalque_I extends DessinAnimable
 
 	public void draw(Graphics2D g2d);
 
-	void addSpray(Spray spray);
+	public void addSpray(Spray spray);
+
+	public void removeSpray(Spray Spray);
+
+	public List<Spray> getSprays();
+
 	}

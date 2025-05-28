@@ -6,14 +6,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
+import ch.hearc.gui.dessin.actions.UndoRedo;
 import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.dessin.composition.DComposition;
+import ch.hearc.gui.export.SprayStorage;
 import ch.hearc.gui.utils.Spray;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -23,13 +26,9 @@ public class JDisplay extends JPanel implements Display_I
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
-
-	private JDisplay()
+	private JDisplay() throws IOException
 
 		{
-		//		this.calques = new ArrayList<>();
-		//		this.dComposition = new DComposition(this);
-		//		this.dComposition.setCalques(this.calques);
 		reset(); // sets the default parameters
 
 		geometry();
@@ -81,18 +80,12 @@ public class JDisplay extends JPanel implements Display_I
 		}
 
 	@Override
-	public List<DCalque> getSelectedCalques()
-		{
-		// Pas encore
-		return null;
-		}
-
-	@Override
 	public void addCalque(String name)
 		{
 		DCalque calque = new DCalque(name);
 		this.calques.add(calque);
 		this.currentCalque = calque;
+		this.undoRedo = new UndoRedo(currentCalque);
 		}
 
 	@Override
@@ -141,6 +134,7 @@ public class JDisplay extends JPanel implements Display_I
 		if (!this.calques.isEmpty())
 			{
 			this.currentCalque = this.calques.get(this.calques.size() - 1);
+			this.undoRedo = new UndoRedo(currentCalque);
 			}
 		else
 			{
@@ -172,6 +166,8 @@ public class JDisplay extends JPanel implements Display_I
 			this.currentCalque = null;
 			}
 
+		this.undoRedo = new UndoRedo(currentCalque);
+
 		repaint();
 		}
 
@@ -179,6 +175,19 @@ public class JDisplay extends JPanel implements Display_I
 	public List<DCalque> getCalques()
 		{
 		return this.calques;
+		}
+
+	@Override
+	public List<DCalque> getSelectedCalques()
+		{
+		// Pas encore
+		return null;
+		}
+
+	@Override
+	public UndoRedo getHistory()
+		{
+		return this.undoRedo;
 		}
 
 	/*------------------------------*\
@@ -195,7 +204,6 @@ public class JDisplay extends JPanel implements Display_I
 				}
 			catch (Exception e)
 				{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				}
 			}
@@ -236,7 +244,7 @@ public class JDisplay extends JPanel implements Display_I
 			@Override
 			public void mouseDragged(MouseEvent e)
 				{
-				addSprayAt(e.getX(), e.getY());
+				// addSprayAt(e.getX(), e.getY());
 				}
 			});
 		}
@@ -257,8 +265,22 @@ public class JDisplay extends JPanel implements Display_I
 			{
 			Spray spray = new Spray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
 			currentCalque.addSpray(spray);
+
+			undoRedo.addAction(spray);
+
+			try
+				{
+				SprayStorage.append(spray, "sprays.bin");
+				}
+			catch (IOException e)
+				{
+				e.printStackTrace();
+				}
+
 			repaint();
+
 			}
+
 		}
 
 	/*------------------------------------------------------------------*\
@@ -279,5 +301,8 @@ public class JDisplay extends JPanel implements Display_I
 	private int currentTaille;
 	private int currentDimension;
 	private SprayShape currentShape;
+
+	// undo/redo
+	private UndoRedo undoRedo;
 
 	}

@@ -95,6 +95,8 @@ public class JOptionsMenu extends Box
 		{
 		this.fileNew.addActionListener(createNewDrawingListener());
 		this.fileSave.addActionListener(SaveFileListener());
+		this.toolsUndo.addActionListener(createUndoListener());
+		this.toolsRedo.addActionListener(createRedoListener());
 		}
 
 	private void appearance()
@@ -116,9 +118,10 @@ public class JOptionsMenu extends Box
 					{
 					JDisplay.getInstance().reset();
 					}
-				else {
-				System.out.println("non");
-				}
+				else
+					{
+					System.out.println("non");
+					}
 				}
 			};
 		}
@@ -139,6 +142,32 @@ public class JOptionsMenu extends Box
 					}
 
 				}*/
+				}
+			};
+		}
+
+	private ActionListener createUndoListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().getHistory().undo();
+				}
+			};
+		}
+
+	private ActionListener createRedoListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().getHistory().redo();
 				}
 			};
 		}
