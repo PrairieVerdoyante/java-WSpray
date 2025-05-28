@@ -1,7 +1,6 @@
 
 package ch.hearc.gui.menu;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -18,7 +17,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import ch.hearc.gui.dessin.calques.DCalque;
-import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.display.JDisplay;
 import ch.hearc.gui.export.SprayStorage;
 import ch.hearc.gui.utils.Spray;
@@ -38,14 +36,6 @@ public class JOptionsMenu extends Box
 		control();
 		appearance();
 		}
-
-	/*------------------------------------------------------------------*\
-	|*							Methods Public							*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
 
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
@@ -102,21 +92,7 @@ public class JOptionsMenu extends Box
 
 	private void control()
 		{
-		this.fileNew.addActionListener(createNewDrawingListener());
-		this.fileSave.addActionListener(SaveFileListener());
-		this.toolsUndo.addActionListener(createUndoListener());
-		this.toolsRedo.addActionListener(createRedoListener());
-		this.fileExportCSV.addActionListener(exportCSVListener());
-		}
-
-	private void appearance()
-		{
-		// rien
-		}
-
-	private ActionListener createNewDrawingListener()
-		{
-		return new ActionListener()
+		this.fileNew.addActionListener(new ActionListener()
 			{
 
 			@Override
@@ -133,12 +109,10 @@ public class JOptionsMenu extends Box
 					System.out.println("non");
 					}
 				}
-			};
-		}
 
-	private ActionListener SaveFileListener()
-		{
-		return new ActionListener()
+			});
+
+		this.fileSave.addActionListener(new ActionListener()
 			{
 			// TODO: file stream
 
@@ -153,12 +127,9 @@ public class JOptionsMenu extends Box
 
 				}*/
 				}
-			};
-		}
 
-	private ActionListener createUndoListener()
-		{
-		return new ActionListener()
+			});
+		this.toolsUndo.addActionListener(new ActionListener()
 			{
 
 			@Override
@@ -167,12 +138,9 @@ public class JOptionsMenu extends Box
 				JDisplay.getInstance().getHistory().undo();
 				JDisplay.getInstance().repaint();
 				}
-			};
-		}
+			});
 
-	private ActionListener createRedoListener()
-		{
-		return new ActionListener()
+		this.toolsRedo.addActionListener(new ActionListener()
 			{
 
 			@Override
@@ -181,7 +149,14 @@ public class JOptionsMenu extends Box
 				JDisplay.getInstance().getHistory().redo();
 				JDisplay.getInstance().repaint();
 				}
-			};
+			});
+
+		this.fileExportCSV.addActionListener(exportCSVListener());
+		}
+
+	private void appearance()
+		{
+		// rien
 		}
 
 	private ActionListener exportCSVListener()
@@ -205,74 +180,26 @@ public class JOptionsMenu extends Box
 				fileChooser.setDialogTitle("Choisir un fichier CSV");
 				int userSelection = fileChooser.showSaveDialog(null);
 
-				try
+				if (userSelection == JFileChooser.APPROVE_OPTION)
 					{
-
-					if (userSelection == JFileChooser.APPROVE_OPTION)
+					File fileToSave = fileChooser.getSelectedFile();
+					try
 						{
-						File fileToSave = fileChooser.getSelectedFile();
 						SprayStorage.exportToCsv(allSprays, fileToSave.getAbsolutePath() + ".csv");
 						}
+					catch (IOException e1)
+						{
+						e1.printStackTrace();
+						}
 					}
-				catch (IOException e1)
-					{
-					e1.printStackTrace();
-					}
-
 				}
 			};
-		}
 
-	private static String getColorName(Color color)
-		{
-		    if (color.equals(Color.RED))
-				{
-					return "rouge";
-					}
-		    if (color.equals(Color.GREEN))
-				{
-					return "vert";
-					}
-		    if (color.equals(Color.BLUE))
-				{
-					return "bleu";
-					}
-		    if (color.equals(Color.PINK))
-				{
-					return "pink";
-					}
-		    if (color.equals(Color.BLACK))
-				{
-					return "noir";
-					}
-		    if (color.equals(Color.WHITE))
-				{
-					return "blanc";
-					}
-		    if (color.equals(Color.YELLOW))
-				{
-					return "jaune";
-					}
-		    if (color.equals(Color.ORANGE))
-				{
-					return "orange";
-					}
-		    if (color.equals(Color.CYAN))
-				{
-					return "cyan";
-					}
-		    if (color.equals(Color.MAGENTA))
-				{
-					return "magenta";
-					}
-
-		    return "inconnu";
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
-
 
 	// Inputs
 
@@ -297,7 +224,5 @@ public class JOptionsMenu extends Box
 
 	private JMenuItem toolsUndo;
 	private JMenuItem toolsRedo;
-
-	private JCalques jCalques;
 
 	}
