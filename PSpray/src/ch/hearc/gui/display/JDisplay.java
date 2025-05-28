@@ -134,7 +134,6 @@ public class JDisplay extends JPanel implements Display_I
 		if (!this.calques.isEmpty())
 			{
 			this.currentCalque = this.calques.get(this.calques.size() - 1);
-			this.undoRedo = new UndoRedo(currentCalque);
 			}
 		else
 			{
@@ -165,8 +164,6 @@ public class JDisplay extends JPanel implements Display_I
 			{
 			this.currentCalque = null;
 			}
-
-		this.undoRedo = new UndoRedo(currentCalque);
 
 		repaint();
 		}
@@ -234,8 +231,27 @@ public class JDisplay extends JPanel implements Display_I
 			@Override
 			public void mousePressed(MouseEvent e)
 				{
-				addSprayAt(e.getX(), e.getY());
+				currentStroke = new ArrayList<>();
+				addSprayAt(e.getX(), e.getY(), false);
 				}
+
+			@Override
+			public void mouseReleased(MouseEvent e)
+				{
+				undoRedo.addActions(currentStroke);
+				try
+					{
+					for(Spray spray:currentStroke)
+						{
+						SprayStorage.append(spray, "sprays.bin");
+						}
+					}
+				catch (IOException ex)
+					{
+					ex.printStackTrace();
+					}
+				}
+
 			});
 
 		addMouseMotionListener(new MouseAdapter()
@@ -244,7 +260,7 @@ public class JDisplay extends JPanel implements Display_I
 			@Override
 			public void mouseDragged(MouseEvent e)
 				{
-				// addSprayAt(e.getX(), e.getY());
+				addSprayAt(e.getX(), e.getY(), false);
 				}
 			});
 		}
@@ -259,28 +275,32 @@ public class JDisplay extends JPanel implements Display_I
 	 * @param x coordinate of the spray position
 	 * @param y coordinate of the spray position
 	 */
-	private void addSprayAt(int x, int y)
+	private void addSprayAt(int x, int y, boolean logImmediately)
 		{
 		if (currentCalque != null)
 			{
 			Spray spray = new Spray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
 			currentCalque.addSpray(spray);
 
-			undoRedo.addAction(spray);
-
-			try
+			if (logImmediately)
 				{
-				SprayStorage.append(spray, "sprays.bin");
+				try
+					{
+					SprayStorage.append(spray, "sprays.bin");
+					}
+				catch (IOException e)
+					{
+					e.printStackTrace();
+					}
 				}
-			catch (IOException e)
+
+			// Always track current stroke
+			if (currentStroke != null)
 				{
-				e.printStackTrace();
+				currentStroke.add(spray);
 				}
-
-			repaint();
-
 			}
-
+		repaint();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -303,6 +323,7 @@ public class JDisplay extends JPanel implements Display_I
 	private SprayShape currentShape;
 
 	// undo/redo
+	private List<Spray> currentStroke;
 	private UndoRedo undoRedo;
 
 	}

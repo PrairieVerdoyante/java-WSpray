@@ -1,6 +1,8 @@
 
 package ch.hearc.gui.dessin.actions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import ch.hearc.gui.dessin.calques.DCalque;
@@ -9,50 +11,46 @@ import ch.hearc.gui.utils.Spray;
 public class UndoRedo
 	{
 
-	/*------------------------------------------------------------------*\
-	|*							Constructors							*|
-	\*------------------------------------------------------------------*/
+	private Stack<List<Spray>> undoStack;
+	private Stack<List<Spray>> redoStack;
+	private DCalque calque;
 
-	public UndoRedo(DCalque currentCalque)
+	public UndoRedo(DCalque calque)
 		{
-		this.currentCalque = currentCalque;
+		this.calque = calque;
+		this.undoStack = new Stack<>();
+		this.redoStack = new Stack<>();
 		}
 
-	/*------------------------------------------------------------------*\
-	|*							Methods Public							*|
-	\*------------------------------------------------------------------*/
-
-	public void addAction(Spray spray)
+	public void addActions(List<Spray> sprays)
 		{
-		undoStack.push(spray);
+		undoStack.push(new ArrayList<>(sprays));
 		redoStack.clear();
 		}
 
 	public void undo()
 		{
-		if (!undoStack.isEmpty() && currentCalque != null)
+		if (!undoStack.isEmpty())
 			{
-			Spray spray = undoStack.pop();
-			currentCalque.removeSpray(spray); // Implement in DCalque
-			redoStack.push(spray);
+			List<Spray> actions = undoStack.pop();
+			for(Spray spray:actions)
+				{
+				calque.removeSpray(spray);
+				}
+			redoStack.push(actions);
 			}
 		}
 
 	public void redo()
 		{
-		if (!redoStack.isEmpty() && currentCalque != null)
+		if (!redoStack.isEmpty())
 			{
-			Spray spray = redoStack.pop();
-			currentCalque.addSpray(spray);
-			undoStack.push(spray);
+			List<Spray> actions = redoStack.pop();
+			for(Spray spray:actions)
+				{
+				calque.addSpray(spray);
+				}
+			undoStack.push(actions);
 			}
 		}
-
-	/*------------------------------------------------------------------*\
-	|*							Attributes Private						*|
-	\*------------------------------------------------------------------*/
-
-	private final Stack<Spray> undoStack = new Stack<>();
-	private final Stack<Spray> redoStack = new Stack<>();
-	private final DCalque currentCalque;
 	}

@@ -155,6 +155,7 @@ public class JOptionsMenu extends Box
 			public void actionPerformed(ActionEvent e)
 				{
 				JDisplay.getInstance().getHistory().undo();
+				JDisplay.getInstance().repaint();
 				}
 			};
 		}
@@ -168,6 +169,7 @@ public class JOptionsMenu extends Box
 			public void actionPerformed(ActionEvent e)
 				{
 				JDisplay.getInstance().getHistory().redo();
+				JDisplay.getInstance().repaint();
 				}
 			};
 		}
