@@ -1,18 +1,27 @@
 
 package ch.hearc.gui.menu;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.display.JDisplay;
+import ch.hearc.gui.export.SprayStorage;
+import ch.hearc.gui.utils.Spray;
 
 public class JOptionsMenu extends Box
 	{
@@ -97,6 +106,7 @@ public class JOptionsMenu extends Box
 		this.fileSave.addActionListener(SaveFileListener());
 		this.toolsUndo.addActionListener(createUndoListener());
 		this.toolsRedo.addActionListener(createRedoListener());
+		this.fileExportCSV.addActionListener(exportCSVListener());
 		}
 
 	private void appearance()
@@ -174,9 +184,95 @@ public class JOptionsMenu extends Box
 			};
 		}
 
+	private ActionListener exportCSVListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				List<Spray> allSprays = new ArrayList<>();
+				for(DCalque calque:JDisplay.getInstance().getCalques())
+					{
+					if (calque.isVisible())
+						{
+						allSprays.addAll(calque.getSprays());
+						}
+					}
+
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Choisir un fichier CSV");
+				int userSelection = fileChooser.showSaveDialog(null);
+
+				try
+					{
+
+					if (userSelection == JFileChooser.APPROVE_OPTION)
+						{
+						File fileToSave = fileChooser.getSelectedFile();
+						SprayStorage.exportToCsv(allSprays, fileToSave.getAbsolutePath() + ".csv");
+						}
+					}
+				catch (IOException e1)
+					{
+					e1.printStackTrace();
+					}
+
+				}
+			};
+		}
+
+	private static String getColorName(Color color)
+		{
+		    if (color.equals(Color.RED))
+				{
+					return "rouge";
+					}
+		    if (color.equals(Color.GREEN))
+				{
+					return "vert";
+					}
+		    if (color.equals(Color.BLUE))
+				{
+					return "bleu";
+					}
+		    if (color.equals(Color.PINK))
+				{
+					return "pink";
+					}
+		    if (color.equals(Color.BLACK))
+				{
+					return "noir";
+					}
+		    if (color.equals(Color.WHITE))
+				{
+					return "blanc";
+					}
+		    if (color.equals(Color.YELLOW))
+				{
+					return "jaune";
+					}
+		    if (color.equals(Color.ORANGE))
+				{
+					return "orange";
+					}
+		    if (color.equals(Color.CYAN))
+				{
+					return "cyan";
+					}
+		    if (color.equals(Color.MAGENTA))
+				{
+					return "magenta";
+					}
+
+		    return "inconnu";
+		}
+
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
+
 
 	// Inputs
 

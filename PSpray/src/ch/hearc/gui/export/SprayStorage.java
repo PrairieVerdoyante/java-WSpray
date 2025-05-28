@@ -23,7 +23,7 @@ public class SprayStorage
 	{
 
 	/*------------------------------------------------------------------*\
-	|*							Public Methods							*|
+	|*							Methods Public							*|
 	\*------------------------------------------------------------------*/
 
 	/*------------------------------*\
@@ -126,8 +126,56 @@ public class SprayStorage
 
 	public static void exportToCsv(List<Spray> sprays, String fileName) throws IOException
 		{
-		FileOutputStream fos = new FileOutputStream(fileName, true);
-		// CsvParser csv = new CsvParser(fos);
-		// csv.beginParsing(fos);
+		FileOutputStream fos = new FileOutputStream(fileName);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		StringBuilder sb = new StringBuilder();
+
+		for(Spray spray:sprays)
+			{
+			int x = spray.getX();
+			int y = spray.getY();
+			int radius = spray.getTaille();
+			String colorName = getColorName(spray.getColor());
+
+			// Format: x ; y ; rayon ; couleur
+			sb.append(x).append(" ;").append(y).append(" ;").append(radius).append(" ;").append(colorName).append("\n");
+			}
+
+		bos.write(sb.toString().getBytes());
+		bos.flush();
+		bos.close();
+		fos.close();
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Methods Private							*|
+	\*------------------------------------------------------------------*/
+
+
+	private static String getColorName(Color color)
+		{
+		if (color.equals(Color.RED))
+			{ return "rouge"; }
+		if (color.equals(Color.GREEN))
+			{ return "vert"; }
+		if (color.equals(Color.BLUE))
+			{ return "bleu"; }
+		if (color.equals(Color.PINK))
+			{ return "pink"; }
+		if (color.equals(Color.BLACK))
+			{ return "noir"; }
+		if (color.equals(Color.WHITE))
+			{ return "blanc"; }
+		if (color.equals(Color.YELLOW))
+			{ return "jaune"; }
+		if (color.equals(Color.ORANGE))
+			{ return "orange"; }
+		if (color.equals(Color.CYAN))
+			{ return "cyan"; }
+		if (color.equals(Color.MAGENTA))
+			{ return "magenta"; }
+
+		return "inconnu";
+		}
+
 	}
