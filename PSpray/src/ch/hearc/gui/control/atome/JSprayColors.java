@@ -1,3 +1,4 @@
+
 package ch.hearc.gui.control.atome;
 
 import java.awt.Color;
@@ -6,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -43,51 +46,31 @@ public class JSprayColors extends Box
 
 	private void geometry()
 		{
-		// Panel pour disposer en grille (ajouté un nombre de colonnes et lignes optimisé)
-		JPanel panelColors = new JPanel(new GridLayout(2, 6, 5, 5)); // 2 lignes, 6 colonnes, marges de 5px
+		JPanel panelColors = new JPanel(new GridLayout(2, 6, 5, 5));
 		panelColors.setOpaque(false);
 
-		// Création des boutons avec des couleurs supplémentaires
-		this.buttonRouge = createColorButton(Color.RED);
-		this.buttonVert = createColorButton(Color.GREEN);
-		this.buttonBleu = createColorButton(Color.BLUE);
-		this.buttonNoir = createColorButton(Color.BLACK);
-		this.buttonJaune = createColorButton(Color.YELLOW);
-		this.buttonCyan = createColorButton(Color.CYAN);
-		this.buttonMagenta = createColorButton(Color.MAGENTA);
-		this.buttonOrange = createColorButton(Color.ORANGE);
-		this.buttonRose = createColorButton(Color.PINK);
-		this.buttonBlanc = createColorButton(Color.WHITE);
-		this.buttonPersonnalisee = createColorButton(Color.GRAY);
-
-		// Groupement exclusif
 		ButtonGroup groupColor = new ButtonGroup();
-		groupColor.add(buttonRouge);
-		groupColor.add(buttonVert);
-		groupColor.add(buttonBleu);
-		groupColor.add(buttonNoir);
-		groupColor.add(buttonJaune);
-		groupColor.add(buttonCyan);
-		groupColor.add(buttonMagenta);
-		groupColor.add(buttonOrange);
-		groupColor.add(buttonRose);
-		groupColor.add(buttonBlanc);
-		groupColor.add(buttonPersonnalisee);
 
-		// Ajout dans la grille
-		panelColors.add(buttonRouge);
-		panelColors.add(buttonVert);
-		panelColors.add(buttonBleu);
-		panelColors.add(buttonNoir);
-		panelColors.add(buttonJaune);
-		panelColors.add(buttonCyan);
-		panelColors.add(buttonMagenta);
-		panelColors.add(buttonOrange);
-		panelColors.add(buttonRose);
-		panelColors.add(buttonBlanc);
+		// Create buttons for predefined colors
+		for(Color color:predefinedColors)
+			{
+			JToggleButton button = createColorButton(color);
+			colorButtons.put(color, button);
+			groupColor.add(button);
+			panelColors.add(button);
+			}
+
+		// Create the custom color ("+")
+		buttonPersonnalisee = createColorButton(Color.GRAY);
+		buttonPersonnalisee.setText("+");
+		buttonPersonnalisee.setFont(new Font("Arial", Font.BOLD, 40));
+		buttonPersonnalisee.setForeground(Color.BLACK);
+		buttonPersonnalisee.setHorizontalTextPosition(SwingConstants.CENTER);
+		buttonPersonnalisee.setVerticalTextPosition(SwingConstants.CENTER);
+
+		groupColor.add(buttonPersonnalisee);
 		panelColors.add(buttonPersonnalisee);
 
-		// Ajout du panel au composant principal
 		this.add(panelColors);
 		}
 
@@ -102,14 +85,14 @@ public class JSprayColors extends Box
 		button.setFocusPainted(false);
 
 		// Ajout du "+" si c'est la couleur personnalisée
-	    if (color.equals(Color.GRAY))
-	    {
-	        button.setText("+");
-	        button.setFont(new Font("Arial", Font.BOLD, 40)); // Optionnel : grosse police pour bien voir le +
-	        button.setForeground(Color.BLACK);                // Couleur du texte
-	        button.setHorizontalTextPosition(SwingConstants.CENTER);
-	        button.setVerticalTextPosition(SwingConstants.CENTER);
-	    }
+		if (color.equals(Color.GRAY))
+			{
+			button.setText("+");
+			button.setFont(new Font("Arial", Font.BOLD, 40)); // Optionnel : grosse police pour bien voir le +
+			button.setForeground(Color.BLACK); // Couleur du texte
+			button.setHorizontalTextPosition(SwingConstants.CENTER);
+			button.setVerticalTextPosition(SwingConstants.CENTER);
+			}
 
 		return button;
 		}
@@ -125,34 +108,29 @@ public class JSprayColors extends Box
 				Color couleur = null;
 
 				if (e.getSource() == buttonPersonnalisee)
-				{
-				    couleur = JColorChooser.showDialog(null, "Choisissez votre couleur", Color.WHITE);
-				    if (couleur != null)
-				    {
-				        couleurPersonnalisee = couleur;
-				        buttonPersonnalisee.setBackground(couleur);
-				    }
-				}
+					{
+					couleur = JColorChooser.showDialog(null, "Choisissez votre couleur", Color.WHITE);
+					if (couleur != null)
+						{
+						couleurPersonnalisee = couleur;
+						buttonPersonnalisee.setBackground(couleur);
+						}
+					}
 				else
-				{
-				    couleur = getSelectedColor();
-				}
+					{
+					couleur = getSelectedColor();
+					}
 
 				updateDisplayColor(couleur);
-
 				}
 			};
 
-		buttonRouge.addActionListener(listener);
-		buttonVert.addActionListener(listener);
-		buttonBleu.addActionListener(listener);
-		buttonNoir.addActionListener(listener);
-		buttonJaune.addActionListener(listener);
-		buttonCyan.addActionListener(listener);
-		buttonMagenta.addActionListener(listener);
-		buttonOrange.addActionListener(listener);
-		buttonRose.addActionListener(listener);
-		buttonBlanc.addActionListener(listener);
+		// Assign listener to all buttons
+		for(JToggleButton button:colorButtons.values())
+			{
+			button.addActionListener(listener);
+			}
+
 		buttonPersonnalisee.addActionListener(listener);
 		}
 
@@ -171,40 +149,27 @@ public class JSprayColors extends Box
 
 	public Color getSelectedColor()
 		{
-		if (buttonRouge.isSelected())
-			{ return Color.RED; }
-		if (buttonVert.isSelected())
-			{ return Color.GREEN; }
-		if (buttonBleu.isSelected())
-			{ return Color.BLUE; }
-		if (buttonNoir.isSelected())
-			{ return Color.BLACK; }
-		if (buttonJaune.isSelected())
-			{ return Color.YELLOW; }
-		if (buttonCyan.isSelected())
-			{ return Color.CYAN; }
-		if (buttonMagenta.isSelected())
-			{ return Color.MAGENTA; }
-		if (buttonOrange.isSelected())
-			{ return Color.ORANGE; }
-		if (buttonRose.isSelected())
-			{ return Color.PINK; }
-		if (buttonBlanc.isSelected())
-			{ return Color.WHITE; }
+		for(Map.Entry<Color, JToggleButton> entry:colorButtons.entrySet())
+			{
+			if (entry.getValue().isSelected())
+				{ return entry.getKey(); }
+			}
+
 		if (buttonPersonnalisee.isSelected() && couleurPersonnalisee != null)
 			{ return couleurPersonnalisee; }
 
-		return Color.BLACK; // défaut
+		return Color.BLACK;
 		}
 
 	private void updateDisplayColor(Color couleur)
-{
-    if (couleur != null)
-    {
-        display.setColor(couleur);
-        System.out.println("Couleur mise à jour : " + couleur);
-    }
-}
+		{
+		if (couleur != null)
+			{
+			display.setColor(couleur);
+			System.out.println("Couleur mise à jour : " + couleur);
+			}
+
+		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
@@ -214,16 +179,9 @@ public class JSprayColors extends Box
 	private Display_I display;
 
 	// Tools
-	private JToggleButton buttonRouge;
-	private JToggleButton buttonVert;
-	private JToggleButton buttonBleu;
-	private JToggleButton buttonNoir;
-	private JToggleButton buttonJaune;
-	private JToggleButton buttonCyan;
-	private JToggleButton buttonMagenta;
-	private JToggleButton buttonOrange;
-	private JToggleButton buttonRose;
-	private JToggleButton buttonBlanc;
+	private final Color[] predefinedColors = { Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.WHITE };
+
+	private final Map<Color, JToggleButton> colorButtons = new LinkedHashMap<>();
 	private JToggleButton buttonPersonnalisee;
 	private Color couleurPersonnalisee;
 	}
