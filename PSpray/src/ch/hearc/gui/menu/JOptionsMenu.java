@@ -104,10 +104,6 @@ public class JOptionsMenu extends Box
 					{
 					JDisplay.getInstance().reset();
 					}
-				else
-					{
-					System.out.println("non");
-					}
 				}
 
 			});
@@ -152,6 +148,23 @@ public class JOptionsMenu extends Box
 			});
 
 		this.fileExportCSV.addActionListener(exportCSVListener());
+		this.fileImportCSV.addActionListener(importCSVListener());
+
+		this.calqueAdd.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				String name = JOptionPane.showInputDialog(null, "Nom du nouveau calque :", "Ajouter un calque", JOptionPane.PLAIN_MESSAGE);
+				if (name != null && !name.trim().isEmpty())
+					{
+					JDisplay.getInstance().addCalque(name.trim());
+					JDisplay.getInstance().getJCalques().resetCalques(); // optional: refresh the UI checkboxes
+					}
+				}
+			});
+
 		}
 
 	private void appearance()
@@ -177,7 +190,7 @@ public class JOptionsMenu extends Box
 					}
 
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Choisir un fichier CSV");
+				fileChooser.setDialogTitle("Choisir l'emplacement");
 				int userSelection = fileChooser.showSaveDialog(null);
 
 				if (userSelection == JFileChooser.APPROVE_OPTION)
@@ -195,6 +208,42 @@ public class JOptionsMenu extends Box
 				}
 			};
 
+		}
+
+	private ActionListener importCSVListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Importer un fichier CSV");
+				int userSelection = fileChooser.showOpenDialog(null);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION)
+					{
+					File selectedFile = fileChooser.getSelectedFile();
+					try
+						{
+						List<Spray> importedSprays = SprayStorage.importFromCsv(selectedFile.getAbsolutePath());
+
+						DCalque newCalque = new DCalque("Import CSV");
+						newCalque.getSprays().addAll(importedSprays);
+
+						String name = "Import CSV - " + (JDisplay.getInstance().getCalques().size() + 1);
+						JDisplay.getInstance().addCalque(name, importedSprays);
+						JDisplay.getInstance().getJCalques().resetCalques(); // to update the checkboxes in JCalques
+
+						}
+					catch (IOException ex)
+						{
+						ex.printStackTrace();
+						}
+					}
+				}
+			};
 		}
 
 	/*------------------------------------------------------------------*\

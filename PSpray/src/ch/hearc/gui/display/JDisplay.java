@@ -89,6 +89,15 @@ public class JDisplay extends JPanel implements Display_I
 		}
 
 	@Override
+	public void addCalque(String name, List<Spray> sprays)
+		{
+		DCalque newCalque = new DCalque(name);
+		newCalque.getSprays().addAll(sprays);
+		this.calques.add(newCalque);
+		repaint();
+		}
+
+	@Override
 	public void removeLastCalque()
 		{
 		if (calques.size() > 1)
@@ -179,6 +188,12 @@ public class JDisplay extends JPanel implements Display_I
 		{
 		// Pas encore
 		return null;
+		}
+
+	@Override
+	public JCalques getJCalques()
+		{
+		return this.jCalques;
 		}
 
 	@Override

@@ -4,13 +4,16 @@ package ch.hearc.gui.export;
 import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
@@ -147,10 +150,39 @@ public class SprayStorage
 		fos.close();
 		}
 
+	public static List<Spray> importFromCsv(String fileName) throws IOException
+		{
+		List<Spray> sprays = new ArrayList<>();
+
+		BufferedReader reader = new BufferedReader(new FileReader(fileName));
+		String line;
+
+		while((line = reader.readLine()) != null)
+			{
+			String[] parts = line.split(";");
+			if (parts.length != 4)
+				{
+				continue;
+				}
+
+			int x = Integer.parseInt(parts[0].trim());
+			int y = Integer.parseInt(parts[1].trim());
+			int radius = Integer.parseInt(parts[2].trim());
+			String colorName = parts[3].trim();
+
+			Color color = parseColor(colorName);
+			Spray spray = new Spray(x, y, color, 100, radius, SprayShape.CERCLE, radius); // Default values
+
+			sprays.add(spray);
+			}
+
+		reader.close();
+		return sprays;
+		}
+
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/
-
 
 	private static String getColorName(Color color)
 		{
@@ -175,7 +207,45 @@ public class SprayStorage
 		if (color.equals(Color.MAGENTA))
 			{ return "magenta"; }
 
-		return "inconnu";
+		// If not a known color, return RGB format
+		return String.format("rgb(%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue());
 		}
 
+	private static Color parseColor(String name)
+		{
+		return switch(name.toLowerCase())
+			{
+			case "rouge" -> Color.RED;
+			case "vert" -> Color.GREEN;
+			case "bleu" -> Color.BLUE;
+			case "pink" -> Color.PINK;
+			case "noir" -> Color.BLACK;
+			case "blanc" -> Color.WHITE;
+			case "jaune" -> Color.YELLOW;
+			case "orange" -> Color.ORANGE;
+			case "cyan" -> Color.CYAN;
+			case "magenta" -> Color.MAGENTA;
+			default -> {
+			if (name.startsWith("rgb(") && name.endsWith(")"))
+				{
+				try
+					{
+					String[] rgb = name.substring(4, name.length() - 1).split(",");
+					int r = Integer.parseInt(rgb[0].trim());
+					int g = Integer.parseInt(rgb[1].trim());
+					int b = Integer.parseInt(rgb[2].trim());
+					yield new Color(r, g, b);
+					}
+				catch (Exception e)
+					{
+					yield Color.GRAY; // fallback color on parse error
+					}
+				}
+			else
+				{
+				yield Color.GRAY; // unknown string
+				}
+			}
+			};
+		}
 	}
