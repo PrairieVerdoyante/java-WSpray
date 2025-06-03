@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Spray
+public class DSpray
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public Spray(int x, int y, Color color, int nbGouttes, int taille, SprayShape shape, int dimension)
+	public DSpray(int x, int y, Color color, int nbGouttes, int taille, SprayShape shape, int dimension)
 		{
 		this.x = x;
 		this.y = y;

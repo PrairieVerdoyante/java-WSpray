@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import ch.hearc.gui.utils.Spray;
+import ch.hearc.gui.utils.DSpray;
 import ch.hearc.gui.utils.SprayShape;
 
 public class SprayStorage
@@ -33,14 +33,14 @@ public class SprayStorage
 	|*			Static				*|
 	\*------------------------------*/
 
-	public static void write(List<Spray> sprays, String fileName) throws IOException
+	public static void write(List<DSpray> sprays, String fileName) throws IOException
 		{
 		FileOutputStream fos = new FileOutputStream(fileName);
 		GZIPOutputStream gos = new GZIPOutputStream(fos);
 		BufferedOutputStream bos = new BufferedOutputStream(gos);
 		DataOutputStream dos = new DataOutputStream(bos);
 
-		for(Spray spray:sprays)
+		for(DSpray spray:sprays)
 			{
 			dos.writeInt(spray.getX());
 			dos.writeInt(spray.getY());
@@ -57,14 +57,14 @@ public class SprayStorage
 		fos.close();
 		}
 
-	public static List<Spray> read(String fileName) throws IOException
+	public static List<DSpray> read(String fileName) throws IOException
 		{
 		FileInputStream fis = new FileInputStream(fileName);
 		GZIPInputStream gis = new GZIPInputStream(fis);
 		BufferedInputStream bis = new BufferedInputStream(gis);
 		DataInputStream dis = new DataInputStream(bis);
 
-		List<Spray> sprays = new LinkedList<>();
+		List<DSpray> sprays = new LinkedList<>();
 
 		try
 			{
@@ -78,7 +78,7 @@ public class SprayStorage
 				SprayShape shape = SprayShape.values()[dis.readInt()];
 				int dimension = dis.readInt();
 
-				sprays.add(new Spray(x, y, color, nbGouttes, taille, shape, dimension));
+				sprays.add(new DSpray(x, y, color, nbGouttes, taille, shape, dimension));
 				}
 			}
 		catch (EOFException e)
@@ -94,7 +94,7 @@ public class SprayStorage
 		return sprays;
 		}
 
-	public static void append(Spray spray, String fileName) throws IOException
+	public static void append(DSpray spray, String fileName) throws IOException
 		{
 		boolean fileExists = new File(fileName).exists();
 
@@ -127,13 +127,13 @@ public class SprayStorage
 		fos.close();
 		}
 
-	public static void exportToCsv(List<Spray> sprays, String fileName) throws IOException
+	public static void exportToCsv(List<DSpray> sprays, String fileName) throws IOException
 		{
 		FileOutputStream fos = new FileOutputStream(fileName);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
 		StringBuilder sb = new StringBuilder();
 
-		for(Spray spray:sprays)
+		for(DSpray spray:sprays)
 			{
 			int x = spray.getX();
 			int y = spray.getY();
@@ -150,9 +150,9 @@ public class SprayStorage
 		fos.close();
 		}
 
-	public static List<Spray> importFromCsv(String fileName) throws IOException
+	public static List<DSpray> importFromCsv(String fileName) throws IOException
 		{
-		List<Spray> sprays = new ArrayList<>();
+		List<DSpray> sprays = new ArrayList<>();
 
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));
 		String line;
@@ -171,7 +171,7 @@ public class SprayStorage
 			String colorName = parts[3].trim();
 
 			Color color = parseColor(colorName);
-			Spray spray = new Spray(x, y, color, 100, radius, SprayShape.CERCLE, radius); // Default values
+			DSpray spray = new DSpray(x, y, color, 100, radius, SprayShape.CERCLE, radius); // Default values
 
 			sprays.add(spray);
 			}

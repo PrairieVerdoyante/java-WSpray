@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hearc.gui.utils.Spray;
+import ch.hearc.gui.utils.DSpray;
 
 public class DCalque implements DCalque_I
 	{
@@ -29,7 +29,7 @@ public class DCalque implements DCalque_I
 		{
 		if (visible)
 			{
-			for(Spray spray:sprays)
+			for(DSpray spray:sprays)
 				{
 				spray.draw(g2d);
 				}
@@ -61,19 +61,19 @@ public class DCalque implements DCalque_I
 		}
 
 	@Override
-	public void addSpray(Spray spray)
+	public void addSpray(DSpray spray)
 		{
 		sprays.add(spray);
 		}
 
 	@Override
-	public void removeSpray(Spray spray)
+	public void removeSpray(DSpray spray)
 		{
 		sprays.remove(spray);
 		}
 
 	@Override
-	public List<Spray> getSprays()
+	public List<DSpray> getSprays()
 		{
 		return this.sprays;
 		}
@@ -89,7 +89,7 @@ public class DCalque implements DCalque_I
 	|*						Attributs Private							*|
 	\*------------------------------------------------------------------*/
 
-	private final List<Spray> sprays = new ArrayList<>();
+	private final List<DSpray> sprays = new ArrayList<>();
 	private boolean visible = true;
 	private final String name;
 

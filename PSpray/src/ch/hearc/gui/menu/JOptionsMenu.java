@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.display.JSpray;
 import ch.hearc.gui.export.SprayStorage;
-import ch.hearc.gui.utils.Spray;
+import ch.hearc.gui.utils.DSpray;
 
 public class JOptionsMenu extends Box
 	{
@@ -180,7 +180,7 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				List<Spray> allSprays = new ArrayList<>();
+				List<DSpray> allSprays = new ArrayList<>();
 				for(DCalque calque:JSpray.getInstance().getCalques())
 					{
 					if (calque.isVisible())
@@ -227,7 +227,7 @@ public class JOptionsMenu extends Box
 					File selectedFile = fileChooser.getSelectedFile();
 					try
 						{
-						List<Spray> importedSprays = SprayStorage.importFromCsv(selectedFile.getAbsolutePath());
+						List<DSpray> importedSprays = SprayStorage.importFromCsv(selectedFile.getAbsolutePath());
 
 						DCalque newCalque = new DCalque("Import CSV");
 						newCalque.getSprays().addAll(importedSprays);

@@ -9,7 +9,7 @@ import ch.hearc.gui.dessin.actions.UndoRedo;
 import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.dessin.sprays.PointXY;
-import ch.hearc.gui.utils.Spray;
+import ch.hearc.gui.utils.DSpray;
 import ch.hearc.gui.utils.SprayShape;
 
 public interface Display_I
@@ -27,7 +27,7 @@ public interface Display_I
 
 	public void addCalque(String name);
 
-	public void addCalque(String name, List<Spray> sprays);
+	public void addCalque(String name, List<DSpray> sprays);
 
 	public void removeLastCalque();
 

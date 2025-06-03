@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 import ch.hearc.c_gui.z_tools.DessinAnimable;
-import ch.hearc.gui.utils.Spray;
+import ch.hearc.gui.utils.DSpray;
 
 public interface DCalque_I extends DessinAnimable
 	{
@@ -17,10 +17,10 @@ public interface DCalque_I extends DessinAnimable
 
 	public void draw(Graphics2D g2d);
 
-	public void addSpray(Spray spray);
+	public void addSpray(DSpray spray);
 
-	public void removeSpray(Spray Spray);
+	public void removeSpray(DSpray Spray);
 
-	public List<Spray> getSprays();
+	public List<DSpray> getSprays();
 
 	}

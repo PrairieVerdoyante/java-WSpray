@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Stack;
 
 import ch.hearc.gui.dessin.calques.DCalque;
-import ch.hearc.gui.utils.Spray;
+import ch.hearc.gui.utils.DSpray;
 
 public class UndoRedo
 	{
 
-	private Stack<List<Spray>> undoStack;
-	private Stack<List<Spray>> redoStack;
+	private Stack<List<DSpray>> undoStack;
+	private Stack<List<DSpray>> redoStack;
 	private DCalque calque;
 
 	public UndoRedo(DCalque calque)
@@ -22,7 +22,7 @@ public class UndoRedo
 		this.redoStack = new Stack<>();
 		}
 
-	public void addActions(List<Spray> sprays)
+	public void addActions(List<DSpray> sprays)
 		{
 		undoStack.push(new ArrayList<>(sprays));
 		redoStack.clear();
@@ -32,8 +32,8 @@ public class UndoRedo
 		{
 		if (!undoStack.isEmpty())
 			{
-			List<Spray> actions = undoStack.pop();
-			for(Spray spray:actions)
+			List<DSpray> actions = undoStack.pop();
+			for(DSpray spray:actions)
 				{
 				calque.removeSpray(spray);
 				}
@@ -45,8 +45,8 @@ public class UndoRedo
 		{
 		if (!redoStack.isEmpty())
 			{
-			List<Spray> actions = redoStack.pop();
-			for(Spray spray:actions)
+			List<DSpray> actions = redoStack.pop();
+			for(DSpray spray:actions)
 				{
 				calque.addSpray(spray);
 				}

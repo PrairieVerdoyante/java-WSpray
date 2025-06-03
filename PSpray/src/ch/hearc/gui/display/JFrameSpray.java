@@ -7,7 +7,6 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import ch.hearc.gui.JApp;
 import ch.hearc.gui.control.JControl;
 
 public class JFrameSpray extends JFrame
@@ -40,7 +39,6 @@ public class JFrameSpray extends JFrame
 		// Layout
 		setLayout(new BorderLayout());
 		add(jControl, BorderLayout.WEST);
-		add(jSpray, BorderLayout.CENTER);
 		}
 
 	private void control()
@@ -50,11 +48,7 @@ public class JFrameSpray extends JFrame
 
 	private void appearance()
 		{
-		setTitle("JSpray");
-		setSize(1200, 800);
-		setLocationRelativeTo(null); // Centré à l'écran
-		setVisible(true);
-		setContentPane(new JApp());
+
 		}
 
 	/*------------------------------------------------------------------*\

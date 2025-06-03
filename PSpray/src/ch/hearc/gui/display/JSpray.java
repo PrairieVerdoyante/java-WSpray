@@ -20,7 +20,7 @@ import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.dessin.composition.DComposition;
 import ch.hearc.gui.dessin.sprays.PointXY;
 import ch.hearc.gui.export.SprayStorage;
-import ch.hearc.gui.utils.Spray;
+import ch.hearc.gui.utils.DSpray;
 import ch.hearc.gui.utils.SprayShape;
 
 public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
@@ -92,7 +92,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 		}
 
 	@Override
-	public void addCalque(String name, List<Spray> sprays)
+	public void addCalque(String name, List<DSpray> sprays)
 		{
 		DCalque newCalque = new DCalque(name);
 		newCalque.getSprays().addAll(sprays);
@@ -210,7 +210,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 		{
 		Map<Color, List<PointXY>> map = new HashMap<>();
 
-		for(Spray spray:currentStroke)
+		for(DSpray spray:currentStroke)
 			{
 			Color color = spray.getColor();
 			PointXY point = new PointXY(spray.getX(), spray.getY());
@@ -282,7 +282,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 				undoRedo.addActions(currentStroke);
 				try
 					{
-					for(Spray spray:currentStroke)
+					for(DSpray spray:currentStroke)
 						{
 						SprayStorage.append(spray, "sprays.bin");
 						}
@@ -320,7 +320,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 		{
 		if (currentCalque != null)
 			{
-			Spray spray = new Spray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
+			DSpray spray = new DSpray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
 			currentCalque.addSpray(spray);
 
 			if (logImmediately)
@@ -364,7 +364,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 	private SprayShape currentShape;
 
 	// undo/redo
-	private List<Spray> currentStroke;
+	private List<DSpray> currentStroke;
 	private UndoRedo undoRedo;
 
 	}
