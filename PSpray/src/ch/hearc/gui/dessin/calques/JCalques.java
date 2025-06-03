@@ -17,7 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import ch.hearc.gui.display.Display_I;
+import ch.hearc.gui.display.JSprayConfigurable_I;
 
 public class JCalques extends Box
 	{
@@ -26,11 +26,11 @@ public class JCalques extends Box
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public JCalques(Display_I display)
+	public JCalques(JSprayConfigurable_I spray)
 		{
 		super(BoxLayout.X_AXIS);
 
-		this.display = display;
+		this.spray = spray;
 
 		geometry();
 		control();
@@ -114,7 +114,7 @@ public class JCalques extends Box
 		cb.setForeground(Color.WHITE);
 		this.calqueCheckBoxes.add(cb);
 
-		display.addCalque(name);
+		spray.addCalque(name);
 
 		cb.addActionListener(new ActionListener()
 			{
@@ -122,7 +122,7 @@ public class JCalques extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				display.setCalqueVisible(name, cb.isSelected());
+				spray.setCalqueVisible(name, cb.isSelected());
 				}
 			});
 
@@ -141,7 +141,7 @@ public class JCalques extends Box
 
 			// remove calque
 			this.panelCheckBoxes.remove(cb);
-			display.removeLastCalque();
+			spray.removeLastCalque();
 
 			revalidate();
 			repaint();
@@ -167,7 +167,7 @@ public class JCalques extends Box
 		add(this.panelBoutons);
 
 		// Rebuild checkboxes from display's calques
-		List<DCalque> calques = display.getCalques();
+		List<DCalque> calques = spray.getCalques();
 
 		for(DCalque calque:calques)
 			{
@@ -178,7 +178,7 @@ public class JCalques extends Box
 			cb.setForeground(Color.WHITE);
 			cb.setSelected(calque.isVisible());
 
-			cb.addActionListener(e -> display.setCalqueVisible(name, cb.isSelected()));
+			cb.addActionListener(e -> spray.setCalqueVisible(name, cb.isSelected()));
 
 			this.calqueCheckBoxes.add(cb);
 			this.panelCheckBoxes.add(cb);
@@ -195,7 +195,7 @@ public class JCalques extends Box
 	\*------------------------------------------------------------------*/
 
 	// Inputs
-	private Display_I display;
+	private JSprayConfigurable_I spray;
 
 	// Tools
 	private List<JCheckBox> calqueCheckBoxes;

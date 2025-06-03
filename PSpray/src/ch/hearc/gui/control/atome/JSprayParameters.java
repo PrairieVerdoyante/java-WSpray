@@ -18,7 +18,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ch.hearc.gui.display.Display_I;
+import ch.hearc.gui.display.JSprayConfigurable_I;
 import ch.hearc.gui.utils.SprayShape;
 
 public class JSprayParameters extends Box
@@ -28,11 +28,11 @@ public class JSprayParameters extends Box
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public JSprayParameters(Display_I display)
+	public JSprayParameters(JSprayConfigurable_I spray)
 		{
 		super(BoxLayout.Y_AXIS);
 
-		this.display = display;
+		this.spray = spray;
 
 		geometry();
 		control();
@@ -108,18 +108,18 @@ public class JSprayParameters extends Box
 			public void stateChanged(ChangeEvent e)
 				{
 				int taille = sliderTaille.getValue();
-				display.setTaille(taille);
+				spray.setTaille(taille);
 				System.out.println("Nouvelle taille de gouttelette : " + taille);
 				}
 			});
 
 		this.buttonCercle.addActionListener(e -> {
-		display.setForme(SprayShape.CERCLE);
+		spray.setForme(SprayShape.CERCLE);
 		System.out.println("Spray en cercle sélectionné");
 		});
 
 		this.buttonCarre.addActionListener(e -> {
-		display.setForme(SprayShape.CARRE);
+		spray.setForme(SprayShape.CARRE);
 		System.out.println("Spray en carre sélectionné");
 		});
 
@@ -130,7 +130,7 @@ public class JSprayParameters extends Box
 			public void stateChanged(ChangeEvent e)
 				{
 				int nb = sliderNbGouttes.getValue();
-				display.setNbGouttes(nb);
+				spray.setNbGouttes(nb);
 				System.out.println("Nouveau nombre de gouttelettes : " + nb);
 				}
 			});
@@ -142,7 +142,7 @@ public class JSprayParameters extends Box
 			public void stateChanged(ChangeEvent e)
 				{
 				int dimension = sliderDimension.getValue();
-				display.setDimension(dimension);
+				spray.setDimension(dimension);
 				System.out.println("Nouvelle dimension de la forme : " + dimension);
 				}
 			});
@@ -178,7 +178,7 @@ public class JSprayParameters extends Box
 	\*------------------------------------------------------------------*/
 
 	// Inputs
-	private Display_I display;
+	private JSprayConfigurable_I spray;
 
 	// Tools
 	private JSlider sliderDimension;

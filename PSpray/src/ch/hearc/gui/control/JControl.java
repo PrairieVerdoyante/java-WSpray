@@ -9,7 +9,7 @@ import javax.swing.BoxLayout;
 import ch.hearc.gui.control.atome.JSprayColors;
 import ch.hearc.gui.control.atome.JSprayParameters;
 import ch.hearc.gui.dessin.calques.JCalques;
-import ch.hearc.gui.display.Display_I;
+import ch.hearc.gui.display.JSprayConfigurable_I;
 
 public class JControl extends Box
 	{
@@ -18,11 +18,11 @@ public class JControl extends Box
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public JControl(Display_I display)
+	public JControl(JSprayConfigurable_I spray)
 		{
 		super(BoxLayout.Y_AXIS);
 
-		this.display = display;
+		this.spray = spray;
 
 		geometry();
 		control();
@@ -35,9 +35,9 @@ public class JControl extends Box
 
 	private void geometry()
 		{
-		this.jSprayParameters = new JSprayParameters(this.display);
-		this.jSprayColors = new JSprayColors(this.display);
-		this.jCalques = new JCalques(this.display);
+		this.jSprayParameters = new JSprayParameters(this.spray);
+		this.jSprayColors = new JSprayColors(this.spray);
+		this.jCalques = new JCalques(this.spray);
 
 		add(createVerticalGlue());
 		add(this.jCalques);
@@ -74,7 +74,7 @@ public class JControl extends Box
 	\*------------------------------------------------------------------*/
 
 	// Inputs
-	private Display_I display;
+	private JSprayConfigurable_I spray;
 
 	// Tools
 	private JSprayParameters jSprayParameters;

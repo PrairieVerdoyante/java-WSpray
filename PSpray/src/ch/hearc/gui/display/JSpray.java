@@ -8,7 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -16,17 +18,18 @@ import ch.hearc.gui.dessin.actions.UndoRedo;
 import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.dessin.composition.DComposition;
+import ch.hearc.gui.dessin.sprays.PointXY;
 import ch.hearc.gui.export.SprayStorage;
 import ch.hearc.gui.utils.Spray;
 import ch.hearc.gui.utils.SprayShape;
 
-public class JDisplay extends JPanel implements Display_I
+public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
-	private JDisplay() throws IOException
+	public JSpray() throws IOException
 
 		{
 		reset(); // sets the default parameters
@@ -202,17 +205,40 @@ public class JDisplay extends JPanel implements Display_I
 		return this.undoRedo;
 		}
 
+	@Override
+	public Map<Color, PointXY[]> getClusters()
+		{
+		Map<Color, List<PointXY>> map = new HashMap<>();
+
+		for(Spray spray:currentStroke)
+			{
+			Color color = spray.getColor();
+			PointXY point = new PointXY(spray.getX(), spray.getY());
+
+			map.computeIfAbsent(color, k -> new ArrayList<>()).add(point);
+			}
+
+		// Conversion en tableaux
+		Map<Color, PointXY[]> clusters = new HashMap<>();
+		for(Map.Entry<Color, List<PointXY>> entry:map.entrySet())
+			{
+			clusters.put(entry.getKey(), entry.getValue().toArray(new PointXY[0]));
+			}
+
+		return clusters;
+		}
+
 	/*------------------------------*\
 	|*			  Static			*|
 	\*------------------------------*/
 
-	public static synchronized JDisplay getInstance()
+	public static synchronized JSpray getInstance()
 		{
 		if (instance == null)
 			{
 			try
 				{
-				instance = new JDisplay();
+				instance = new JSpray();
 				}
 			catch (Exception e)
 				{
@@ -323,7 +349,7 @@ public class JDisplay extends JPanel implements Display_I
 	\*------------------------------------------------------------------*/
 
 	// inputs
-	private static JDisplay instance = null;
+	private static JSpray instance = null;
 
 	// tools
 	private List<DCalque> calques;

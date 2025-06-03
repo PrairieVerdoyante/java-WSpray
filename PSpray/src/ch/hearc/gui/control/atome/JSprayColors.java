@@ -20,7 +20,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import ch.hearc.gui.display.Display_I;
+import ch.hearc.gui.display.JSprayConfigurable_I;
 
 public class JSprayColors extends Box
 	{
@@ -29,11 +29,11 @@ public class JSprayColors extends Box
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public JSprayColors(Display_I display)
+	public JSprayColors(JSprayConfigurable_I spray)
 		{
 		super(BoxLayout.Y_AXIS);
 
-		this.display = display;
+		this.spray = spray;
 
 		geometry();
 		control();
@@ -165,7 +165,7 @@ public class JSprayColors extends Box
 		{
 		if (couleur != null)
 			{
-			display.setColor(couleur);
+			spray.setColor(couleur);
 			System.out.println("Couleur mise à jour : " + couleur);
 			}
 
@@ -176,7 +176,7 @@ public class JSprayColors extends Box
 	\*------------------------------------------------------------------*/
 
 	// Inputs
-	private Display_I display;
+	private JSprayConfigurable_I spray;
 
 	// Tools
 	private final Color[] predefinedColors = { Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.WHITE };

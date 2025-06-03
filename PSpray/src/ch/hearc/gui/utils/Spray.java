@@ -2,6 +2,7 @@
 package ch.hearc.gui.utils;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -63,6 +64,12 @@ public class Spray
 			}
 		}
 
+	public void draw(Graphics g)
+		{
+		g.setColor(color);
+		g.fillOval(x - taille / 2, y - taille / 2, taille, taille);
+		}
+
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
@@ -117,6 +124,5 @@ public class Spray
 	private SprayShape shape;
 
 	private List<Point> points;
-
 
 	}

@@ -3,10 +3,12 @@ package ch.hearc.gui.display;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Map;
 
 import ch.hearc.gui.dessin.actions.UndoRedo;
 import ch.hearc.gui.dessin.calques.DCalque;
 import ch.hearc.gui.dessin.calques.JCalques;
+import ch.hearc.gui.dessin.sprays.PointXY;
 import ch.hearc.gui.utils.Spray;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -44,5 +46,9 @@ public interface Display_I
 	public JCalques getJCalques();
 
 	public UndoRedo getHistory();
+	/**
+	* Chaque entry de la map (line) forunit un cluster
+	*/
+	public Map<Color, PointXY[]> getClusters();
 
 	}
