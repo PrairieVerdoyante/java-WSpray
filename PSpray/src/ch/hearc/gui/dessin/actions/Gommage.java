@@ -1,11 +1,10 @@
 
 package ch.hearc.gui.dessin.actions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.hearc.gui.calques.DCalque;
-import ch.hearc.gui.utils.DSpray;
+import ch.hearc.gui.dessin.Sprayage.Sprayage;
 
 public class Gommage extends Geste
 	{
@@ -14,9 +13,9 @@ public class Gommage extends Geste
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public Gommage(DCalque calque, boolean logImmediately, List<DSpray> stroke)
+	public Gommage(DCalque calque, boolean logImmediately, List<Sprayage> stroke)
 		{
-		super(calque, logImmediately, stroke);
+		super();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -24,11 +23,11 @@ public class Gommage extends Geste
 	\*------------------------------------------------------------------*/
 
 	@Override
-	public void apply(int x, int y)
-		{
+	public void apply(int x, int y, DCalque calque, List<Sprayage> strokeList)
+		{/*
 		// Example erasing logic: remove sprays near (x, y) from calque
 		List<DSpray> toRemove = new ArrayList<>();
-		for(DSpray spray:calque.getSprays())
+		for(Sprayage spray:calque.getSprays())
 			{
 			if (spray.isNear(x, y))
 				{
@@ -42,5 +41,6 @@ public class Gommage extends Geste
 			{
 			// You can implement log for erasures if needed
 			}
+			*/
 		}
 	}

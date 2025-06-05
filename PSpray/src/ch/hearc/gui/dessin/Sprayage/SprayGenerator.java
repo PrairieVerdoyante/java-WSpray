@@ -1,32 +1,26 @@
 
-package ch.hearc.gui.utils;
+package ch.hearc.gui.dessin.Sprayage;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class DSpray
-	{
+import ch.hearc.gui.dessin.points.PointXY;
+import ch.hearc.gui.utils.SprayShape;
 
+public class SprayGenerator
+	{
 	/*------------------------------------------------------------------*\
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public DSpray(int x, int y, Color color, int nbGouttes, int taille, SprayShape shape, int dimension)
+	public static Sprayage generate(int x, int y, Color color, int nbGouttes, int taille, SprayShape shape, int dimension)
 		{
-		this.x = x;
-		this.y = y;
-		this.color = color;
-		this.taille = taille;
-		this.shape = shape;
-		this.dimension = dimension;
-		this.points = new ArrayList<>();
-
+		List<Point> points = new ArrayList<>();
 		Random random = new Random();
+		PointXY center = new PointXY(x, y);
 
 		if (shape == SprayShape.CERCLE)
 			{
@@ -48,72 +42,18 @@ public class DSpray
 				points.add(new Point(px, py));
 				}
 			}
+
+		return new Sprayage(center, points, color, taille);
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
 	\*------------------------------------------------------------------*/
 
-	public void draw(Graphics2D g2d)
-		{
-		g2d.setColor(color);
-		for(Point p:points)
-			{
-			int r = taille;
-			g2d.fillOval(p.x - r / 2, p.y - r / 2, r, r);
-			}
-		}
-
-	public void draw(Graphics g)
-		{
-		g.setColor(color);
-		g.fillOval(x - taille / 2, y - taille / 2, taille, taille);
-		}
-
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
 
-	public int getX()
-		{
-		return this.x;
-		}
-
-	public int getY()
-		{
-		return this.y;
-		}
-
-	public Color getColor()
-		{
-		return this.color;
-		}
-
-	public int getNbGouttes()
-		{
-		return this.nbGouttes;
-		}
-
-	public int getTaille()
-		{
-		return this.taille;
-		}
-
-	public SprayShape getShape()
-		{
-		return this.shape;
-		}
-
-	public int getDimension()
-		{
-		return this.dimension;
-		}
-
-	public boolean isNear(int x2, int y2)
-		{
-		// TODO Auto-generated method stub
-		return false;
-		}
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/
@@ -121,14 +61,5 @@ public class DSpray
 	/*------------------------------------------------------------------*\
 	|*							Attributes Private						*|
 	\*------------------------------------------------------------------*/
-
-	private int x, y;
-	private Color color;
-	private int nbGouttes;
-	private int taille;
-	private int dimension;
-	private SprayShape shape;
-
-	private List<Point> points;
 
 	}

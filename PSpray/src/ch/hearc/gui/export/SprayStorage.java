@@ -2,188 +2,146 @@
 package ch.hearc.gui.export;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
-import ch.hearc.gui.utils.DSpray;
-import ch.hearc.gui.utils.SprayShape;
+import ch.hearc.gui.dessin.Sprayage.Sprayage;
+import ch.hearc.gui.dessin.points.PointXY;
 
 public class SprayStorage
 	{
 
-	/*------------------------------------------------------------------*\
-	|*							Methods Public							*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------*\
-	|*			Static				*|
-	\*------------------------------*/
-
-	public static void write(List<DSpray> sprays, String fileName) throws IOException
+	// Write Sprayages to a non compressed binary file
+	public static void write(List<Sprayage> sprays, String fileName) throws IOException
 		{
 		FileOutputStream fos = new FileOutputStream(fileName);
-		GZIPOutputStream gos = new GZIPOutputStream(fos);
-		BufferedOutputStream bos = new BufferedOutputStream(gos);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
 		DataOutputStream dos = new DataOutputStream(bos);
 
-		for(DSpray spray:sprays)
+		for(Sprayage spray:sprays)
 			{
-			dos.writeInt(spray.getX());
-			dos.writeInt(spray.getY());
 			dos.writeInt(spray.getColor().getRGB());
-			dos.writeInt(spray.getNbGouttes());
 			dos.writeInt(spray.getTaille());
-			dos.writeInt(spray.getShape().ordinal());
-			dos.writeInt(spray.getDimension());
-			}
 
+			List<Point> points = spray.getPoints();
+			dos.writeInt(points.size());
+
+			for(Point p:points)
+				{
+				dos.writeInt(p.x);
+				dos.writeInt(p.y);
+				}
+			}
 		dos.close();
 		bos.close();
-		gos.close();
 		fos.close();
+
 		}
 
-	public static List<DSpray> read(String fileName) throws IOException
+	// Read Sprayages from a non compressed binary file
+	public static List<Sprayage> read(String fileName) throws IOException
 		{
+		List<Sprayage> sprays = new LinkedList<>();
 		FileInputStream fis = new FileInputStream(fileName);
-		GZIPInputStream gis = new GZIPInputStream(fis);
-		BufferedInputStream bis = new BufferedInputStream(gis);
+		BufferedInputStream bis = new BufferedInputStream(fis);
 		DataInputStream dis = new DataInputStream(bis);
 
-		List<DSpray> sprays = new LinkedList<>();
-
-		try
+		while(true)
 			{
-			while(true)
+
+			Color color = new Color(dis.readInt(), true);
+			int taille = dis.readInt();
+			int nbPoints = dis.readInt();
+
+			List<Point> points = new ArrayList<>();
+			for(int i = 0; i < nbPoints; i++)
 				{
 				int x = dis.readInt();
 				int y = dis.readInt();
-				Color color = new Color(dis.readInt(), true);
-				int nbGouttes = dis.readInt();
-				int taille = dis.readInt();
-				SprayShape shape = SprayShape.values()[dis.readInt()];
-				int dimension = dis.readInt();
-
-				sprays.add(new DSpray(x, y, color, nbGouttes, taille, shape, dimension));
+				points.add(new Point(x, y));
 				}
-			}
-		catch (EOFException e)
-			{
-			// End of file
-			}
 
-		dis.close();
-		bis.close();
-		gis.close();
-		fis.close();
+			Point originPoint = points.get(0);
+			PointXY origin = new PointXY((int)originPoint.getX(), (int)originPoint.getY());
+			sprays.add(new Sprayage(origin, points, color, taille));
 
-		return sprays;
+			dis.close();
+			bis.close();
+			fis.close();
+
+			return sprays;
+
+			}
 		}
 
-	public static void append(DSpray spray, String fileName) throws IOException
+	// Export to CSV
+	public static void exportToCsv(List<Sprayage> sprays, String fileName) throws IOException
 		{
-		boolean fileExists = new File(fileName).exists();
+		FileWriter fw = new FileWriter(fileName);
+		BufferedWriter writer = new BufferedWriter(fw);
 
-		FileOutputStream fos = new FileOutputStream(fileName, true);
-		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		DataOutputStream dos;
-
-		if (!fileExists)
+		for(Sprayage spray:sprays)
 			{
-			// Write header if new file
-			dos = new DataOutputStream(bos);
-			}
-		else
-			{
-			// Append without writing headers
-			dos = new DataOutputStream(bos);
-			}
-
-		// Write spray data
-		dos.writeInt(spray.getX());
-		dos.writeInt(spray.getY());
-		dos.writeInt(spray.getColor().getRGB());
-		dos.writeInt(spray.getNbGouttes());
-		dos.writeInt(spray.getTaille());
-		dos.writeUTF(spray.getShape().name());
-		dos.writeInt(spray.getDimension());
-
-		dos.close();
-		bos.close();
-		fos.close();
-		}
-
-	public static void exportToCsv(List<DSpray> sprays, String fileName) throws IOException
-		{
-		FileOutputStream fos = new FileOutputStream(fileName);
-		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		StringBuilder sb = new StringBuilder();
-
-		for(DSpray spray:sprays)
-			{
-			int x = spray.getX();
-			int y = spray.getY();
-			int radius = spray.getTaille();
 			String colorName = getColorName(spray.getColor());
+			int taille = spray.getTaille();
 
-			// Format: x ; y ; rayon ; couleur
-			sb.append(x).append(" ;").append(y).append(" ;").append(radius).append(" ;").append(colorName).append("\n");
-			}
-
-		bos.write(sb.toString().getBytes());
-		bos.flush();
-		bos.close();
-		fos.close();
-		}
-
-	public static List<DSpray> importFromCsv(String fileName) throws IOException
-		{
-		List<DSpray> sprays = new ArrayList<>();
-
-		BufferedReader reader = new BufferedReader(new FileReader(fileName));
-		String line;
-
-		while((line = reader.readLine()) != null)
-			{
-			String[] parts = line.split(";");
-			if (parts.length != 4)
+			for(Point p:spray.getPoints())
 				{
-				continue;
+				writer.write(p.x + ";" + p.y + ";" + taille + ";" + colorName);
+				writer.newLine();
 				}
 
-			int x = Integer.parseInt(parts[0].trim());
-			int y = Integer.parseInt(parts[1].trim());
-			int radius = Integer.parseInt(parts[2].trim());
-			String colorName = parts[3].trim();
-
-			Color color = parseColor(colorName);
-			DSpray spray = new DSpray(x, y, color, 100, radius, SprayShape.CERCLE, radius); // Default values
-
-			sprays.add(spray);
 			}
 
-		reader.close();
+		writer.close();
+		fw.close();
+		}
+
+	// Import basic CSV into Sprayages (one point per spray)
+	public static List<Sprayage> importFromCsv(String fileName) throws IOException
+		{
+		List<Sprayage> sprays = new ArrayList<>();
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName)))
+			{
+			String line;
+			while((line = reader.readLine()) != null)
+				{
+				String[] parts = line.split(";");
+				if (parts.length != 4)
+					{
+					continue;
+					}
+
+				int x = Integer.parseInt(parts[0].trim());
+				int y = Integer.parseInt(parts[1].trim());
+				int taille = Integer.parseInt(parts[2].trim());
+				Color color = parseColor(parts[3].trim());
+
+				List<Point> points = new ArrayList<>();
+				points.add(new Point(x, y));
+
+				sprays.add(new Sprayage(new PointXY(x, y), points, color, taille));
+				}
+			}
+
 		return sprays;
 		}
 
-	/*------------------------------------------------------------------*\
-	|*							Methods Private							*|
-	\*------------------------------------------------------------------*/
-
+	// Color name → String
 	private static String getColorName(Color color)
 		{
 		if (color.equals(Color.RED))
@@ -206,11 +164,10 @@ public class SprayStorage
 			{ return "cyan"; }
 		if (color.equals(Color.MAGENTA))
 			{ return "magenta"; }
-
-		// If not a known color, return RGB format
 		return String.format("rgb(%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue());
 		}
 
+	// String → Color
 	private static Color parseColor(String name)
 		{
 		return switch(name.toLowerCase())
@@ -238,12 +195,12 @@ public class SprayStorage
 					}
 				catch (Exception e)
 					{
-					yield Color.GRAY; // fallback color on parse error
+					yield Color.GRAY;
 					}
 				}
 			else
 				{
-				yield Color.GRAY; // unknown string
+				yield Color.GRAY;
 				}
 			}
 			};

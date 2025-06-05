@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hearc.gui.utils.DSpray;
+import ch.hearc.gui.dessin.Sprayage.Sprayage;
 
 public class DCalque implements DCalque_I
 	{
@@ -18,6 +18,7 @@ public class DCalque implements DCalque_I
 		{
 		this.name = name;
 		this.visible = true;
+		this.sprays = new ArrayList<>();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -29,11 +30,18 @@ public class DCalque implements DCalque_I
 		{
 		if (visible)
 			{
-			for(DSpray spray:sprays)
+			for(Sprayage s:sprays)
 				{
-				spray.draw(g2d);
+				s.draw(g2d, 0, 0);
 				}
 			}
+		}
+
+	@Override
+	public void draw(Graphics2D g2d, int arg1, int arg2)
+		{
+		// Appelle la méthode principale de dessin
+		draw(g2d);
 		}
 
 	@Override
@@ -55,25 +63,19 @@ public class DCalque implements DCalque_I
 		}
 
 	@Override
-	public void draw(Graphics2D g2d, int arg1, int arg2)
-		{
-		this.draw(g2d);
-		}
-
-	@Override
-	public void addSpray(DSpray spray)
+	public void addSpray(Sprayage spray)
 		{
 		sprays.add(spray);
 		}
 
 	@Override
-	public void removeSpray(DSpray spray)
+	public void removeSpray(Sprayage spray)
 		{
 		sprays.remove(spray);
 		}
 
 	@Override
-	public List<DSpray> getSprays()
+	public List<Sprayage> getSprays()
 		{
 		return this.sprays;
 		}
@@ -81,16 +83,15 @@ public class DCalque implements DCalque_I
 	@Override
 	public void animationStep()
 		{
-		// TODO Auto-generated method stub
-
+		// Animation non implémentée pour l’instant
 		}
 
 	/*------------------------------------------------------------------*\
 	|*						Attributs Private							*|
 	\*------------------------------------------------------------------*/
 
-	private final List<DSpray> sprays = new ArrayList<>();
-	private boolean visible = true;
+	private boolean visible;
 	private final String name;
+	private final List<Sprayage> sprays;
 
 	}

@@ -9,7 +9,7 @@ import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.control.JControl;
 import ch.hearc.gui.control.JToolBox;
 import ch.hearc.gui.menu.JOptionsMenu;
-import ch.hearc.gui.spray.JSpray;
+import ch.hearc.gui.spray.JDisplay;
 
 public class JApp extends JPanel
 	{
@@ -31,7 +31,7 @@ public class JApp extends JPanel
 
 	private void geometry()
 		{
-		this.jSpray = JSpray.getInstance();
+		this.jSpray = JDisplay.getInstance();
 		this.jControl = new JControl(this.jSpray);
 		this.jToolBox = new JToolBox();
 		this.jOptionsMenu = new JOptionsMenu();
@@ -69,7 +69,7 @@ public class JApp extends JPanel
 	private JControl jControl;
 	private JCalques jCalques;
 	private JToolBox jToolBox;
-	private JSpray jSpray;
+	private JDisplay jSpray;
 	private JOptionsMenu jOptionsMenu;
 
 	}

@@ -17,9 +17,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import ch.hearc.gui.calques.DCalque;
+import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.export.SprayStorage;
-import ch.hearc.gui.spray.JSpray;
-import ch.hearc.gui.utils.DSpray;
+import ch.hearc.gui.spray.JDisplay;
 
 public class JOptionsMenu extends Box
 	{
@@ -102,7 +102,7 @@ public class JOptionsMenu extends Box
 
 				if (result == JOptionPane.YES_OPTION)
 					{
-					JSpray.getInstance().reset();
+					JDisplay.getInstance().reset();
 					}
 				}
 
@@ -131,8 +131,8 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				JSpray.getInstance().getHistory().undo();
-				JSpray.getInstance().repaint();
+				JDisplay.getInstance().getHistory().undo();
+				JDisplay.getInstance().repaint();
 				}
 			});
 
@@ -142,8 +142,8 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				JSpray.getInstance().getHistory().redo();
-				JSpray.getInstance().repaint();
+				JDisplay.getInstance().getHistory().redo();
+				JDisplay.getInstance().repaint();
 				}
 			});
 
@@ -159,8 +159,8 @@ public class JOptionsMenu extends Box
 				String name = JOptionPane.showInputDialog(null, "Nom du nouveau calque :", "Ajouter un calque", JOptionPane.PLAIN_MESSAGE);
 				if (name != null && !name.trim().isEmpty())
 					{
-					JSpray.getInstance().addCalque(name.trim());
-					JSpray.getInstance().getJCalques().resetCalques(); // optional: refresh the UI checkboxes
+					JDisplay.getInstance().addCalque(name.trim());
+					JDisplay.getInstance().getJCalques().resetCalques(); // optional: refresh the UI checkboxes
 					}
 				}
 			});
@@ -180,8 +180,8 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				List<DSpray> allSprays = new ArrayList<>();
-				for(DCalque calque:JSpray.getInstance().getCalques())
+				List<Sprayage> allSprays = new ArrayList<>();
+				for(DCalque calque:JDisplay.getInstance().getCalques())
 					{
 					if (calque.isVisible())
 						{
@@ -227,14 +227,14 @@ public class JOptionsMenu extends Box
 					File selectedFile = fileChooser.getSelectedFile();
 					try
 						{
-						List<DSpray> importedSprays = SprayStorage.importFromCsv(selectedFile.getAbsolutePath());
+						List<Sprayage> importedSprays = SprayStorage.importFromCsv(selectedFile.getAbsolutePath());
 
 						DCalque newCalque = new DCalque("Import CSV");
 						newCalque.getSprays().addAll(importedSprays);
 
-						String name = "Import CSV - " + (JSpray.getInstance().getCalques().size() + 1);
-						JSpray.getInstance().addCalque(name, importedSprays);
-						JSpray.getInstance().getJCalques().resetCalques(); // to update the checkboxes in JCalques
+						String name = "Import CSV - " + (JDisplay.getInstance().getCalques().size() + 1);
+						JDisplay.getInstance().addCalque(name, importedSprays);
+						JDisplay.getInstance().getJCalques().resetCalques(); // to update the checkboxes in JCalques
 
 						}
 					catch (IOException ex)

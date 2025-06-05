@@ -6,8 +6,8 @@ import java.util.List;
 
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
+import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.dessin.actions.UndoRedo;
-import ch.hearc.gui.utils.DSpray;
 import ch.hearc.gui.utils.SprayShape;
 
 public interface JSprayConfigurable_I
@@ -25,7 +25,7 @@ public interface JSprayConfigurable_I
 
 	public void addCalque(String name);
 
-	public void addCalque(String name, List<DSpray> sprays);
+	public void addCalque(String name, List<Sprayage> sprays);
 
 	public void removeLastCalque();
 
@@ -44,4 +44,9 @@ public interface JSprayConfigurable_I
 	public JCalques getJCalques();
 
 	public UndoRedo getHistory();
+
+	public void setCurrentStroke(List<Sprayage> sprays);
+
+	public List<Sprayage> getCurrentStroke();
+
 	}

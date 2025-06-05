@@ -5,10 +5,11 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 import ch.hearc.c_gui.z_tools.DessinAnimable;
-import ch.hearc.gui.utils.DSpray;
+import ch.hearc.gui.dessin.Sprayage.Sprayage;
 
 public interface DCalque_I extends DessinAnimable
 	{
+
 	public void setVisible(boolean visible);
 
 	public boolean isVisible();
@@ -17,10 +18,10 @@ public interface DCalque_I extends DessinAnimable
 
 	public void draw(Graphics2D g2d);
 
-	public void addSpray(DSpray spray);
+	public void addSpray(Sprayage spray);
 
-	public void removeSpray(DSpray Spray);
+	public void removeSpray(Sprayage Spray);
 
-	public List<DSpray> getSprays();
+	public List<Sprayage> getSprays();
 
 	}

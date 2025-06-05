@@ -2,208 +2,32 @@
 package ch.hearc.gui.spray;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JPanel;
-
-import ch.hearc.gui.calques.DCalque;
-import ch.hearc.gui.calques.JCalques;
-import ch.hearc.gui.dessin.actions.UndoRedo;
-import ch.hearc.gui.dessin.composition.DComposition;
+import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.dessin.points.PointXY;
-import ch.hearc.gui.export.SprayStorage;
-import ch.hearc.gui.utils.DSpray;
-import ch.hearc.gui.utils.SprayShape;
 
-public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
+public class JSpray extends JDisplay implements JSpray_I
 	{
 
 	/*------------------------------------------------------------------*\
-	|*							Constructeurs							*|
+	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 	public JSpray() throws IOException
-
 		{
-		reset(); // sets the default parameters
-
-		geometry();
-		control();
-		appearance();
+		super();
 		}
-
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
 	\*------------------------------------------------------------------*/
 
-	@Override
-	protected void paintComponent(Graphics g)
-		{
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D)g;
-
-		this.dComposition.draw(g2d, currentDimension, currentDimension);
-		}
-
-	@Override
-	public void setColor(Color color)
-		{
-		this.currentColor = color;
-		}
-
-	@Override
-	public void setNbGouttes(int nbGouttes)
-		{
-		this.currentNbGouttes = nbGouttes;
-		}
-
-	@Override
-	public void setTaille(int taille)
-		{
-		this.currentTaille = taille;
-		}
-
-	@Override
-	public void setDimension(int dimension)
-		{
-		this.currentDimension = dimension;
-		}
-
-	@Override
-	public void setForme(SprayShape shape)
-		{
-		this.currentShape = shape;
-		}
-
-	@Override
-	public void addCalque(String name)
-		{
-		DCalque calque = new DCalque(name);
-		this.calques.add(calque);
-		this.currentCalque = calque;
-		this.undoRedo = new UndoRedo(currentCalque);
-		}
-
-	@Override
-	public void addCalque(String name, List<DSpray> sprays)
-		{
-		DCalque newCalque = new DCalque(name);
-		newCalque.getSprays().addAll(sprays);
-		this.calques.add(newCalque);
-		repaint();
-		}
-
-	@Override
-	public void removeLastCalque()
-		{
-		if (calques.size() > 1)
-			{
-			calques.remove(calques.size() - 1);
-			currentCalque = calques.get(calques.size() - 1);
-			repaint();
-			}
-		}
-
-	@Override
-	public void setCalqueVisible(String name, boolean visible)
-		{
-		for(DCalque calque:calques)
-			{
-			if (calque.getName().equals(name))
-				{
-				calque.setVisible(visible);
-				repaint();
-				break;
-				}
-			}
-		}
-
-	/**
-	 * Restores JDisplay to default parameters.
-	 */
-	@Override
-	public void reset()
-		{
-		this.currentColor = Color.BLACK;
-		this.currentNbGouttes = 100;
-		this.currentDimension = 10;
-		this.currentShape = SprayShape.CERCLE;
-		this.currentTaille = 10;
-
-		this.calques = new ArrayList<>();
-		this.dComposition = new DComposition(this);
-		this.dComposition.setCalques(this.calques);
-
-		addCalque("Calque 1");
-
-		if (!this.calques.isEmpty())
-			{
-			this.currentCalque = this.calques.get(this.calques.size() - 1);
-			}
-		else
-			{
-			this.currentCalque = null;
-			}
-
-		// reset calques
-		if (jCalques != null)
-			{
-			jCalques.resetCalques();
-
-			repaint();
-			}
-		}
-
-	@Override
-	public void setCalques(List<DCalque> calques)
-		{
-		this.calques = calques != null ? calques : new ArrayList<>();
-		this.dComposition.setCalques(this.calques);
-
-		// Always reset currentCalque to a valid one if possible
-		if (!this.calques.isEmpty())
-			{
-			this.currentCalque = this.calques.get(this.calques.size() - 1);
-			}
-		else
-			{
-			this.currentCalque = null;
-			}
-
-		repaint();
-		}
-
-	@Override
-	public List<DCalque> getCalques()
-		{
-		return this.calques;
-		}
-
-	@Override
-	public List<DCalque> getSelectedCalques()
-		{
-		// Pas encore
-		return null;
-		}
-
-	@Override
-	public JCalques getJCalques()
-		{
-		return this.jCalques;
-		}
-
-	@Override
-	public UndoRedo getHistory()
-		{
-		return this.undoRedo;
-		}
+	/*------------------------------*\
+	|*				Get				*|
+	\*------------------------------*/
 
 	/**
 	 * JSpray_I
@@ -213,7 +37,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 		{
 		Map<Color, List<PointXY>> map = new HashMap<>();
 
-		for(DSpray spray:currentStroke)
+		for(Sprayage spray:getCurrentStroke())
 			{
 			Color color = spray.getColor();
 			PointXY point = new PointXY(spray.getX(), spray.getY());
@@ -231,228 +55,11 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 		return clusters;
 		}
 
-	/*------------------------------*\
-	|*			  Static			*|
-	\*------------------------------*/
-
-	public static synchronized JSpray getInstance()
-		{
-		if (instance == null)
-			{
-			try
-				{
-				instance = new JSpray();
-				}
-			catch (Exception e)
-				{
-				e.printStackTrace();
-				}
-			}
-
-		return instance;
-		}
-
-	@Override
-	public void setJCalques(JCalques jCalques)
-		{
-		this.jCalques = jCalques;
-		}
-
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/
 
-	private void geometry()
-		{
-		// rien
-		}
-
-	private void control()
-		{
-		addMouseListener(new MouseAdapter()
-			{
-
-			@Override
-			public void mousePressed(MouseEvent e)
-				{
-				currentStroke = new ArrayList<>();
-				addSprayAtAsync(e.getX(), e.getY(), false);
-				}
-
-			@Override
-			public void mouseReleased(MouseEvent e)
-				{
-				undoRedo.addActions(currentStroke);
-				try
-					{
-					for(DSpray spray:currentStroke)
-						{
-						SprayStorage.append(spray, "sprays.bin");
-						}
-					}
-				catch (IOException ex)
-					{
-					ex.printStackTrace();
-					}
-				}
-
-			});
-
-		addMouseMotionListener(new MouseAdapter()
-			{
-
-			@Override
-			public void mouseDragged(MouseEvent e)
-				{
-				addSprayAtAsync(e.getX(), e.getY(), false);
-				}
-			});
-		}
-
-	private void appearance()
-		{
-		setBackground(Color.WHITE);
-		}
-
-	/**
-	 * Adds a spray to the selected calque.
-	 * @param x coordinate of the spray position
-	 * @param y coordinate of the spray position
-	 */
-	private void addSprayAt(int x, int y, boolean logImmediately)
-		{
-		try
-			{
-			if (currentCalque == null)
-				{
-				// Afficher un message d’erreur ou logger
-				System.err.println("Aucun calque sélectionné !");
-				return;
-				}
-
-			DSpray spray = new DSpray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
-			currentCalque.addSpray(spray);
-
-			if (logImmediately)
-				{
-				try
-					{
-					SprayStorage.append(spray, "sprays.bin");
-					}
-				catch (IOException e)
-					{
-					// Afficher un message d’erreur ou logger
-					System.err.println("Erreur lors de la sauvegarde du spray : " + e.getMessage());
-					}
-				}
-
-			if (currentStroke != null)
-				{
-				currentStroke.add(spray);
-				}
-			}
-		catch (Exception e)
-			{
-			// Afficher un message d’erreur ou logger
-			System.err.println("Erreur lors de l’ajout du spray : " + e.getMessage());
-			}
-		repaint();
-		}
-
-	private void addSprayAtAsync(int x, int y, boolean logImmediately)
-		{
-		Runnable runnable = new Runnable()
-			{
-
-			@Override
-			public void run()
-				{
-				// Création du spray (thread secondaire, pas de problème)
-				DSpray spray = new DSpray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
-
-				// Ajout du spray dans le calque et dans l'UI : TOUJOURS sur le thread Swing !
-				javax.swing.SwingUtilities.invokeLater(new Runnable()
-					{
-
-					@Override
-					public void run()
-						{
-						if (currentCalque != null)
-							{
-							currentCalque.addSpray(spray);
-							if (currentStroke != null)
-								{
-								currentStroke.add(spray);
-								}
-							repaint();
-							}
-						}
-					});
-
-				// Sauvegarde sur disque (thread secondaire, OK)
-				if (logImmediately)
-					{
-					try
-						{
-						SprayStorage.append(spray, "sprays.bin");
-						}
-					catch (IOException e)
-						{
-						System.err.println("Erreur lors de la sauvegarde du spray : " + e.getMessage());
-						}
-					}
-				}
-			};
-
-		new Thread(runnable).start();
-		}
-
-	// Méthode sécurisée pour l'ajout du spray (sans repaint)
-	private void addSprayAtSafe(int x, int y, boolean logImmediately)
-		{
-		if (currentCalque == null)
-			{ throw new IllegalStateException("Aucun calque sélectionné !"); }
-		DSpray spray = new DSpray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
-		currentCalque.addSpray(spray);
-
-		if (logImmediately)
-			{
-			try
-				{
-				SprayStorage.append(spray, "sprays.bin");
-				}
-			catch (IOException e)
-				{
-				throw new RuntimeException("Erreur lors de la sauvegarde du spray", e);
-				}
-			}
-
-		if (currentStroke != null)
-			{
-			currentStroke.add(spray);
-			}
-		}
 	/*------------------------------------------------------------------*\
-	|*							Attributs Private						*|
+	|*							Attributes Private						*|
 	\*------------------------------------------------------------------*/
-
-	// inputs
-	private static JSpray instance = null;
-
-	// tools
-	private List<DCalque> calques;
-	private DCalque currentCalque;
-	private DComposition dComposition;
-	private JCalques jCalques;
-	// Paramètres courants
-	private Color currentColor;
-	private int currentNbGouttes;
-	private int currentTaille;
-	private int currentDimension;
-	private SprayShape currentShape;
-
-	// undo/redo
-	private List<DSpray> currentStroke;
-	private UndoRedo undoRedo;
-
 	}
