@@ -1,5 +1,5 @@
 
-package ch.hearc.gui;
+package ch.hearc.gui.app;
 
 import java.awt.BorderLayout;
 

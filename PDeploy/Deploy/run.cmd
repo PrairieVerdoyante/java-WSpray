@@ -60,7 +60,7 @@ set MEMORY= %MEMORY_MIN% %MEMORY_MAX%
 
 rem run
 
-java -cp %CLASSPATH% %MEMORY% ch.hearc.gui.JFrameSpray
+java -cp %CLASSPATH% %MEMORY% ch.hearc.gui.app.JFrameSpray
 
 rem -------------------------------------------
 rem 			end
