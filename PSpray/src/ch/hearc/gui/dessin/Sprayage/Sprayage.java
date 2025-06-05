@@ -26,8 +26,7 @@ public class Sprayage implements Dessin_I
 		g2d.setColor(color);
 		for(Point p:points)
 			{
-			int r = taille;
-			g2d.fillOval(p.x, p.y, taille, taille);
+			g2d.fillOval(p.x - taille / 2, p.y - taille / 2, taille, taille);
 			}
 		}
 
@@ -50,14 +49,16 @@ public class Sprayage implements Dessin_I
 		{
 		return this.origin;
 		}
+
 	public int getX()
-	{
-	return origin.x();
-	}
+		{
+		return origin.x();
+		}
+
 	public int getY()
-	{
-	return origin.y();
-	}
+		{
+		return origin.y();
+		}
 
 	private final List<Point> points;
 	private final Color color;
