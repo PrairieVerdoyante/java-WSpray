@@ -4,9 +4,8 @@ package ch.hearc.gui;
 import javax.swing.JFrame;
 
 import ch.hearc.c_gui.z_tools.decorator.JFrameSimple;
-import ch.hearc.c_gui.z_tools.decorator.JMarge;
 
-public class UseJApp extends JFrame
+public class JFrameSpray extends JFrame
 	{
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
@@ -19,12 +18,12 @@ public class UseJApp extends JFrame
 
 	public static void main()
 		{
-		new JFrameSimple(new JMarge(new JApp(), 0), "Spray App");
-		//new JFrameSimple(new JApp(), "Spray App");
+		JApp app = new JApp();
+
+		// You can add an icon if needed:
+		// ImageIcon icon = new ImageIcon("res/icon.png");
+		// new JFrameSimple(app, "Spray", icon);
+
+		new JFrameSimple(app, "Spray"); // icon possible
 		}
-
-	/*------------------------------------------------------------------*\
-	|*							Methods Private							*|
-	\*------------------------------------------------------------------*/
-
 	}

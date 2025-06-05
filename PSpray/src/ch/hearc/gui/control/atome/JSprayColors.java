@@ -20,7 +20,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import ch.hearc.gui.display.JSprayConfigurable_I;
+import ch.hearc.gui.spray.JSprayConfigurable_I;
 
 public class JSprayColors extends Box
 	{

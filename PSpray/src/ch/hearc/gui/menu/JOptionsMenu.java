@@ -16,9 +16,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import ch.hearc.gui.dessin.calques.DCalque;
-import ch.hearc.gui.display.JSpray;
+import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.export.SprayStorage;
+import ch.hearc.gui.spray.JSpray;
 import ch.hearc.gui.utils.DSpray;
 
 public class JOptionsMenu extends Box

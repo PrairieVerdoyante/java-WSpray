@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JComponent;
 
 import ch.hearc.c_gui.z_tools.DessinAnimable;
-import ch.hearc.gui.dessin.calques.DCalque;
+import ch.hearc.gui.calques.DCalque;
 
 public class DComposition implements DessinAnimable
 	{

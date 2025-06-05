@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.display;
+package ch.hearc.gui.spray;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,11 +14,11 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import ch.hearc.gui.calques.DCalque;
+import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.actions.UndoRedo;
-import ch.hearc.gui.dessin.calques.DCalque;
-import ch.hearc.gui.dessin.calques.JCalques;
 import ch.hearc.gui.dessin.composition.DComposition;
-import ch.hearc.gui.dessin.sprays.PointXY;
+import ch.hearc.gui.dessin.points.PointXY;
 import ch.hearc.gui.export.SprayStorage;
 import ch.hearc.gui.utils.DSpray;
 import ch.hearc.gui.utils.SprayShape;
@@ -205,6 +205,9 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 		return this.undoRedo;
 		}
 
+	/**
+	 * JSpray_I
+	 */
 	@Override
 	public Map<Color, PointXY[]> getClusters()
 		{
@@ -273,7 +276,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 			public void mousePressed(MouseEvent e)
 				{
 				currentStroke = new ArrayList<>();
-				addSprayAt(e.getX(), e.getY(), false);
+				addSprayAtAsync(e.getX(), e.getY(), false);
 				}
 
 			@Override
@@ -301,7 +304,7 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 			@Override
 			public void mouseDragged(MouseEvent e)
 				{
-				addSprayAt(e.getX(), e.getY(), false);
+				addSprayAtAsync(e.getX(), e.getY(), false);
 				}
 			});
 		}
@@ -318,8 +321,15 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 	 */
 	private void addSprayAt(int x, int y, boolean logImmediately)
 		{
-		if (currentCalque != null)
+		try
 			{
+			if (currentCalque == null)
+				{
+				// Afficher un message d’erreur ou logger
+				System.err.println("Aucun calque sélectionné !");
+				return;
+				}
+
 			DSpray spray = new DSpray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
 			currentCalque.addSpray(spray);
 
@@ -331,19 +341,97 @@ public class JSpray extends JPanel implements JSpray_I ,JSprayConfigurable_I
 					}
 				catch (IOException e)
 					{
-					e.printStackTrace();
+					// Afficher un message d’erreur ou logger
+					System.err.println("Erreur lors de la sauvegarde du spray : " + e.getMessage());
 					}
 				}
 
-			// Always track current stroke
 			if (currentStroke != null)
 				{
 				currentStroke.add(spray);
 				}
 			}
+		catch (Exception e)
+			{
+			// Afficher un message d’erreur ou logger
+			System.err.println("Erreur lors de l’ajout du spray : " + e.getMessage());
+			}
 		repaint();
 		}
 
+	private void addSprayAtAsync(int x, int y, boolean logImmediately)
+		{
+		Runnable runnable = new Runnable()
+			{
+
+			@Override
+			public void run()
+				{
+				// Création du spray (thread secondaire, pas de problème)
+				DSpray spray = new DSpray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
+
+				// Ajout du spray dans le calque et dans l'UI : TOUJOURS sur le thread Swing !
+				javax.swing.SwingUtilities.invokeLater(new Runnable()
+					{
+
+					@Override
+					public void run()
+						{
+						if (currentCalque != null)
+							{
+							currentCalque.addSpray(spray);
+							if (currentStroke != null)
+								{
+								currentStroke.add(spray);
+								}
+							repaint();
+							}
+						}
+					});
+
+				// Sauvegarde sur disque (thread secondaire, OK)
+				if (logImmediately)
+					{
+					try
+						{
+						SprayStorage.append(spray, "sprays.bin");
+						}
+					catch (IOException e)
+						{
+						System.err.println("Erreur lors de la sauvegarde du spray : " + e.getMessage());
+						}
+					}
+				}
+			};
+
+		new Thread(runnable).start();
+		}
+
+	// Méthode sécurisée pour l'ajout du spray (sans repaint)
+	private void addSprayAtSafe(int x, int y, boolean logImmediately)
+		{
+		if (currentCalque == null)
+			{ throw new IllegalStateException("Aucun calque sélectionné !"); }
+		DSpray spray = new DSpray(x, y, currentColor, currentNbGouttes, currentTaille, currentShape, currentDimension);
+		currentCalque.addSpray(spray);
+
+		if (logImmediately)
+			{
+			try
+				{
+				SprayStorage.append(spray, "sprays.bin");
+				}
+			catch (IOException e)
+				{
+				throw new RuntimeException("Erreur lors de la sauvegarde du spray", e);
+				}
+			}
+
+		if (currentStroke != null)
+			{
+			currentStroke.add(spray);
+			}
+		}
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/

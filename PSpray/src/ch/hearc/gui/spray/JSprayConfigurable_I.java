@@ -1,18 +1,16 @@
 
-package ch.hearc.gui.display;
+package ch.hearc.gui.spray;
 
 import java.awt.Color;
 import java.util.List;
-import java.util.Map;
 
+import ch.hearc.gui.calques.DCalque;
+import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.actions.UndoRedo;
-import ch.hearc.gui.dessin.calques.DCalque;
-import ch.hearc.gui.dessin.calques.JCalques;
-import ch.hearc.gui.dessin.sprays.PointXY;
 import ch.hearc.gui.utils.DSpray;
 import ch.hearc.gui.utils.SprayShape;
 
-public interface Display_I
+public interface JSprayConfigurable_I
 	{
 
 	public void setColor(Color color);
@@ -35,20 +33,15 @@ public interface Display_I
 
 	public void setCalques(List<DCalque> newCalques);
 
-	public void reset();
-
-	public void setJCalques(JCalques jCalques);
-
 	public List<DCalque> getCalques();
 
 	public List<DCalque> getSelectedCalques();
 
+	public void reset();
+
+	public void setJCalques(JCalques jCalques);
+
 	public JCalques getJCalques();
 
 	public UndoRedo getHistory();
-	/**
-	* Chaque entry de la map (line) forunit un cluster
-	*/
-	public Map<Color, PointXY[]> getClusters();
-
 	}

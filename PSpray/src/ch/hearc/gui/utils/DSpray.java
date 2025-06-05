@@ -108,6 +108,12 @@ public class DSpray
 		{
 		return this.dimension;
 		}
+
+	public boolean isNear(int x2, int y2)
+		{
+		// TODO Auto-generated method stub
+		return false;
+		}
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/

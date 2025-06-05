@@ -6,10 +6,10 @@ import java.awt.Color;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 
+import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.control.atome.JSprayColors;
 import ch.hearc.gui.control.atome.JSprayParameters;
-import ch.hearc.gui.dessin.calques.JCalques;
-import ch.hearc.gui.display.JSprayConfigurable_I;
+import ch.hearc.gui.spray.JSprayConfigurable_I;
 
 public class JControl extends Box
 	{

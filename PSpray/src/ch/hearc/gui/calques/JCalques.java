@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.calques;
+package ch.hearc.gui.calques;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -17,7 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import ch.hearc.gui.display.JSprayConfigurable_I;
+import ch.hearc.gui.spray.JSprayConfigurable_I;
 
 public class JCalques extends Box
 	{

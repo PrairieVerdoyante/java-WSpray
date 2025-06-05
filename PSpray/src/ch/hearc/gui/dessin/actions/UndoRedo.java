@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import ch.hearc.gui.dessin.calques.DCalque;
+import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.utils.DSpray;
 
 public class UndoRedo
 	{
 
-	private Stack<List<DSpray>> undoStack;
-	private Stack<List<DSpray>> redoStack;
-	private DCalque calque;
+	/*------------------------------------------------------------------*\
+	|*							Constructor								*|
+	\*------------------------------------------------------------------*/
 
 	public UndoRedo(DCalque calque)
 		{
@@ -21,6 +21,10 @@ public class UndoRedo
 		this.undoStack = new Stack<>();
 		this.redoStack = new Stack<>();
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Methods public							*|
+	\*------------------------------------------------------------------*/
 
 	public void addActions(List<DSpray> sprays)
 		{
@@ -53,4 +57,11 @@ public class UndoRedo
 			undoStack.push(actions);
 			}
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Attributes private							*|
+	\*------------------------------------------------------------------*/
+	private Stack<List<DSpray>> undoStack;
+	private Stack<List<DSpray>> redoStack;
+	private DCalque calque;
 	}

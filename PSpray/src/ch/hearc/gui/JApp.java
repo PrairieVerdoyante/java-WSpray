@@ -5,11 +5,11 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
+import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.control.JControl;
 import ch.hearc.gui.control.JToolBox;
-import ch.hearc.gui.dessin.calques.JCalques;
-import ch.hearc.gui.display.JSpray;
 import ch.hearc.gui.menu.JOptionsMenu;
+import ch.hearc.gui.spray.JSpray;
 
 public class JApp extends JPanel
 	{
@@ -24,14 +24,6 @@ public class JApp extends JPanel
 		control();
 		appearance();
 		}
-
-	/*------------------------------------------------------------------*\
-	|*							Methods Public							*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
 
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|

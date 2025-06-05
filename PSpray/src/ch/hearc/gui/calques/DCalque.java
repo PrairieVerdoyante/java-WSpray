@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.calques;
+package ch.hearc.gui.calques;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;

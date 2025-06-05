@@ -18,7 +18,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ch.hearc.gui.display.JSprayConfigurable_I;
+import ch.hearc.gui.spray.JSprayConfigurable_I;
 import ch.hearc.gui.utils.SprayShape;
 
 public class JSprayParameters extends Box

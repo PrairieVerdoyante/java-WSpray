@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.sprays;
+package ch.hearc.gui.dessin.points;
 
 import java.io.Serializable;
 
