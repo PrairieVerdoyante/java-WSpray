@@ -88,7 +88,7 @@ public class SprayStorage
 		}
 
 	// Export to CSV
-	public static void exportToCsv(List<Sprayage> sprays, String fileName) throws IOException
+	public static void exportToCsv(List<Sprayage> sprays, String fileName, boolean data) throws IOException
 		{
 		FileWriter fw = new FileWriter(fileName);
 		BufferedWriter writer = new BufferedWriter(fw);
@@ -100,6 +100,15 @@ public class SprayStorage
 
 			for(Point p:spray.getPoints())
 				{
+				if (data) // sans taille (pour ID)
+					{
+					writer.write(p.x + ";" + p.y + ";" + colorName);
+					}
+				else // avec taille (pour IL)
+					{
+					writer.write(p.x + ";" + p.y + ";" + taille + ";" + colorName);
+
+					}
 				writer.write(p.x + ";" + p.y + ";" + taille + ";" + colorName);
 				writer.newLine();
 				}

@@ -198,7 +198,10 @@ public class JOptionsMenu extends Box
 					File fileToSave = fileChooser.getSelectedFile();
 					try
 						{
-						SprayStorage.exportToCsv(allSprays, fileToSave.getAbsolutePath() + ".csv");
+						int result = JOptionPane.showConfirmDialog(null, "Voulez-vous le rayon ?", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+						boolean data = !(result == JOptionPane.YES_OPTION);
+						SprayStorage.exportToCsv(allSprays, fileToSave.getAbsolutePath() + ".csv", data);
 						}
 					catch (IOException e1)
 						{
