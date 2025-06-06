@@ -19,7 +19,7 @@ public class DComposition implements DessinAnimable
 
 	public DComposition(JComponent jComponent)
 		{
-	    this.jComponent = jComponent;
+		this.jComponent = jComponent;
 		this.calques = new ArrayList<>();
 		}
 

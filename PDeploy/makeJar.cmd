@@ -5,18 +5,18 @@ set PATH=%PATH%;%PATH_7z%
 
 
 
-if exist Deploy\PXXX.jar del Deploy\PXXX.jar
+if exist Deploy\PSpray.jar del Deploy\PSpray.jar
 if errorlevel 1 (
 	echo. 
-    echo "Failed to delete old PXXX.jar"
+    echo "Failed to delete old PSpray.jar"
     exit /b 1
 	)
 
 
-7z a -tzip Deploy/PXXX.jar ../PXXX/bin/ch
+7z a -tzip Deploy/PSpray.jar ../PSpray/bin/ch
 if errorlevel 1 (
 	echo.
-    echo "Failed to jar PXXX"
+    echo "Failed to jar PSpray"
     exit /b 1
 	)
 

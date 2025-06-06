@@ -9,7 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -46,8 +45,8 @@ public class JSprayParameters extends Box
 	private void geometry()
 		{
 		// Surface de sprayage
-		this.buttonCercle = createToolButton("cercle.png");
-		this.buttonCarre = createToolButton("carre.png");
+		this.buttonCercle = new JToggleButton("Cercle");//createToolButton("cercle.png");
+		this.buttonCarre = new JToggleButton("carre.png");
 
 		// Groupement exclusif des boutons
 		ButtonGroup groupForme = new ButtonGroup();
@@ -162,9 +161,10 @@ public class JSprayParameters extends Box
 		JToggleButton button = new JToggleButton();
 
 		// Chargement de l'image
-		ImageIcon icon = new ImageIcon(getClass().getResource("/icons/" + imageName));
-
-		button.setIcon(icon); // Affectation de l'icône
+		// ImageIcon icon = new ImageIcon(getClass().getResource("/icons/" + imageName));
+		// TODO images
+		// button.setIcon(icon); // Affectation de l'icône
+		button.setText("Icône");
 		button.setPreferredSize(new Dimension(50, 50)); // Taille des boutons
 		button.setMaximumSize(new Dimension(50, 50));
 		button.setMinimumSize(new Dimension(50, 50));

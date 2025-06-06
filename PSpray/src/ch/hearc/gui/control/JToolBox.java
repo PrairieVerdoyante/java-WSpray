@@ -40,10 +40,10 @@ public class JToolBox extends Box
 	private void geometry()
 		{
 		// Chargement des images comme icônes
-		buttonSpray = createToolButton("spray.png"); // Image pour le spray
-		buttonGomme = createToolButton("gomme.png"); // Image pour la gomme
-		buttonSelectionner = createToolButton("selectionner.png"); // Image pour sélectionner
-		buttonDeplacer = createToolButton("deplacer.png"); // Image pour déplacer
+		buttonSpray = new JToggleButton("Spray");//createToolButton("spray.png"); // Image pour le spray
+		buttonGomme = new JToggleButton("Gomme");//createToolButton("gomme.png"); // Image pour la gomme
+		buttonSelectionner = new JToggleButton("Create");//createToolButton("selectionner.png"); // Image pour sélectionner
+		buttonDeplacer = new JToggleButton("Deplacer");//createToolButton("deplacer.png"); // Image pour déplacer
 
 		// Groupe exclusif (un seul outil sélectionné à la fois)
 		ButtonGroup groupTools = new ButtonGroup();
