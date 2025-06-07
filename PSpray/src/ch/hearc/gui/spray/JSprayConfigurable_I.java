@@ -43,7 +43,7 @@ public interface JSprayConfigurable_I
 
 	public JCalques getJCalques();
 
-	public UndoRedo getHistory();
+	public UndoRedo getUndoRedo();
 
 	public void setCurrentStroke(List<Sprayage> sprays);
 
