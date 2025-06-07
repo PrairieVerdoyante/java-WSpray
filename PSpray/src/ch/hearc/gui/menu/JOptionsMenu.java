@@ -131,7 +131,7 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				JDisplay.getInstance().getHistory().undo();
+				JDisplay.getInstance().getUndoRedo().undo();
 				JDisplay.getInstance().repaint();
 				}
 			});
@@ -142,7 +142,7 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				JDisplay.getInstance().getHistory().redo();
+				JDisplay.getInstance().getUndoRedo().redo();
 				JDisplay.getInstance().repaint();
 				}
 			});
