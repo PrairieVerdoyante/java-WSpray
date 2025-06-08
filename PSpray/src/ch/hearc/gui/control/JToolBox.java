@@ -44,6 +44,8 @@ public class JToolBox extends Box
 
 	private void geometry()
 		{
+		gommeMenu = new JPopupMenu();
+		gommageFormeMenu = new JPopupMenu();
 		// Chargement des images comme icônes
 		buttonSpray = new JToggleButton("Spray");//createToolButton("spray.png"); // Image pour le spray
 		buttonGomme = new JToggleButton("Gomme");//createToolButton("gomme.png"); // Image pour la gomme
@@ -54,14 +56,23 @@ public class JToolBox extends Box
 		buttonSelectionner = new JToggleButton("Create");//createToolButton("selectionner.png"); // Image pour sélectionner
 		buttonDeplacer = new JToggleButton("Deplacer");//createToolButton("deplacer.png"); // Image pour déplacer
 
-		this.itemSprayage = new JMenuItem("Ecrasement par Sprayage");
-		this.itemForme = new JMenuItem("Écrasement par Forme");
-		this.itemNumerique = new JMenuItem("Numérique");
+		itemSprayage = new JMenuItem("Ecrasement par Sprayage");
+		itemForme = new JMenuItem("Écrasement par Forme");
+		itemNumerique = new JMenuItem("Numérique");
+
+		itemFormeCercle = new JMenuItem("Cercle");
+		itemFormeLigne = new JMenuItem("Ligne");
+		itemFormePolygone = new JMenuItem("Polygone");
 
 		// choix de type de gommage
 		gommeMenu.add(itemSprayage);
 		gommeMenu.add(itemForme);
 		gommeMenu.add(itemNumerique);
+
+		// choix de la forme
+		gommageFormeMenu.add(itemFormeCercle);
+		gommageFormeMenu.add(itemFormeLigne);
+		gommageFormeMenu.add(itemFormePolygone);
 
 		// Groupe exclusif (un seul outil sélectionné à la fois)
 		ButtonGroup groupTools = new ButtonGroup();
@@ -100,7 +111,6 @@ public class JToolBox extends Box
 		{
 		buttonSpray.addActionListener(new ActionListener()
 			{
-
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
@@ -158,6 +168,8 @@ public class JToolBox extends Box
 			public void actionPerformed(ActionEvent e)
 				{
 				JDisplay.getInstance().setModeGomme(ModeGomme.FORME);
+				// affichage menu
+				gommageFormeMenu.show(buttonGomme, 0, buttonGomme.getHeight());
 				}
 			});
 
@@ -168,6 +180,36 @@ public class JToolBox extends Box
 			public void actionPerformed(ActionEvent e)
 				{
 				JDisplay.getInstance().setModeGomme(ModeGomme.NUMERIQUE);
+				}
+			});
+
+		itemFormeCercle.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().setModeGomme(ModeGomme.GOMMECERCLE);
+				}
+			});
+
+		itemFormeLigne.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().setModeGomme(ModeGomme.GOMMELIGNE);
+				}
+			});
+
+		itemFormePolygone.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().setModeGomme(ModeGomme.GOMMEPOLYGONE);
 				}
 			});
 		}
@@ -189,9 +231,12 @@ public class JToolBox extends Box
 	private JToggleButton buttonGomme;
 	private JToggleButton buttonSelectionner;
 	private JToggleButton buttonDeplacer;
-	private JPopupMenu gommeMenu = new JPopupMenu();
+	private JPopupMenu gommeMenu;
 	private JMenuItem itemSprayage;
 	private JMenuItem itemForme;
 	private JMenuItem itemNumerique;
-	private ModeGomme currentModeGomme = ModeGomme.SPRAYAGE; // valeur par défaut
+	private JPopupMenu gommageFormeMenu;
+	private JMenuItem itemFormeCercle;
+	private JMenuItem itemFormeLigne;
+	private JMenuItem itemFormePolygone;
 	}

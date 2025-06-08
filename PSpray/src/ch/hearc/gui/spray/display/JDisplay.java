@@ -127,17 +127,18 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				currentStroke.add(gommeGeste);
 				break;
 			case FORME:
+				// demander à l'utilisateur de choisir entre cercle, ligne, polygone
+				// cercle: cliquer, le rayon se  fait autour.
+				// ligne:
 				break;
 			case NUMERIQUE:
 				break;
 			default: // mode sprayage
 				DSprayage sprayGeste = new DSprayage(currentColor, currentTaille, currentNbGouttes, currentDimension, currentShape);
 
-				javax.swing.SwingUtilities.invokeLater(() -> {
-
 				sprayGeste.apply(x, y, currentCalque, null);
 				currentStroke.add(sprayGeste);
-				});
+
 				break;
 			}
 		repaint();
