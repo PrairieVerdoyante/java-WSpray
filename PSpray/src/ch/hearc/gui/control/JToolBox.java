@@ -12,8 +12,13 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
+
+import ch.hearc.gui.dessin.actions.Sprayage.ModeGomme;
+import ch.hearc.gui.spray.display.JDisplay;
 
 public class JToolBox extends Box
 	{
@@ -42,21 +47,37 @@ public class JToolBox extends Box
 		// Chargement des images comme icônes
 		buttonSpray = new JToggleButton("Spray");//createToolButton("spray.png"); // Image pour le spray
 		buttonGomme = new JToggleButton("Gomme");//createToolButton("gomme.png"); // Image pour la gomme
+		//buttonGommeEcrasementSprayage = new JToggleButton("Effacer par sprayage");
+		//buttonGommeEcrasementForme = new JToggleButton("Effacer par ecrasement de forme");
+		//buttonGommeNumerique = new JToggleButton("Gomme numérique");
+
 		buttonSelectionner = new JToggleButton("Create");//createToolButton("selectionner.png"); // Image pour sélectionner
 		buttonDeplacer = new JToggleButton("Deplacer");//createToolButton("deplacer.png"); // Image pour déplacer
+
+		this.itemSprayage = new JMenuItem("Ecrasement par Sprayage");
+		this.itemForme = new JMenuItem("Écrasement par Forme");
+		this.itemNumerique = new JMenuItem("Numérique");
+
+		// choix de type de gommage
+		gommeMenu.add(itemSprayage);
+		gommeMenu.add(itemForme);
+		gommeMenu.add(itemNumerique);
 
 		// Groupe exclusif (un seul outil sélectionné à la fois)
 		ButtonGroup groupTools = new ButtonGroup();
 		groupTools.add(buttonSpray);
 		groupTools.add(buttonGomme);
+
 		groupTools.add(buttonSelectionner);
 		groupTools.add(buttonDeplacer);
 
 		// Ajout dans la colonne
 		this.add(buttonSpray);
 		this.add(buttonGomme);
+
 		this.add(buttonSelectionner);
 		this.add(buttonDeplacer);
+
 		}
 
 	private JToggleButton createToolButton(String imageName)
@@ -84,6 +105,7 @@ public class JToolBox extends Box
 			public void actionPerformed(ActionEvent e)
 				{
 				System.out.println("Spray sélectionné");
+				JDisplay.getInstance().setModeGomme(ModeGomme.NONE);
 				}
 			});
 
@@ -94,6 +116,7 @@ public class JToolBox extends Box
 			public void actionPerformed(ActionEvent e)
 				{
 				System.out.println("Gomme sélectionnée");
+				gommeMenu.show(buttonGomme, 0, buttonGomme.getHeight());
 				}
 			});
 
@@ -117,6 +140,36 @@ public class JToolBox extends Box
 				System.out.println("Déplacer activé");
 				}
 			});
+
+		itemSprayage.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().setModeGomme(ModeGomme.SPRAYAGE);
+				}
+			});
+
+		itemForme.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().setModeGomme(ModeGomme.FORME);
+				}
+			});
+
+		itemNumerique.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().setModeGomme(ModeGomme.NUMERIQUE);
+				}
+			});
 		}
 
 	private void appearance()
@@ -136,4 +189,9 @@ public class JToolBox extends Box
 	private JToggleButton buttonGomme;
 	private JToggleButton buttonSelectionner;
 	private JToggleButton buttonDeplacer;
+	private JPopupMenu gommeMenu = new JPopupMenu();
+	private JMenuItem itemSprayage;
+	private JMenuItem itemForme;
+	private JMenuItem itemNumerique;
+	private ModeGomme currentModeGomme = ModeGomme.SPRAYAGE; // valeur par défaut
 	}

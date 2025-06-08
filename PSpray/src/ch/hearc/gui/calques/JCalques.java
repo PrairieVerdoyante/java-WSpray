@@ -17,7 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import ch.hearc.gui.spray.JSprayConfigurable_I;
+import ch.hearc.gui.spray.display.JSprayConfigurable_I;
 
 public class JCalques extends Box
 	{

@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.export.SprayStorage;
-import ch.hearc.gui.spray.JDisplay;
+import ch.hearc.gui.spray.display.JDisplay;
 
 public class JOptionsMenu extends Box
 	{

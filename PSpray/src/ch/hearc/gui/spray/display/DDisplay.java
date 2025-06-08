@@ -2,20 +2,15 @@
 package ch.hearc.gui.spray.display;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.hearc.gui.calques.DCalque;
-import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.UndoRedo;
+import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
 import ch.hearc.gui.dessin.composition.DComposition;
-import ch.hearc.gui.spray.JSprayConfigurable_I;
 import ch.hearc.gui.utils.SprayShape;
 
-public class DDisplay implements JSprayConfigurable_I
+public class DDisplay
 	{
 
 	/*------------------------------------------------------------------*\
@@ -23,13 +18,13 @@ public class DDisplay implements JSprayConfigurable_I
 	\*------------------------------------------------------------------*/
 	public DDisplay()
 		{
-		reset();
+		// reset();
 		}
 
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
 	\*------------------------------------------------------------------*/
-
+	/*
 	@Override
 	protected void paintComponent(Graphics g)
 		{
@@ -115,89 +110,87 @@ public class DDisplay implements JSprayConfigurable_I
 	/**
 	 * Restores JDisplay to default parameters.
 	 */
-	@Override
-	public void reset()
-		{
-		this.currentColor = Color.BLACK;
-		this.currentNbGouttes = 70;
-		this.currentDimension = 10;
-		this.currentShape = SprayShape.CERCLE;
-		this.currentTaille = 10;
-
-		this.calques = new ArrayList<>();
-		this.dComposition = new DComposition(this);
-		this.dComposition.setCalques(this.calques);
-
-		addCalque("Calque 1");
-
-		if (!this.calques.isEmpty())
-			{
-			this.currentCalque = this.calques.get(this.calques.size() - 1);
-			}
-		else
-			{
-			this.currentCalque = null;
-			}
-
-		// reset calques
-		if (jCalques != null)
-			{
-			jCalques.resetCalques();
-
-			repaint();
-			}
-		}
+//	@Override
+//	public void reset()
+//		{
+//		this.currentColor = Color.BLACK;
+//		this.currentNbGouttes = 70;
+//		this.currentDimension = 10;
+//		this.currentShape = SprayShape.CERCLE;
+//		this.currentTaille = 10;
+//
+//		this.calques = new ArrayList<>();
+//		this.dComposition = new DComposition(this);
+//		this.dComposition.setCalques(this.calques);
+//
+//		addCalque("Calque 1");
+//
+//		if (!this.calques.isEmpty())
+//			{
+//			this.currentCalque = this.calques.get(this.calques.size() - 1);
+//			}
+//		else
+//			{
+//			this.currentCalque = null;
+//			}
+//
+//		// reset calques
+//		if (jCalques != null)
+//			{
+//			jCalques.resetCalques();
+//
+//			repaint();
+//			}
+//		}
 
 	/*------------------------------*\
 	|*			Get	/ set			*|
 	\*------------------------------*/
-
-
-
-	@Override
-	public void setCalques(List<DCalque> calques)
-		{
-		this.calques = calques != null ? calques : new ArrayList<>();
-		this.dComposition.setCalques(this.calques);
-
-		// Always reset currentCalque to a valid one if possible
-		if (!this.calques.isEmpty())
-			{
-			this.currentCalque = this.calques.get(this.calques.size() - 1);
-			}
-		else
-			{
-			this.currentCalque = null;
-			}
-
-		repaint();
-		}
-
-	@Override
-	public List<DCalque> getCalques()
-		{
-		return this.calques;
-		}
-
-	@Override
-	public List<DCalque> getSelectedCalques()
-		{
-		// Pas encore
-		return null;
-		}
-
-	@Override
-	public JCalques getJCalques()
-		{
-		return this.jCalques;
-		}
-
-	@Override
-	public UndoRedo getHistory()
-		{
-		return this.undoRedo;
-		}
-
+	//
+	//	@Override
+	//	public void setCalques(List<DCalque> calques)
+	//		{
+	//		this.calques = calques != null ? calques : new ArrayList<>();
+	//		this.dComposition.setCalques(this.calques);
+	//
+	//		// Always reset currentCalque to a valid one if possible
+	//		if (!this.calques.isEmpty())
+	//			{
+	//			this.currentCalque = this.calques.get(this.calques.size() - 1);
+	//			}
+	//		else
+	//			{
+	//			this.currentCalque = null;
+	//			}
+	//
+	//		repaint();
+	//		}
+	//
+	//	@Override
+	//	public List<DCalque> getCalques()
+	//		{
+	//		return this.calques;
+	//		}
+	//
+	//	@Override
+	//	public List<DCalque> getSelectedCalques()
+	//		{
+	//		// Pas encore
+	//		return null;
+	//		}
+	//
+	//	@Override
+	//	public JCalques getJCalques()
+	//		{
+	//		return this.jCalques;
+	//		}
+	//
+	//	@Override
+	//	public UndoRedo getHistory()
+	//		{
+	//		return this.undoRedo;
+	//		}
+	//		*/
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/

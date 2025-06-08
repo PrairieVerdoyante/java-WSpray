@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions;
+package ch.hearc.gui.dessin.actions.Sprayage;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -14,6 +14,10 @@ import ch.hearc.gui.utils.SprayShape;
 public class DSprayage extends Geste implements Dessin_I
 	{
 
+	/*------------------------------------------------------------------*\
+	|*							Constructors							*|
+	\*------------------------------------------------------------------*/
+
 	public DSprayage(Color color, int taille, int nbGouttes, int dimension, SprayShape shape)
 		{
 		this.color = color;
@@ -22,6 +26,11 @@ public class DSprayage extends Geste implements Dessin_I
 		this.dimension = dimension;
 		this.shape = shape;
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Methods public							*|
+	\*------------------------------------------------------------------*/
+
 
 	@Override
 	public void draw(Graphics2D g2d, int arg1, int arg2)
@@ -32,14 +41,30 @@ public class DSprayage extends Geste implements Dessin_I
 	@Override
 	public void apply(int x, int y, DCalque calque, List<Sprayage> strokeList)
 		{
+		this.setPosition(x, y);
+
 		Sprayage spray = SprayGenerator.generate(x, y, color, nbGouttes, taille, shape, dimension);
 		calque.addSpray(spray);
+		addSpray(spray); // ajout au geste
+		System.out.println("Application d'un sprayage.");
+
 		if (strokeList != null)
 			{
 			strokeList.add(spray);
 			}
 		}
 
+	@Override
+	public Color getColor()
+	{
+	return this.color;
+	}
+
+	/*------------------------------------------------------------------*\
+	|*							Attributs Private						*|
+	\*------------------------------------------------------------------*/
+
+	// tools
 	private final Color color;
 	private final int taille; // taille gouttelettes
 	private final int nbGouttes;

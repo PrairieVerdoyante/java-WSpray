@@ -6,7 +6,7 @@ import java.util.List;
 
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.DSprayage;
+import ch.hearc.gui.dessin.actions.Sprayage.DSprayage;
 import ch.hearc.gui.utils.SprayShape;
 
 /**

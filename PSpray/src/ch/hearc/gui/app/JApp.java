@@ -9,7 +9,7 @@ import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.control.JControl;
 import ch.hearc.gui.control.JToolBox;
 import ch.hearc.gui.menu.JOptionsMenu;
-import ch.hearc.gui.spray.JDisplay;
+import ch.hearc.gui.spray.display.JDisplay;
 
 public class JApp extends JPanel
 	{

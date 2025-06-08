@@ -9,7 +9,7 @@ import javax.swing.BoxLayout;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.control.atome.JSprayColors;
 import ch.hearc.gui.control.atome.JSprayParameters;
-import ch.hearc.gui.spray.JSprayConfigurable_I;
+import ch.hearc.gui.spray.display.JSprayConfigurable_I;
 
 public class JControl extends Box
 	{

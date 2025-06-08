@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.hearc.gui.dessin.Sprayage.Sprayage;
+import ch.hearc.gui.dessin.actions.Sprayage.Geste;
 import ch.hearc.gui.dessin.points.PointXY;
+import ch.hearc.gui.spray.display.JDisplay;
 
 public class JSpray extends JDisplay implements JSpray_I
 	{
@@ -37,7 +38,7 @@ public class JSpray extends JDisplay implements JSpray_I
 		{
 		Map<Color, List<PointXY>> map = new HashMap<>();
 
-		for(Sprayage spray:getCurrentStroke())
+		for(Geste spray:getCurrentStroke())
 			{
 			Color color = spray.getColor();
 			PointXY point = new PointXY(spray.getX(), spray.getY());

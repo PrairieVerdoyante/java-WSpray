@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.spray;
+package ch.hearc.gui.spray.display;
 
 import java.awt.Color;
 import java.util.List;
@@ -7,7 +7,9 @@ import java.util.List;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.UndoRedo;
+import ch.hearc.gui.dessin.actions.Sprayage.Geste;
+import ch.hearc.gui.dessin.actions.Sprayage.ModeGomme;
+import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
 import ch.hearc.gui.utils.SprayShape;
 
 public interface JSprayConfigurable_I
@@ -45,8 +47,12 @@ public interface JSprayConfigurable_I
 
 	public UndoRedo getUndoRedo();
 
-	public void setCurrentStroke(List<Sprayage> sprays);
+	public void setCurrentStroke(List<Geste> sprays);
 
-	public List<Sprayage> getCurrentStroke();
+	public List<Geste> getCurrentStroke();
+
+	public ModeGomme getModeGomme(); // gomme
+
+	public void setModeGomme(ModeGomme mode);
 
 	}

@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.spray;
+package ch.hearc.gui.spray.display;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,8 +15,11 @@ import javax.swing.JPanel;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.DSprayage;
-import ch.hearc.gui.dessin.actions.UndoRedo;
+import ch.hearc.gui.dessin.actions.Sprayage.DGommage;
+import ch.hearc.gui.dessin.actions.Sprayage.DSprayage;
+import ch.hearc.gui.dessin.actions.Sprayage.Geste;
+import ch.hearc.gui.dessin.actions.Sprayage.ModeGomme;
+import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
 import ch.hearc.gui.dessin.composition.DComposition;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -85,6 +88,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				{
 				currentStroke = new ArrayList<>();
 				addSprayAtAsync(e.getX(), e.getY(), false);
+
 				}
 
 			@Override
@@ -115,13 +119,28 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 
 	private void addSprayAtAsync(int x, int y, boolean logImmediately)
 		{
-		new Thread(() -> {
-		DSprayage spray = new DSprayage(currentColor, currentTaille, currentNbGouttes, currentDimension, currentShape);
-		javax.swing.SwingUtilities.invokeLater(() -> {
-		spray.apply(x, y, currentCalque, currentStroke);
+		switch(modeGomme)
+			{
+			case SPRAYAGE:
+				DGommage gommeGeste = new DGommage(currentTaille, currentNbGouttes, currentDimension, currentShape);
+				gommeGeste.apply(x, y, currentCalque, null);
+				currentStroke.add(gommeGeste);
+				break;
+			case FORME:
+				break;
+			case NUMERIQUE:
+				break;
+			default: // mode sprayage
+				DSprayage sprayGeste = new DSprayage(currentColor, currentTaille, currentNbGouttes, currentDimension, currentShape);
+
+				javax.swing.SwingUtilities.invokeLater(() -> {
+
+				sprayGeste.apply(x, y, currentCalque, null);
+				currentStroke.add(sprayGeste);
+				});
+				break;
+			}
 		repaint();
-		});
-		}).start();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -216,6 +235,8 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		this.dComposition = new DComposition(this);
 		this.dComposition.setCalques(this.calques);
 
+		this.modeGomme = ModeGomme.NONE; // spray par defaut
+
 		addCalque("Calque 1");
 
 		if (!this.calques.isEmpty())
@@ -275,15 +296,27 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		}
 
 	@Override
-	public void setCurrentStroke(List<Sprayage> sprays)
+	public void setCurrentStroke(List<Geste> sprays)
 		{
 		this.currentStroke = sprays;
 		}
 
 	@Override
-	public List<Sprayage> getCurrentStroke()
+	public List<Geste> getCurrentStroke()
 		{
 		return this.currentStroke;
+		}
+
+	@Override
+	public ModeGomme getModeGomme()
+		{
+		return this.modeGomme;
+		}
+
+	@Override
+	public void setModeGomme(ModeGomme mode)
+		{
+		this.modeGomme = mode;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -303,7 +336,9 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	private int currentDimension;
 	private SprayShape currentShape;
 
-	private List<Sprayage> currentStroke;
+	private List<Geste> currentStroke;
 	private UndoRedo undoRedo;
+
+	private ModeGomme modeGomme;
 
 	}

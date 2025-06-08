@@ -1,12 +1,12 @@
 
-package ch.hearc.gui.dessin.actions;
+package ch.hearc.gui.dessin.actions.UndoRedo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 import ch.hearc.gui.calques.DCalque;
-import ch.hearc.gui.dessin.Sprayage.Sprayage;
+import ch.hearc.gui.dessin.actions.Sprayage.Geste;
 
 public class UndoRedo
 	{
@@ -26,7 +26,7 @@ public class UndoRedo
 	|*							Methods public							*|
 	\*------------------------------------------------------------------*/
 
-	public void addActions(List<Sprayage> sprays)
+	public void addActions(List<Geste> sprays)
 		{
 		undoStack.push(new ArrayList<>(sprays));
 		redoStack.clear();
@@ -36,10 +36,10 @@ public class UndoRedo
 		{
 		if (!undoStack.isEmpty())
 			{
-			List<Sprayage> actions = undoStack.pop();
-			for(Sprayage spray:actions)
+			List<Geste> actions = undoStack.pop();
+			for(Geste geste:actions)
 				{
-				calque.removeSpray(spray);
+				geste.undo(calque); // ✅ use Geste.undo()
 				}
 			redoStack.push(actions);
 			}
@@ -49,10 +49,10 @@ public class UndoRedo
 		{
 		if (!redoStack.isEmpty())
 			{
-			List<Sprayage> actions = redoStack.pop();
-			for(Sprayage spray:actions)
+			List<Geste> actions = redoStack.pop();
+			for(Geste geste:actions)
 				{
-				calque.addSpray(spray);
+				geste.redo(calque); // ✅ use Geste.redo()
 				}
 			undoStack.push(actions);
 			}
@@ -61,7 +61,7 @@ public class UndoRedo
 	/*------------------------------------------------------------------*\
 	|*							Attributes private							*|
 	\*------------------------------------------------------------------*/
-	private Stack<List<Sprayage>> undoStack;
-	private Stack<List<Sprayage>> redoStack;
+	private Stack<List<Geste>> undoStack;
+	private Stack<List<Geste>> redoStack;
 	private DCalque calque;
 	}
