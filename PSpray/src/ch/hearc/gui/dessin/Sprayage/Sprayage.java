@@ -4,6 +4,7 @@ package ch.hearc.gui.dessin.Sprayage;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.List;
 
 import ch.hearc.c_gui.z_tools.Dessin_I;
@@ -58,6 +59,31 @@ public class Sprayage implements Dessin_I
 	public int getY()
 		{
 		return origin.y();
+		}
+
+	public boolean removePointsInCircle(int x, int y, int r)
+		{
+			// Supposons qu'il y a une liste interne de Point ou coordonnées
+			Iterator<Point> it = this.points.iterator();
+			boolean removed = false;
+
+			while(it.hasNext())
+			{
+				Point p = it.next();
+				int dx = p.x - x;
+				int dy = p.y - y;
+				if (dx * dx + dy * dy <= r * r)
+				{
+					it.remove();
+					removed = true;
+				}
+			}
+			return removed;
+		}
+
+		public boolean isEmpty()
+		{
+			return this.points.isEmpty();
 		}
 
 	private final List<Point> points;

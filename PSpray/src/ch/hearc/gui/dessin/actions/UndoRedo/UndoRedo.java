@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import ch.hearc.gui.calques.DCalque;
-import ch.hearc.gui.dessin.actions.Sprayage.Geste;
+import ch.hearc.gui.dessin.actions.dessin.Geste;
 
 public class UndoRedo
 	{

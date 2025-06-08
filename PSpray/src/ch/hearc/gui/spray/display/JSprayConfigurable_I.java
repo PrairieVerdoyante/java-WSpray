@@ -7,9 +7,9 @@ import java.util.List;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.Sprayage.Geste;
-import ch.hearc.gui.dessin.actions.Sprayage.ModeGomme;
 import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
+import ch.hearc.gui.dessin.actions.dessin.Geste;
+import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
 import ch.hearc.gui.utils.SprayShape;
 
 public interface JSprayConfigurable_I
@@ -54,5 +54,7 @@ public interface JSprayConfigurable_I
 	public ModeGomme getModeGomme(); // gomme
 
 	public void setModeGomme(ModeGomme mode);
+
+	public void setGommeRayon(int rayon);
 
 	}

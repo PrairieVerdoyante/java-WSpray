@@ -15,11 +15,13 @@ import javax.swing.JPanel;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.Sprayage.DGommage;
-import ch.hearc.gui.dessin.actions.Sprayage.DSprayage;
-import ch.hearc.gui.dessin.actions.Sprayage.Geste;
-import ch.hearc.gui.dessin.actions.Sprayage.ModeGomme;
 import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
+import ch.hearc.gui.dessin.actions.dessin.DGommage;
+import ch.hearc.gui.dessin.actions.dessin.DGommageCercle;
+import ch.hearc.gui.dessin.actions.dessin.DGommageNumerique;
+import ch.hearc.gui.dessin.actions.dessin.DSprayage;
+import ch.hearc.gui.dessin.actions.dessin.Geste;
+import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
 import ch.hearc.gui.dessin.composition.DComposition;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -126,12 +128,17 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				gommeGeste.apply(x, y, currentCalque, null);
 				currentStroke.add(gommeGeste);
 				break;
-			case FORME:
-				// demander à l'utilisateur de choisir entre cercle, ligne, polygone
+			case GOMMECERCLE:
+				DGommageCercle gommeCercle = new DGommageCercle(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
 				// cercle: cliquer, le rayon se  fait autour.
+				gommeCercle.apply(x, y, currentCalque, null);
+				currentStroke.add(gommeCercle);
 				// ligne:
 				break;
 			case NUMERIQUE:
+
+				DGommageNumerique gommeNum = new DGommageNumerique(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
+				gommeNum.apply(x, y, currentCalque, null);
 				break;
 			default: // mode sprayage
 				DSprayage sprayGeste = new DSprayage(currentColor, currentTaille, currentNbGouttes, currentDimension, currentShape);
@@ -237,6 +244,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		this.dComposition.setCalques(this.calques);
 
 		this.modeGomme = ModeGomme.NONE; // spray par defaut
+		this.rayonGomme = this.currentDimension;
 
 		addCalque("Calque 1");
 
@@ -320,6 +328,12 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		this.modeGomme = mode;
 		}
 
+	@Override
+	public void setGommeRayon(int rayon)
+		{
+		this.rayonGomme = rayon;
+		}
+
 	/*------------------------------------------------------------------*\
 	|*							Attributes								*|
 	\*------------------------------------------------------------------*/
@@ -341,5 +355,6 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	private UndoRedo undoRedo;
 
 	private ModeGomme modeGomme;
+	private int rayonGomme;
 
 	}

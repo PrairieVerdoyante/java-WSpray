@@ -13,11 +13,12 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
-import ch.hearc.gui.dessin.actions.Sprayage.ModeGomme;
+import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
 import ch.hearc.gui.spray.display.JDisplay;
 
 public class JToolBox extends Box
@@ -111,6 +112,7 @@ public class JToolBox extends Box
 		{
 		buttonSpray.addActionListener(new ActionListener()
 			{
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
@@ -179,7 +181,24 @@ public class JToolBox extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
+				String inputNum = JOptionPane.showInputDialog(null, "Rayon du gommage numérique :", "Entrée", JOptionPane.QUESTION_MESSAGE);
+				int rayon;
+
+				try
+					{
+					if (inputNum == null || inputNum.trim().isEmpty())
+						{
+						throw new NumberFormatException(); // on force une exception pour tomber dans le catch
+						}
+					rayon = Integer.parseInt(inputNum.trim());
+					}
+				catch (NumberFormatException e2)
+					{
+					rayon = 10; // valeur par défaut
+					}
+				JDisplay.getInstance().setGommeRayon(rayon);
 				JDisplay.getInstance().setModeGomme(ModeGomme.NUMERIQUE);
+
 				}
 			});
 
@@ -189,6 +208,23 @@ public class JToolBox extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
+				String inputNum = JOptionPane.showInputDialog(null, "Rayon du gommage numérique :", "Entrée", JOptionPane.QUESTION_MESSAGE);
+				int rayon;
+
+				try
+					{
+					if (inputNum == null || inputNum.trim().isEmpty())
+						{
+						throw new NumberFormatException(); // on force une exception pour tomber dans le catch
+						}
+					rayon = Integer.parseInt(inputNum.trim());
+					}
+				catch (NumberFormatException e2)
+					{
+					rayon = 10; // valeur par défaut
+					}
+				JDisplay.getInstance().setGommeRayon(rayon);
+
 				JDisplay.getInstance().setModeGomme(ModeGomme.GOMMECERCLE);
 				}
 			});

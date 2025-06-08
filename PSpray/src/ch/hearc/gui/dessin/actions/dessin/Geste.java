@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.Sprayage;
+package ch.hearc.gui.dessin.actions.dessin;
 
 import java.awt.Color;
 import java.util.ArrayList;

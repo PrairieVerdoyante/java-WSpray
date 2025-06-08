@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.Sprayage;
+package ch.hearc.gui.dessin.actions.dessin;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,18 +9,18 @@ import ch.hearc.c_gui.z_tools.Dessin_I;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.SprayGenerator;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
+import ch.hearc.gui.spray.display.JDisplay;
 import ch.hearc.gui.utils.SprayShape;
 
-public class DSprayage extends Geste implements Dessin_I
+public class DGommage extends Geste implements Dessin_I
 	{
 
 	/*------------------------------------------------------------------*\
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
-	public DSprayage(Color color, int taille, int nbGouttes, int dimension, SprayShape shape)
+	public DGommage(int taille, int nbGouttes, int dimension, SprayShape shape)
 		{
-		this.color = color;
 		this.taille = taille;
 		this.nbGouttes = nbGouttes;
 		this.dimension = dimension;
@@ -31,43 +31,57 @@ public class DSprayage extends Geste implements Dessin_I
 	|*							Methods public							*|
 	\*------------------------------------------------------------------*/
 
-
-	@Override
-	public void draw(Graphics2D g2d, int arg1, int arg2)
-		{
-		// rien à dessiner ici directement
-		}
-
 	@Override
 	public void apply(int x, int y, DCalque calque, List<Sprayage> strokeList)
 		{
-		this.setPosition(x, y);
-
-		Sprayage spray = SprayGenerator.generate(x, y, color, nbGouttes, taille, shape, dimension);
-		calque.addSpray(spray);
-		addSpray(spray); // ajout au geste
-		System.out.println("Application d'un sprayage.");
-
-		if (strokeList != null)
+		switch(JDisplay.getInstance().getModeGomme())
 			{
-			strokeList.add(spray);
+			case ModeGomme.SPRAYAGE:
+				Color white = Color.WHITE; // simulate erasure
+				Sprayage spray = SprayGenerator.generate(x, y, white, nbGouttes, taille, shape, dimension);
+				calque.addSpray(spray);
+
+				if (strokeList != null)
+					{
+					strokeList.add(spray);
+					}
+				break;
+			default:
+				break;
 			}
+
+		}
+
+	@Override
+	public void draw(Graphics2D arg0, int arg1, int arg2)
+		{
+		// rien
 		}
 
 	@Override
 	public Color getColor()
-	{
-	return this.color;
-	}
+		{
+		return Color.WHITE;
+		}
 
-	/*------------------------------------------------------------------*\
-	|*							Attributs Private						*|
-	\*------------------------------------------------------------------*/
+	public int getNbGouttes()
+		{
+		return this.nbGouttes;
+		}
 
-	// tools
-	private final Color color;
+	public int getDimension()
+		{
+		return this.dimension;
+		}
+
+	public int getTaille()
+		{
+		return this.taille;
+		}
+
 	private final int taille; // taille gouttelettes
 	private final int nbGouttes;
 	private final int dimension;
 	private final SprayShape shape;
+
 	}

@@ -16,6 +16,10 @@ public class SprayGenerator
 	|*							Constructors							*|
 	\*------------------------------------------------------------------*/
 
+	/*------------------------------------------------------------------*\
+	|*							Methods Public							*|
+	\*------------------------------------------------------------------*/
+
 	public static Sprayage generate(int x, int y, Color color, int nbGouttes, int taille, SprayShape shape, int dimension)
 		{
 		List<Point> points = new ArrayList<>();
@@ -46,9 +50,16 @@ public class SprayGenerator
 		return new Sprayage(center, points, color, taille);
 		}
 
-	/*------------------------------------------------------------------*\
-	|*							Methods Public							*|
-	\*------------------------------------------------------------------*/
+	public static Sprayage generateCircle(int x, int y, int taille, int rayon)
+		{
+		List<Point> points = new ArrayList<>();
+		PointXY center = new PointXY(x, y);
+		Color color = Color.WHITE;
+
+		points.add(new Point(x, y)); // Point unique exactement au centre
+
+		return new Sprayage(center, points, color, 2 * rayon);
+		}
 
 	/*------------------------------*\
 	|*				Get				*|
