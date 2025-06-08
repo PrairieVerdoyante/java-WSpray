@@ -201,7 +201,13 @@ public class JOptionsMenu extends Box
 						int result = JOptionPane.showConfirmDialog(null, "Voulez-vous le rayon ?", "Confirmation", JOptionPane.YES_NO_OPTION);
 
 						boolean data = !(result == JOptionPane.YES_OPTION);
-						SprayStorage.exportToCsv(allSprays, fileToSave.getAbsolutePath() + ".csv", data);
+
+						String filePath = fileToSave.getAbsolutePath();
+						if (!filePath.toLowerCase().endsWith(".csv"))
+							{
+							filePath += ".csv";
+							}
+						SprayStorage.exportToCsv(allSprays, filePath, data);
 						}
 					catch (IOException e1)
 						{

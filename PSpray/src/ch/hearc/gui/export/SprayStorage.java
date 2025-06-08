@@ -109,7 +109,6 @@ public class SprayStorage
 					writer.write(p.x + ";" + p.y + ";" + taille + ";" + colorName);
 
 					}
-				writer.write(p.x + ";" + p.y + ";" + taille + ";" + colorName);
 				writer.newLine();
 				}
 
