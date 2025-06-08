@@ -40,8 +40,7 @@ public class DGommageCercle extends DGommage implements Dessin_I
 			strokeList.add(gommeVisuelle);
 			}
 
-		// enlever les cercles qui sont dans l'endroit, numériquement
-		//DGommageNumerique gommeNumerique = new DGommageNumerique(getTaille(), getNbGouttes(), getDimension(), SprayShape.CERCLE, rayon);
+		// utilisation de la gomme numérique
 		gommeNumerique.apply(x, y, calque, strokeList);
 		}
 

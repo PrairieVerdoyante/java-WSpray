@@ -16,9 +16,9 @@ import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
-import ch.hearc.gui.dessin.actions.dessin.DGommage;
 import ch.hearc.gui.dessin.actions.dessin.DGommageCercle;
 import ch.hearc.gui.dessin.actions.dessin.DGommageNumerique;
+import ch.hearc.gui.dessin.actions.dessin.DGommageSprayage;
 import ch.hearc.gui.dessin.actions.dessin.DSprayage;
 import ch.hearc.gui.dessin.actions.dessin.Geste;
 import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
@@ -124,7 +124,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		switch(modeGomme)
 			{
 			case SPRAYAGE:
-				DGommage gommeGeste = new DGommage(currentTaille, currentNbGouttes, currentDimension, currentShape);
+				DGommageSprayage gommeGeste = new DGommageSprayage(currentTaille, currentNbGouttes, currentDimension, currentShape);
 				gommeGeste.apply(x, y, currentCalque, null);
 				currentStroke.add(gommeGeste);
 				break;
