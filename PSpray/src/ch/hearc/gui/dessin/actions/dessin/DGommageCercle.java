@@ -16,6 +16,7 @@ public class DGommageCercle extends DGommage implements Dessin_I
 		{
 		super(taille, nbGouttes, dimension, shape);
 		this.rayon = rayon;
+		this.gommeNumerique = new DGommageNumerique(taille, nbGouttes, dimension, shape, rayon);
 		}
 
 	/*------------------------------------------------------------------*\
@@ -33,15 +34,34 @@ public class DGommageCercle extends DGommage implements Dessin_I
 		Sprayage gommeVisuelle = SprayGenerator.generateCircle(x, y, valeur, rayon);
 		calque.addSpray(gommeVisuelle);
 		addSpray(gommeVisuelle); // ajout au geste.
+
 		if (strokeList != null)
 			{
 			strokeList.add(gommeVisuelle);
 			}
 
 		// enlever les cercles qui sont dans l'endroit, numériquement
-		DGommageNumerique gommeNumerique = new DGommageNumerique(getTaille(), getNbGouttes(), getDimension(), SprayShape.CERCLE, rayon);
+		//DGommageNumerique gommeNumerique = new DGommageNumerique(getTaille(), getNbGouttes(), getDimension(), SprayShape.CERCLE, rayon);
 		gommeNumerique.apply(x, y, calque, strokeList);
 		}
+
+	@Override
+	public void undo(DCalque calque)
+		{
+		// Undo the numeric erasing stored in DGommageNumerique
+		gommeNumerique.undo(calque);
+
+		// Undo this gesture’s visual spray if needed
+		super.undo(calque);
+		}
+
+	@Override
+	public void redo(DCalque calque)
+		{
+		gommeNumerique.redo(calque);
+		super.redo(calque);
+		}
+
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/
@@ -54,4 +74,5 @@ public class DGommageCercle extends DGommage implements Dessin_I
 	|*							Attributes Private						*|
 	\*------------------------------------------------------------------*/
 	private int rayon;
+	private DGommageNumerique gommeNumerique;
 	}

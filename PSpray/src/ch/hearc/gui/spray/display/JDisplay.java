@@ -130,16 +130,12 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				break;
 			case GOMMECERCLE:
 				DGommageCercle gommeCercle = new DGommageCercle(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
-				// cercle: cliquer, le rayon se  fait autour.
 				gommeCercle.apply(x, y, currentCalque, null);
 				currentStroke.add(gommeCercle);
-				// ligne:
 				break;
 			case NUMERIQUE:
 				DGommageNumerique gommeNum = new DGommageNumerique(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
-				List<Geste> strokeNum = new ArrayList<>();
 				gommeNum.apply(x, y, currentCalque, null);
-				// currentStroke.addAll(strokeNum);
 				currentStroke.add(gommeNum);
 				break;
 			default: // mode sprayage

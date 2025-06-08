@@ -4,6 +4,7 @@ package ch.hearc.gui.dessin.Sprayage;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +14,10 @@ import ch.hearc.gui.dessin.points.PointXY;
 public class Sprayage implements Dessin_I
 	{
 
+	/*------------------------------------------------------------------*\
+	|*							Constructor								*|
+	\*------------------------------------------------------------------*/
+
 	public Sprayage(PointXY origin, List<Point> points, Color color, int taille)
 		{
 		this.origin = origin;
@@ -20,6 +25,10 @@ public class Sprayage implements Dessin_I
 		this.color = color;
 		this.taille = taille;
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Methods public							*|
+	\*------------------------------------------------------------------*/
 
 	@Override
 	public void draw(Graphics2D g2d, int arg1, int arg2)
@@ -61,30 +70,72 @@ public class Sprayage implements Dessin_I
 		return origin.y();
 		}
 
+	public boolean isEmpty()
+		{
+		return this.points.isEmpty();
+		}
+
 	public boolean removePointsInCircle(int x, int y, int r)
 		{
-			// Supposons qu'il y a une liste interne de Point ou coordonnées
-			Iterator<Point> it = this.points.iterator();
-			boolean removed = false;
+		// Supposons qu'il y a une liste interne de Point ou coordonnées
+		Iterator<Point> it = this.points.iterator();
+		boolean removed = false;
 
-			while(it.hasNext())
+		while(it.hasNext())
 			{
-				Point p = it.next();
-				int dx = p.x - x;
-				int dy = p.y - y;
-				if (dx * dx + dy * dy <= r * r)
+			Point p = it.next();
+			int dx = p.x - x;
+			int dy = p.y - y;
+			if (dx * dx + dy * dy <= r * r)
 				{
-					it.remove();
-					removed = true;
+				it.remove();
+				removed = true;
 				}
 			}
-			return removed;
+		return removed;
 		}
 
-		public boolean isEmpty()
+	public List<Point> removePointsInCircleWithReturn(int x, int y, int radius)
 		{
-			return this.points.isEmpty();
+		List<Point> removedPoints = new ArrayList<>();
+		Iterator<Point> it = this.points.iterator();
+
+		while(it.hasNext())
+			{
+			Point p = it.next();
+			int dx = p.x - x;
+			int dy = p.y - y;
+
+			if (dx * dx + dy * dy <= radius * radius)
+				{
+				removedPoints.add(new Point(p)); // add a copy to removedPoints
+				it.remove();
+				}
+			}
+
+		return removedPoints;
 		}
+
+	/**
+	 * Adds the given points back to this spray.
+	 */
+	public void addPoints(List<Point> pointsToAdd)
+		{
+		this.points.addAll(pointsToAdd);
+		}
+
+	/**
+	 * Removes the given points from this spray.
+	 * Uses equals() to match points.
+	 */
+	public void removePoints(List<Point> pointsToRemove)
+		{
+		this.points.removeAll(pointsToRemove);
+		}
+
+	/*------------------------------------------------------------------*\
+	|*						Attributes private							*|
+	\*------------------------------------------------------------------*/
 
 	private final List<Point> points;
 	private final Color color;
