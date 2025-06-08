@@ -40,6 +40,7 @@ public class DGommageNumerique extends DGommage implements Dessin_I
 				{
 				strokeList.add(spray);
 				}
+			addSpray(spray);
 			}
 		}
 

@@ -39,7 +39,7 @@ public class UndoRedo
 			List<Geste> actions = undoStack.pop();
 			for(Geste geste:actions)
 				{
-				geste.undo(calque); // ✅ use Geste.undo()
+				geste.undo(calque);
 				}
 			redoStack.push(actions);
 			}
@@ -52,7 +52,7 @@ public class UndoRedo
 			List<Geste> actions = redoStack.pop();
 			for(Geste geste:actions)
 				{
-				geste.redo(calque); // ✅ use Geste.redo()
+				geste.redo(calque);
 				}
 			undoStack.push(actions);
 			}

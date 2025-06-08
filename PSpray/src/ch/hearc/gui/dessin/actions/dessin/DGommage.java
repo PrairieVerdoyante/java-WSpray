@@ -40,6 +40,7 @@ public class DGommage extends Geste implements Dessin_I
 				Color white = Color.WHITE; // simulate erasure
 				Sprayage spray = SprayGenerator.generate(x, y, white, nbGouttes, taille, shape, dimension);
 				calque.addSpray(spray);
+				addSpray(spray);
 
 				if (strokeList != null)
 					{

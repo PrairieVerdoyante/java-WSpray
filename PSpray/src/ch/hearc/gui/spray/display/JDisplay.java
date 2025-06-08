@@ -136,9 +136,11 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				// ligne:
 				break;
 			case NUMERIQUE:
-
 				DGommageNumerique gommeNum = new DGommageNumerique(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
+				List<Geste> strokeNum = new ArrayList<>();
 				gommeNum.apply(x, y, currentCalque, null);
+				// currentStroke.addAll(strokeNum);
+				currentStroke.add(gommeNum);
 				break;
 			default: // mode sprayage
 				DSprayage sprayGeste = new DSprayage(currentColor, currentTaille, currentNbGouttes, currentDimension, currentShape);
