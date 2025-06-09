@@ -17,6 +17,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ch.hearc.gui.dessin.image.ImageShop;
 import ch.hearc.gui.spray.display.JSprayConfigurable_I;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -45,8 +46,8 @@ public class JSprayParameters extends Box
 	private void geometry()
 		{
 		// Surface de sprayage
-		this.buttonCercle = new JToggleButton("Cercle");//createToolButton("cercle.png");
-		this.buttonCarre = new JToggleButton("carre.png");
+		this.buttonCercle = new JToggleButton(ImageShop.CERCLE);
+		this.buttonCarre = new JToggleButton(ImageShop.CARRE);
 
 		// Groupement exclusif des boutons
 		ButtonGroup groupForme = new ButtonGroup();
