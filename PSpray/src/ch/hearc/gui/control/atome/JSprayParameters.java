@@ -2,7 +2,6 @@
 package ch.hearc.gui.control.atome;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -14,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import ch.hearc.gui.dessin.image.ImageShop;
 import ch.hearc.gui.spray.display.JSprayConfigurable_I;
@@ -59,59 +56,88 @@ public class JSprayParameters extends Box
 		panelButtons.setLayout(new BoxLayout(panelButtons, BoxLayout.X_AXIS));
 		panelButtons.setOpaque(false); // Rendre le panel transparent
 		panelButtons.add(buttonCercle);
-		panelButtons.add(Box.createHorizontalStrut(10)); // Espacement horizontal de 10px
+		panelButtons.add(Box.createHorizontalStrut(10)); // Espacement entre les boutons
 		panelButtons.add(buttonCarre);
 
 		// Label pour la forme de sprayage
 		JLabel labelForme = new JLabel("Forme de sprayage");
 		labelForme.setOpaque(false);
 		labelForme.setForeground(Color.WHITE);
-		this.add(labelForme);
 
-		// Ajout du panel contenant les boutons
+		// Ajout dans le composant
+		this.add(labelForme);
 		this.add(panelButtons);
 
-		// Dimension de la Forme
-		this.sliderDimension = new JSlider(1, 100, 10); // min 1, max 100, initial 10
+		this.sliderDimension = new JSlider(5, 100, 20);
 		sliderDimension.setOpaque(false);
+
 		JLabel labelDimension = new JLabel("Dimension de la forme");
 		labelDimension.setOpaque(false);
 		labelDimension.setForeground(Color.WHITE);
-		this.add(labelDimension);
-		this.add(sliderDimension);
 
-		// Taille des gouttelettes
-		this.sliderTaille = new JSlider(1, 100, 10); // min 1, max 100, initial 10
+		// Label de valeur
+		labelDimensionValue = new JLabel(String.valueOf(sliderDimension.getValue()));
+		labelDimensionValue.setForeground(Color.WHITE);
+
+		// Panel horizontal
+		JPanel panelDimension = new JPanel();
+		panelDimension.setLayout(new BoxLayout(panelDimension, BoxLayout.X_AXIS));
+		panelDimension.setOpaque(false);
+		panelDimension.add(sliderDimension);
+		panelDimension.add(Box.createHorizontalStrut(10));
+		panelDimension.add(labelDimensionValue);
+
+		this.add(labelDimension);
+		this.add(panelDimension);
+
+		this.sliderTaille = new JSlider(1, 30, 5);
 		sliderTaille.setOpaque(false);
+
 		JLabel labelTaille = new JLabel("Taille des gouttelettes");
 		labelTaille.setOpaque(false);
 		labelTaille.setForeground(Color.WHITE);
-		this.add(labelTaille);
-		this.add(sliderTaille);
 
-		// Nombre de gouttelettes
-		this.sliderNbGouttes = new JSlider(1, 500, 50); // min 1, max 500, initial 50
+		// Label de valeur
+		labelTailleValue = new JLabel(String.valueOf(sliderTaille.getValue()));
+		labelTailleValue.setForeground(Color.WHITE);
+
+		// Panel horizontal
+		JPanel panelTaille = new JPanel();
+		panelTaille.setLayout(new BoxLayout(panelTaille, BoxLayout.X_AXIS));
+		panelTaille.setOpaque(false);
+		panelTaille.add(sliderTaille);
+		panelTaille.add(Box.createHorizontalStrut(10));
+		panelTaille.add(labelTailleValue);
+
+		this.add(labelTaille);
+		this.add(panelTaille);
+
+		this.sliderNbGouttes = new JSlider(10, 200, 50);
 		sliderNbGouttes.setOpaque(false);
+
 		JLabel labelNbGouttes = new JLabel("Nombre de gouttelettes");
 		labelNbGouttes.setOpaque(false);
 		labelNbGouttes.setForeground(Color.WHITE);
+
+		// Label de valeur
+		labelNbGouttesValue = new JLabel(String.valueOf(sliderNbGouttes.getValue()));
+		labelNbGouttesValue.setForeground(Color.WHITE);
+
+		// Panel horizontal
+		JPanel panelNbGouttes = new JPanel();
+		panelNbGouttes.setLayout(new BoxLayout(panelNbGouttes, BoxLayout.X_AXIS));
+		panelNbGouttes.setOpaque(false);
+		panelNbGouttes.add(sliderNbGouttes);
+		panelNbGouttes.add(Box.createHorizontalStrut(10));
+		panelNbGouttes.add(labelNbGouttesValue);
+
 		this.add(labelNbGouttes);
-		this.add(sliderNbGouttes);
+		this.add(panelNbGouttes);
+
 		}
 
 	private void control()
 		{
-		this.sliderTaille.addChangeListener(new ChangeListener()
-			{
-
-			@Override
-			public void stateChanged(ChangeEvent e)
-				{
-				int taille = sliderTaille.getValue();
-				spray.setTaille(taille);
-				System.out.println("Nouvelle taille de gouttelette : " + taille);
-				}
-			});
 
 		this.buttonCercle.addActionListener(e -> {
 		spray.setForme(SprayShape.CERCLE);
@@ -123,29 +149,27 @@ public class JSprayParameters extends Box
 		System.out.println("Spray en carre sélectionné");
 		});
 
-		this.sliderNbGouttes.addChangeListener(new ChangeListener()
-			{
+		this.sliderDimension.addChangeListener(e -> {
+		int dimension = sliderDimension.getValue();
+		spray.setDimension(dimension);
+		labelDimensionValue.setText(String.valueOf(dimension));
+		System.out.println("Nouvelle dimension de la forme : " + dimension);
+		});
 
-			@Override
-			public void stateChanged(ChangeEvent e)
-				{
-				int nb = sliderNbGouttes.getValue();
-				spray.setNbGouttes(nb);
-				System.out.println("Nouveau nombre de gouttelettes : " + nb);
-				}
-			});
+		this.sliderTaille.addChangeListener(e -> {
+		int taille = sliderTaille.getValue();
+		spray.setTaille(taille);
+		labelTailleValue.setText(String.valueOf(taille));
+		System.out.println("Nouvelle taille de gouttelette : " + taille);
+		});
 
-		this.sliderDimension.addChangeListener(new ChangeListener()
-			{
+		this.sliderNbGouttes.addChangeListener(e -> {
+		int nb = sliderNbGouttes.getValue();
+		spray.setNbGouttes(nb);
+		labelNbGouttesValue.setText(String.valueOf(nb));
+		System.out.println("Nouveau nombre de gouttelettes : " + nb);
+		});
 
-			@Override
-			public void stateChanged(ChangeEvent e)
-				{
-				int dimension = sliderDimension.getValue();
-				spray.setDimension(dimension);
-				System.out.println("Nouvelle dimension de la forme : " + dimension);
-				}
-			});
 		}
 
 	private void appearance()
@@ -155,23 +179,6 @@ public class JSprayParameters extends Box
 		// debug
 		setOpaque(true);
 		setBackground(new Color(71, 71, 71, 255));
-		}
-
-	private JToggleButton createToolButton(String imageName)
-		{
-		JToggleButton button = new JToggleButton();
-
-		// Chargement de l'image
-		// ImageIcon icon = new ImageIcon(getClass().getResource("/icons/" + imageName));
-		// TODO images
-		// button.setIcon(icon); // Affectation de l'icône
-		button.setText("Icône");
-		button.setPreferredSize(new Dimension(50, 50)); // Taille des boutons
-		button.setMaximumSize(new Dimension(50, 50));
-		button.setMinimumSize(new Dimension(50, 50));
-		button.setFocusPainted(false);
-		button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-		return button;
 		}
 
 	/*------------------------------------------------------------------*\
@@ -187,4 +194,8 @@ public class JSprayParameters extends Box
 	private JSlider sliderNbGouttes;
 	private JToggleButton buttonCercle;
 	private JToggleButton buttonCarre;
+	private JLabel labelDimensionValue;
+	private JLabel labelTailleValue;
+	private JLabel labelNbGouttesValue;
+
 	}
