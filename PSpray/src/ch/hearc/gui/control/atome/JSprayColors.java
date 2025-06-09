@@ -1,4 +1,3 @@
-
 package ch.hearc.gui.control.atome;
 
 import java.awt.Color;
@@ -8,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -23,165 +24,216 @@ import javax.swing.border.TitledBorder;
 import ch.hearc.gui.spray.display.JSprayConfigurable_I;
 
 public class JSprayColors extends Box
-	{
+{
+    /*------------------------------------------------------------------*\
+    |*							Constructors							*|
+    \*------------------------------------------------------------------*/
 
-	/*------------------------------------------------------------------*\
-	|*							Constructors							*|
-	\*------------------------------------------------------------------*/
+    public JSprayColors(JSprayConfigurable_I spray)
+    {
+        super(BoxLayout.Y_AXIS);
 
-	public JSprayColors(JSprayConfigurable_I spray)
-		{
-		super(BoxLayout.Y_AXIS);
+        this.spray = spray;
+        this.couleursRecentes = new LinkedList<>();
 
-		this.spray = spray;
+        geometry();
+        control();
+        appearance();
+    }
 
-		geometry();
-		control();
-		appearance();
-		}
+    /*------------------------------------------------------------------*\
+    |*							Methods Private							*|
+    \*------------------------------------------------------------------*/
 
-	/*------------------------------------------------------------------*\
-	|*							Methods Private							*|
-	\*------------------------------------------------------------------*/
+    private void geometry()
+    {
+        // ---------- Section Couleurs Prédéfinies ----------
+        JPanel panelCouleursPredefinies = new JPanel(new GridLayout(2, 5, 5, 5));
+        panelCouleursPredefinies.setOpaque(false);
 
-	private void geometry()
-		{
-		JPanel panelColors = new JPanel(new GridLayout(2, 6, 5, 5));
-		panelColors.setOpaque(false);
+        groupColor = new ButtonGroup();
 
-		ButtonGroup groupColor = new ButtonGroup();
+        for (Color color : predefinedColors)
+        {
+            JToggleButton button = createStyledColorButton(color);
+            colorButtons.put(color, button);
+            groupColor.add(button);
+            panelCouleursPredefinies.add(button);
+        }
 
-		// Create buttons for predefined colors
-		for(Color color:predefinedColors)
-			{
-			JToggleButton button = createColorButton(color);
-			colorButtons.put(color, button);
-			groupColor.add(button);
-			panelColors.add(button);
-			}
+        this.add(panelCouleursPredefinies);
 
-		// Create the custom color ("+")
-		buttonPersonnalisee = createColorButton(Color.GRAY);
-		buttonPersonnalisee.setText("+");
-		buttonPersonnalisee.setFont(new Font("Arial", Font.BOLD, 40));
-		buttonPersonnalisee.setForeground(Color.BLACK);
-		buttonPersonnalisee.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonPersonnalisee.setVerticalTextPosition(SwingConstants.CENTER);
+        // ---------- Section Bouton Personnalisé ----------
+        JPanel panelBoutonPersonnalise = new JPanel();
+        panelBoutonPersonnalise.setOpaque(false);
 
-		groupColor.add(buttonPersonnalisee);
-		panelColors.add(buttonPersonnalisee);
+        buttonPersonnalisee = createStyledColorButton(Color.LIGHT_GRAY);
+        buttonPersonnalisee.setText("+");
+        buttonPersonnalisee.setFont(new Font("Arial", Font.BOLD, 30));
+        buttonPersonnalisee.setForeground(Color.BLACK);
+        buttonPersonnalisee.setHorizontalTextPosition(SwingConstants.CENTER);
+        buttonPersonnalisee.setVerticalTextPosition(SwingConstants.CENTER);
 
-		this.add(panelColors);
-		}
+        groupColor.add(buttonPersonnalisee);
+        panelBoutonPersonnalise.add(buttonPersonnalisee);
 
-	private JToggleButton createColorButton(Color color)
-		{
-		JToggleButton button = new JToggleButton();
-		button.setBackground(color);
-		button.setPreferredSize(new Dimension(40, 40));
-		button.setMaximumSize(new Dimension(40, 40));
-		button.setMinimumSize(new Dimension(40, 40));
-		button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-		button.setFocusPainted(false);
+        this.add(panelBoutonPersonnalise);
 
-		// Ajout du "+" si c'est la couleur personnalisée
-		if (color.equals(Color.GRAY))
-			{
-			button.setText("+");
-			button.setFont(new Font("Arial", Font.BOLD, 40)); // Optionnel : grosse police pour bien voir le +
-			button.setForeground(Color.BLACK); // Couleur du texte
-			button.setHorizontalTextPosition(SwingConstants.CENTER);
-			button.setVerticalTextPosition(SwingConstants.CENTER);
-			}
+        // ---------- Section Couleurs Personnalisées Récentes ----------
+        panelCouleursRecentes = new JPanel(new GridLayout(1, 5, 5, 5));
+        panelCouleursRecentes.setOpaque(false);
+        this.add(panelCouleursRecentes);
+    }
 
-		return button;
-		}
+    private JToggleButton createStyledColorButton(Color color)
+    {
+        JToggleButton button = new JToggleButton();
+        button.setBackground(color);
+        button.setPreferredSize(new Dimension(50, 50));
+        button.setMaximumSize(new Dimension(50, 50));
+        button.setMinimumSize(new Dimension(50, 50));
+        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(true);
 
-	private void control()
-		{
-		ActionListener listener = new ActionListener()
-			{
+        return button;
+    }
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-				{
-				Color couleur = null;
+    private void control()
+    {
+        ActionListener listener = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Color couleur = null;
 
-				if (e.getSource() == buttonPersonnalisee)
-					{
-					couleur = JColorChooser.showDialog(null, "Choisissez votre couleur", Color.WHITE);
-					if (couleur != null)
-						{
-						couleurPersonnalisee = couleur;
-						buttonPersonnalisee.setBackground(couleur);
-						}
-					}
-				else
-					{
-					couleur = getSelectedColor();
-					}
+                if (e.getSource() == buttonPersonnalisee)
+                {
+                    couleur = JColorChooser.showDialog(null, "Choisissez votre couleur", Color.WHITE);
+                    if (couleur != null)
+                    {
+                        couleurPersonnalisee = couleur;
+                        buttonPersonnalisee.setBackground(couleur);
+                        ajouterCouleurRecente(couleur);
+                    }
+                }
+                else
+                {
+                    couleur = getSelectedColor();
+                }
 
-				updateDisplayColor(couleur);
-				}
-			};
+                updateDisplayColor(couleur);
+            }
+        };
 
-		// Assign listener to all buttons
-		for(JToggleButton button:colorButtons.values())
-			{
-			button.addActionListener(listener);
-			}
+        // Assign listener to all boutons prédéfinis
+        for (JToggleButton button : colorButtons.values())
+        {
+            button.addActionListener(listener);
+        }
 
-		buttonPersonnalisee.addActionListener(listener);
-		}
+        buttonPersonnalisee.addActionListener(listener);
+    }
 
-	private void appearance()
-		{
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Couleur du Spray", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+    private void ajouterCouleurRecente(Color couleur)
+    {
+        couleursRecentes.remove(couleur); // Supprime les doublons
+        couleursRecentes.add(0, couleur); // Ajoute en début de liste
 
-		// debug
-		setOpaque(true);
-		setBackground(new Color(71, 71, 71, 255));
-		}
+        if (couleursRecentes.size() > 5)
+        {
+            couleursRecentes = couleursRecentes.subList(0, 5); // Limite à 5 couleurs
+        }
 
-	/*------------------------------------------------------------------*\
-	|*							Public Method							*|
-	\*------------------------------------------------------------------*/
+        rafraichirCouleursRecentes();
+    }
 
-	public Color getSelectedColor()
-		{
-		for(Map.Entry<Color, JToggleButton> entry:colorButtons.entrySet())
-			{
-			if (entry.getValue().isSelected())
-				{ return entry.getKey(); }
-			}
+    private void rafraichirCouleursRecentes()
+    {
+        panelCouleursRecentes.removeAll();
+        ButtonGroup groupRecents = new ButtonGroup();
 
-		if (buttonPersonnalisee.isSelected() && couleurPersonnalisee != null)
-			{ return couleurPersonnalisee; }
+        for (Color couleur : couleursRecentes)
+        {
+            JToggleButton boutonRecent = createStyledColorButton(couleur);
 
-		return Color.BLACK;
-		}
+            boutonRecent.addActionListener(e -> {
+                spray.setColor(couleur);
+                System.out.println("Couleur récente sélectionnée : " + couleur);
 
-	private void updateDisplayColor(Color couleur)
-		{
-		if (couleur != null)
-			{
-			spray.setColor(couleur);
-			System.out.println("Couleur mise à jour : " + couleur);
-			}
+                // Désélectionner tous les boutons principaux
+                groupColor.clearSelection();
+            });
 
-		}
+            groupRecents.add(boutonRecent);
+            panelCouleursRecentes.add(boutonRecent);
+        }
 
-	/*------------------------------------------------------------------*\
-	|*							Attributs Private						*|
-	\*------------------------------------------------------------------*/
+        panelCouleursRecentes.revalidate();
+        panelCouleursRecentes.repaint();
+    }
 
-	// Inputs
-	private JSprayConfigurable_I spray;
+    private void updateDisplayColor(Color couleur)
+    {
+        if (couleur != null)
+        {
+            spray.setColor(couleur);
+            System.out.println("Couleur mise à jour : " + couleur);
+        }
+    }
 
-	// Tools
-	private final Color[] predefinedColors = { Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.WHITE };
+    private void appearance()
+    {
+        setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.WHITE, 2),
+                "Palette de Couleurs",
+                TitledBorder.DEFAULT_JUSTIFICATION,
+                TitledBorder.DEFAULT_POSITION,
+                new Font("Arial", Font.BOLD, 14),
+                Color.WHITE));
 
-	private final Map<Color, JToggleButton> colorButtons = new LinkedHashMap<>();
-	private JToggleButton buttonPersonnalisee;
-	private Color couleurPersonnalisee;
-	}
+        setOpaque(true);
+        setBackground(new Color(71, 71, 71, 255));
+    }
+
+    /*------------------------------------------------------------------*\
+    |*							Public Method							*|
+    \*------------------------------------------------------------------*/
+
+    public Color getSelectedColor()
+    {
+        for (Map.Entry<Color, JToggleButton> entry : colorButtons.entrySet())
+        {
+            if (entry.getValue().isSelected())
+            {
+                return entry.getKey();
+            }
+        }
+
+        if (buttonPersonnalisee.isSelected() && couleurPersonnalisee != null)
+        {
+            return couleurPersonnalisee;
+        }
+
+        return Color.BLACK;
+    }
+
+    /*------------------------------------------------------------------*\
+    |*							Attributs Private						*|
+    \*------------------------------------------------------------------*/
+
+    // Inputs
+    private JSprayConfigurable_I spray;
+
+    // Tools
+    private final Color[] predefinedColors = { Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.WHITE };
+    private final Map<Color, JToggleButton> colorButtons = new LinkedHashMap<>();
+    private ButtonGroup groupColor;
+
+    private JToggleButton buttonPersonnalisee;
+    private Color couleurPersonnalisee;
+
+    private List<Color> couleursRecentes;
+    private JPanel panelCouleursRecentes;
+}
