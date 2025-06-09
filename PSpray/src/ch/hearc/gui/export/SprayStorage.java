@@ -126,6 +126,7 @@ public class SprayStorage
 	public static List<Sprayage> importFromCsv(String fileName) throws IOException
 		{
 		List<Sprayage> sprays = new ArrayList<>();
+		int defaultTaille = 5; // fixed size for gouttelettes without taille
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName)))
 			{
@@ -133,15 +134,26 @@ public class SprayStorage
 			while((line = reader.readLine()) != null)
 				{
 				String[] parts = line.split(";");
-				if (parts.length != 4)
+				if (parts.length != 3 && parts.length != 4)
 					{
 					continue;
 					}
 
 				int x = Integer.parseInt(parts[0].trim());
 				int y = Integer.parseInt(parts[1].trim());
-				int taille = Integer.parseInt(parts[2].trim());
-				Color color = parseColor(parts[3].trim());
+				Color color;
+				int taille;
+
+				if (parts.length == 3)
+					{
+					taille = defaultTaille;
+					color = parseColor(parts[2].trim());
+					}
+				else // parts.length == 4
+					{
+					taille = Integer.parseInt(parts[2].trim());
+					color = parseColor(parts[3].trim());
+					}
 
 				List<Point> points = new ArrayList<>();
 				points.add(new Point(x, y));
@@ -175,6 +187,11 @@ public class SprayStorage
 		File outputFile = new File(fileName);
 		ImageIO.write(image, "png", outputFile);
 		}
+	//
+	//	private void copyToClipboard(List<Sprays> sprays)
+	//	{
+	//
+	//	}
 
 	// Color name → String
 	private static String getColorName(Color color)
