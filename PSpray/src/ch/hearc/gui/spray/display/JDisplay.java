@@ -71,6 +71,26 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			{
 			dComposition.draw(g2d, currentDimension, currentDimension);
 			}
+
+		// Dessiner la prévisualisation
+		if (mouseX >= 0 && mouseY >= 0)
+			{
+			g2d.setColor(new Color(currentColor.getRed(), currentColor.getGreen(), currentColor.getBlue(), 128)); // semi-transparence
+			int size = (modeGomme == ModeGomme.GOMMECERCLE || modeGomme == ModeGomme.NUMERIQUE) ? rayonGomme : currentDimension * 2;
+
+			switch(currentShape)
+				{
+				case CERCLE:
+					g2d.drawOval(mouseX - size / 2, mouseY - size / 2, size, size);
+					break;
+				case CARRE:
+					g2d.drawRect(mouseX - size / 2, mouseY - size / 2, size, size);
+					break;
+				default:
+					g2d.drawOval(mouseX - size / 2, mouseY - size / 2, size, size);
+					break;
+				}
+			}
 		}
 
 	/*------------------------------------------------------------------*\
@@ -89,6 +109,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			@Override
 			public void mousePressed(MouseEvent e)
 				{
+				isDrawing = true; // → On commence à dessiner
 				currentStroke = new ArrayList<>();
 				addSprayAtAsync(e.getX(), e.getY(), false);
 
@@ -100,16 +121,24 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 					{
 					addSprayAtAsync(e.getX(), e.getY(), false);
 					}
-
 				}
 
 			@Override
 			public void mouseReleased(MouseEvent e)
 				{
+				isDrawing = false; // → On arrête de dessiner
 				if (undoRedo != null && currentStroke != null)
 					{
 					undoRedo.addActions(currentStroke);
 					}
+				}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+				{
+				mouseX = -1;
+				mouseY = -1;
+				repaint();
 				}
 			});
 
@@ -119,9 +148,21 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			@Override
 			public void mouseDragged(MouseEvent e)
 				{
+				mouseX = e.getX(); // → On continue de suivre la souris pendant le dessin
+				mouseY = e.getY();
 				addSprayAtAsync(e.getX(), e.getY(), false);
+				repaint();
+				}
+
+			@Override
+			public void mouseMoved(MouseEvent e)
+				{
+				mouseX = e.getX();
+				mouseY = e.getY();
+				repaint();
 				}
 			});
+
 		}
 
 	private void appearance()
@@ -489,5 +530,9 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	private int rayonGomme;
 	private int ligneEpaisseur;
 	private LigneClickManager ligneClickManager;
+
+	private int mouseX = -1;
+	private int mouseY = -1;
+	private boolean isDrawing = false;
 
 	}
