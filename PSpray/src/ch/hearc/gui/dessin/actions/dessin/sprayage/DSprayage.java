@@ -46,7 +46,6 @@ public class DSprayage extends Geste implements Dessin_I
 		Sprayage spray = SprayGenerator.generate(x, y, color, nbGouttes, taille, shape, dimension);
 		calque.addSpray(spray);
 		addSpray(spray); // ajout au geste
-		System.out.println("Application d'un sprayage.");
 
 		if (strokeList != null)
 			{
