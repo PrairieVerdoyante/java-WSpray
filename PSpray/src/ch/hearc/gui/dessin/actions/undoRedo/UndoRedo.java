@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
+import ch.hearc.gui.spray.display.JDisplay;
 
 public class UndoRedo
 	{
@@ -15,12 +16,17 @@ public class UndoRedo
 	|*							Constructor								*|
 	\*------------------------------------------------------------------*/
 
-	public UndoRedo(DCalque calque)
+	public UndoRedo(DCalque calque, JDisplay jDisplay)
 		{
 		this.calque = calque;
+		this.jDisplay = jDisplay;
 		this.undoStack = new Stack<>();
 		this.redoStack = new Stack<>();
 		}
+
+	/*------------------------------------------------------------------*\
+	|*							Methods public							*|
+	\*------------------------------------------------------------------*/
 
 	/*------------------------------------------------------------------*\
 	|*							Methods public							*|
@@ -42,6 +48,12 @@ public class UndoRedo
 				geste.undo(calque);
 				}
 			redoStack.push(actions);
+
+			// Mise à jour du buffer et repaint après undo
+			if (jDisplay != null)
+				{
+				jDisplay.refreshDisplay();
+				}
 			}
 		}
 
@@ -55,6 +67,12 @@ public class UndoRedo
 				geste.redo(calque);
 				}
 			undoStack.push(actions);
+
+			// Mise à jour du buffer et repaint après redo
+			if (jDisplay != null)
+				{
+				jDisplay.refreshDisplay();
+				}
 			}
 		}
 
@@ -64,4 +82,5 @@ public class UndoRedo
 	private Stack<List<Geste>> undoStack;
 	private Stack<List<Geste>> redoStack;
 	private DCalque calque;
+	private JDisplay jDisplay;
 	}
