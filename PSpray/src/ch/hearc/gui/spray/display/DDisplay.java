@@ -6,7 +6,7 @@ import java.util.List;
 
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
+import ch.hearc.gui.dessin.actions.undoRedo.UndoRedo;
 import ch.hearc.gui.dessin.composition.DComposition;
 import ch.hearc.gui.utils.SprayShape;
 

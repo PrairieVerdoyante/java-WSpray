@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.UndoRedo;
+package ch.hearc.gui.dessin.actions.undoRedo;
 
 import java.awt.Point;
 import java.util.List;

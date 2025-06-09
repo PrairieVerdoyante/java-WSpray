@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.dessin;
+package ch.hearc.gui.dessin.actions.dessin.gommage;
 
 import java.awt.Color;
 import java.util.List;

@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.dessin;
+package ch.hearc.gui.dessin.actions.dessin.gommage;
 
 import java.util.List;
 
@@ -74,4 +74,5 @@ public class DGommageCercle extends DGommage implements Dessin_I
 	\*------------------------------------------------------------------*/
 	private int rayon;
 	private DGommageNumerique gommeNumerique;
+
 	}

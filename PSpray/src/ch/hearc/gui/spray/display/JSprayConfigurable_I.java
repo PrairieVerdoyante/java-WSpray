@@ -7,9 +7,9 @@ import java.util.List;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
-import ch.hearc.gui.dessin.actions.dessin.Geste;
 import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
+import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
+import ch.hearc.gui.dessin.actions.undoRedo.UndoRedo;
 import ch.hearc.gui.utils.SprayShape;
 
 public interface JSprayConfigurable_I
@@ -39,6 +39,10 @@ public interface JSprayConfigurable_I
 
 	public List<DCalque> getSelectedCalques();
 
+	public DCalque getCurrentCalque();
+
+	public void setCurrentCalque(DCalque currentCalque);
+
 	public void reset();
 
 	public void setJCalques(JCalques jCalques);
@@ -56,5 +60,17 @@ public interface JSprayConfigurable_I
 	public void setModeGomme(ModeGomme mode);
 
 	public void setGommeRayon(int rayon);
+
+	public void setLigneEpaisseur(int epaisseur);
+
+	public int getCurrentNbGouttes();
+
+	public int getCurrentTaille();
+
+	public int getCurrentDimension();
+
+	public SprayShape getCurrentShape();
+
+	public int getLigneEpaisseur();
 
 	}

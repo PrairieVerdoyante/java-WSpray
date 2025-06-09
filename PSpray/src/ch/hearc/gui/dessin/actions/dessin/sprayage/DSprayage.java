@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.dessin;
+package ch.hearc.gui.dessin.actions.dessin.sprayage;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,6 +9,7 @@ import ch.hearc.c_gui.z_tools.Dessin_I;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.SprayGenerator;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
+import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
 import ch.hearc.gui.utils.SprayShape;
 
 public class DSprayage extends Geste implements Dessin_I
@@ -30,7 +31,6 @@ public class DSprayage extends Geste implements Dessin_I
 	/*------------------------------------------------------------------*\
 	|*							Methods public							*|
 	\*------------------------------------------------------------------*/
-
 
 	@Override
 	public void draw(Graphics2D g2d, int arg1, int arg2)
@@ -56,9 +56,9 @@ public class DSprayage extends Geste implements Dessin_I
 
 	@Override
 	public Color getColor()
-	{
-	return this.color;
-	}
+		{
+		return this.color;
+		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|

@@ -1,12 +1,12 @@
 
-package ch.hearc.gui.dessin.actions.UndoRedo;
+package ch.hearc.gui.dessin.actions.undoRedo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 import ch.hearc.gui.calques.DCalque;
-import ch.hearc.gui.dessin.actions.dessin.Geste;
+import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
 
 public class UndoRedo
 	{

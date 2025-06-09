@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.hearc.gui.dessin.actions.dessin.Geste;
+import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
 import ch.hearc.gui.dessin.points.PointXY;
 import ch.hearc.gui.spray.display.JDisplay;
 

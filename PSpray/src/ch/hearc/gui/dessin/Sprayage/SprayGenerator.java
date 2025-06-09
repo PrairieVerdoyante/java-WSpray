@@ -61,6 +61,34 @@ public class SprayGenerator
 		return new Sprayage(center, points, color, 2 * rayon);
 		}
 
+	public static Sprayage generateLine(int x1, int y1, int x2, int y2, int epaisseur)
+		{
+		List<Point> points = new ArrayList<>();
+
+		double dx = x2 - x1;
+		double dy = y2 - y1;
+		double distance = Math.hypot(dx, dy);
+
+		int numPoints = (int)(distance); // one point per pixel, change for density
+		if (numPoints == 0)
+			{
+				numPoints = 1;
+				}
+
+		for(int i = 0; i <= numPoints; i++)
+			{
+			double t = i / (double)numPoints;
+			int x = (int)Math.round(x1 + t * dx);
+			int y = (int)Math.round(y1 + t * dy);
+
+			points.add(new Point(x, y));
+			}
+
+		PointXY origin = new PointXY(x1, y1); // could use center instead
+		Color color = Color.WHITE; // or pass it as a parameter
+		return new Sprayage(origin, points, color, x2-x1);
+		}
+
 	/*------------------------------*\
 	|*				Get				*|
 	\*------------------------------*/

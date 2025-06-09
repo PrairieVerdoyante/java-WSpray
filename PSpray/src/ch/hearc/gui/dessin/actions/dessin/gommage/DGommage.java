@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.dessin;
+package ch.hearc.gui.dessin.actions.dessin.gommage;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,6 +9,7 @@ import ch.hearc.c_gui.z_tools.Dessin_I;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.SprayGenerator;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
+import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
 import ch.hearc.gui.utils.SprayShape;
 
 public class DGommage extends Geste implements Dessin_I

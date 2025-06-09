@@ -15,13 +15,15 @@ import javax.swing.JPanel;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.calques.JCalques;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.UndoRedo.UndoRedo;
-import ch.hearc.gui.dessin.actions.dessin.DGommageCercle;
-import ch.hearc.gui.dessin.actions.dessin.DGommageNumerique;
-import ch.hearc.gui.dessin.actions.dessin.DGommageSprayage;
-import ch.hearc.gui.dessin.actions.dessin.DSprayage;
-import ch.hearc.gui.dessin.actions.dessin.Geste;
 import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
+import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
+import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageCercle;
+import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageLigne;
+import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageNumerique;
+import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageSprayage;
+import ch.hearc.gui.dessin.actions.dessin.sprayage.DSprayage;
+import ch.hearc.gui.dessin.actions.lineClickManager.LigneClickManager;
+import ch.hearc.gui.dessin.actions.undoRedo.UndoRedo;
 import ch.hearc.gui.dessin.composition.DComposition;
 import ch.hearc.gui.utils.SprayShape;
 
@@ -91,6 +93,15 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				currentStroke = new ArrayList<>();
 				addSprayAtAsync(e.getX(), e.getY(), false);
 
+				if (modeGomme == ModeGomme.GOMMELIGNE)
+					{
+					ligneClickManager.handleClick(e.getX(), e.getY());
+					}
+				else
+					{
+					addSprayAtAsync(e.getX(), e.getY(), false);
+					}
+
 				}
 
 			@Override
@@ -133,6 +144,11 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				gommeCercle.apply(x, y, currentCalque, null);
 				currentStroke.add(gommeCercle);
 				break;
+			case GOMMELIGNE:
+				DGommageLigne gommeLigne = new DGommageLigne(currentTaille, currentNbGouttes, currentDimension, currentShape, ligneEpaisseur);
+				//gommeLigne.apply(x1, y1, x2, y2, calque, strokeList);
+				//currentStroke.add(gommeLigne);
+				break;
 			case NUMERIQUE:
 				DGommageNumerique gommeNum = new DGommageNumerique(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
 				gommeNum.apply(x, y, currentCalque, null);
@@ -154,33 +170,40 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	\*------------------------------------------------------------------*/
 
 	@Override
-	public void setColor(Color color)
+	public void reset()
 		{
-		this.currentColor = color;
-		}
+		this.currentColor = Color.BLACK;
+		this.currentNbGouttes = 70;
+		this.currentDimension = 10;
+		this.currentShape = SprayShape.CERCLE;
+		this.currentTaille = 10;
 
-	@Override
-	public void setNbGouttes(int nbGouttes)
-		{
-		this.currentNbGouttes = nbGouttes;
-		}
+		this.calques = new ArrayList<>();
+		this.dComposition = new DComposition(this);
+		this.dComposition.setCalques(this.calques);
 
-	@Override
-	public void setDimension(int dimension)
-		{
-		this.currentDimension = dimension;
-		}
+		// gomme
+		this.modeGomme = ModeGomme.NONE; // spray par defaut
+		this.rayonGomme = this.currentDimension;
+		this.ligneClickManager = new LigneClickManager(this);
 
-	@Override
-	public void setTaille(int taille)
-		{
-		this.currentTaille = taille;
-		}
+		addCalque("Calque 1");
 
-	@Override
-	public void setForme(SprayShape shape)
-		{
-		this.currentShape = shape;
+		if (!this.calques.isEmpty())
+			{
+			this.currentCalque = this.calques.get(this.calques.size() - 1);
+			}
+		else
+			{
+			this.currentCalque = null;
+			}
+
+		if (jCalques != null)
+			{
+			jCalques.resetCalques();
+			}
+
+		repaint();
 		}
 
 	@Override
@@ -214,6 +237,40 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			}
 		}
 
+	/*----------------------------------*\
+	|*				Get/set				*|
+	\*----------------------------------*/
+
+	@Override
+	public void setColor(Color color)
+		{
+		this.currentColor = color;
+		}
+
+	@Override
+	public void setNbGouttes(int nbGouttes)
+		{
+		this.currentNbGouttes = nbGouttes;
+		}
+
+	@Override
+	public void setDimension(int dimension)
+		{
+		this.currentDimension = dimension;
+		}
+
+	@Override
+	public void setTaille(int taille)
+		{
+		this.currentTaille = taille;
+		}
+
+	@Override
+	public void setForme(SprayShape shape)
+		{
+		this.currentShape = shape;
+		}
+
 	@Override
 	public void setCalqueVisible(String name, boolean visible)
 		{
@@ -226,41 +283,6 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				break;
 				}
 			}
-		}
-
-	@Override
-	public void reset()
-		{
-		this.currentColor = Color.BLACK;
-		this.currentNbGouttes = 70;
-		this.currentDimension = 10;
-		this.currentShape = SprayShape.CERCLE;
-		this.currentTaille = 10;
-
-		this.calques = new ArrayList<>();
-		this.dComposition = new DComposition(this);
-		this.dComposition.setCalques(this.calques);
-
-		this.modeGomme = ModeGomme.NONE; // spray par defaut
-		this.rayonGomme = this.currentDimension;
-
-		addCalque("Calque 1");
-
-		if (!this.calques.isEmpty())
-			{
-			this.currentCalque = this.calques.get(this.calques.size() - 1);
-			}
-		else
-			{
-			this.currentCalque = null;
-			}
-
-		if (jCalques != null)
-			{
-			jCalques.resetCalques();
-			}
-
-		repaint();
 		}
 
 	@Override
@@ -294,6 +316,18 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	public JCalques getJCalques()
 		{
 		return this.jCalques;
+		}
+
+	@Override
+	public DCalque getCurrentCalque()
+		{
+		return this.currentCalque;
+		}
+
+	@Override
+	public void setCurrentCalque(DCalque currentCalque)
+		{
+		this.currentCalque = currentCalque;
 		}
 
 	@Override
@@ -332,6 +366,42 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		this.rayonGomme = rayon;
 		}
 
+	@Override
+	public void setLigneEpaisseur(int epaisseur)
+		{
+		this.ligneEpaisseur = epaisseur;
+		}
+
+	@Override
+	public int getCurrentNbGouttes()
+		{
+		return this.currentNbGouttes;
+		}
+
+	@Override
+	public int getCurrentTaille()
+		{
+		return this.currentTaille;
+		}
+
+	@Override
+	public int getCurrentDimension()
+		{
+		return this.currentDimension;
+		}
+
+	@Override
+	public SprayShape getCurrentShape()
+		{
+		return this.currentShape;
+		}
+
+	@Override
+	public int getLigneEpaisseur()
+		{
+		return this.ligneEpaisseur;
+		}
+
 	/*------------------------------------------------------------------*\
 	|*							Attributes								*|
 	\*------------------------------------------------------------------*/
@@ -354,5 +424,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 
 	private ModeGomme modeGomme;
 	private int rayonGomme;
+	private int ligneEpaisseur;
+	private LigneClickManager ligneClickManager;
 
 	}

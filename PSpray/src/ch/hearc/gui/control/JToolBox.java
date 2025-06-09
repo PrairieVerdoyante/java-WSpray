@@ -235,6 +235,24 @@ public class JToolBox extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
+				String inputNum = JOptionPane.showInputDialog(null, "Epaisseur de la ligne :", "Entrée", JOptionPane.QUESTION_MESSAGE);
+				int epaisseur;
+
+				try
+					{
+					if (inputNum == null || inputNum.trim().isEmpty())
+						{
+						throw new NumberFormatException(); // on force une exception pour tomber dans le catch
+						}
+					epaisseur = Integer.parseInt(inputNum.trim());
+					}
+				catch (NumberFormatException e2)
+					{
+					epaisseur = 10; // valeur par défaut
+					}
+
+
+				JDisplay.getInstance().setLigneEpaisseur(epaisseur);
 				JDisplay.getInstance().setModeGomme(ModeGomme.GOMMELIGNE);
 				}
 			});

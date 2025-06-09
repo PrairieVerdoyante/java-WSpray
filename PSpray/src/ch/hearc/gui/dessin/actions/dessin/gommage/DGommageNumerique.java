@@ -1,5 +1,5 @@
 
-package ch.hearc.gui.dessin.actions.dessin;
+package ch.hearc.gui.dessin.actions.dessin.gommage;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -10,7 +10,7 @@ import java.util.ListIterator;
 import ch.hearc.c_gui.z_tools.Dessin_I;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.dessin.actions.UndoRedo.ErasedPointsRecord;
+import ch.hearc.gui.dessin.actions.undoRedo.ErasedPointsRecord;
 import ch.hearc.gui.utils.SprayShape;
 
 public class DGommageNumerique extends DGommage implements Dessin_I
