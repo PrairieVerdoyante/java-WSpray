@@ -18,7 +18,6 @@ import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
 import ch.hearc.gui.dessin.actions.dessin.geste.Geste;
 import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageCercle;
-import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageLigne;
 import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageNumerique;
 import ch.hearc.gui.dessin.actions.dessin.gommage.DGommageSprayage;
 import ch.hearc.gui.dessin.actions.dessin.sprayage.DSprayage;
@@ -145,9 +144,6 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				currentStroke.add(gommeCercle);
 				break;
 			case GOMMELIGNE:
-				DGommageLigne gommeLigne = new DGommageLigne(currentTaille, currentNbGouttes, currentDimension, currentShape, ligneEpaisseur);
-				//gommeLigne.apply(x1, y1, x2, y2, calque, strokeList);
-				//currentStroke.add(gommeLigne);
 				break;
 			case NUMERIQUE:
 				DGommageNumerique gommeNum = new DGommageNumerique(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
