@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import ch.hearc.gui.spray.display.JSprayConfigurable_I;
@@ -112,18 +115,71 @@ public class JCalques extends Box
 		JCheckBox cb = new JCheckBox(name);
 		cb.setOpaque(false);
 		cb.setForeground(Color.WHITE);
+		cb.setSelected(true);
+
 		this.calqueCheckBoxes.add(cb);
+		this.panelCheckBoxes.add(cb);
 
 		spray.addCalque(name);
 
-		cb.addActionListener(new ActionListener()
+		cb.addMouseListener(new MouseListener()
 			{
 
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void mousePressed(MouseEvent e)
 				{
 				spray.setCalqueVisible(name, cb.isSelected());
 				}
+
+			@Override
+			public void mouseClicked(MouseEvent e)
+				{
+				if (SwingUtilities.isRightMouseButton(e)) // clic droit
+					{
+					System.out.println("Clic droit sur " + name);
+
+					// Exemple : un menu contextuel avec "Renommer" ou "Supprimer"
+					javax.swing.JPopupMenu menu = new javax.swing.JPopupMenu();
+					javax.swing.JMenuItem itemSupprimer = new javax.swing.JMenuItem("Supprimer");
+					itemSupprimer.addActionListener(ev -> {
+					// Action personnalisée
+					System.out.println("Supprimer " + name);
+
+					for(DCalque calque:new ArrayList<>(spray.getCalques()))
+						{
+						if (calque.getName() == name)
+							{
+							spray.removeCalque(calque);
+							}
+						}
+					});
+					menu.add(itemSupprimer);
+					menu.show(cb, e.getX(), e.getY());
+					}
+
+				}
+
+			@Override
+			public void mouseReleased(MouseEvent e)
+				{
+				// TODO Auto-generated method stub
+
+				}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+				{
+				// TODO Auto-generated method stub
+
+				}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+				{
+				// TODO Auto-generated method stub
+
+				}
+
 			});
 
 		cb.setSelected(true);

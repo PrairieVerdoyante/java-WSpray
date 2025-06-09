@@ -1,8 +1,6 @@
 
 package ch.hearc.gui.dessin.image;
 
-package ch.hearc.c_gui.c_dessin.c_image.b_file;
-
 import javax.swing.ImageIcon;
 
 import ch.hearc.c_gui.z_tools.image.io.ImageLoader;

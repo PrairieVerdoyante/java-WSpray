@@ -170,6 +170,15 @@ public class JOptionsMenu extends Box
 				}
 			});
 
+		this.calqueDelete.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().removeCurrentCalque();
+				}
+			});
 		}
 
 	private void appearance()
@@ -237,7 +246,7 @@ public class JOptionsMenu extends Box
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setDialogTitle("Importer un fichier CSV");
 
-				// ✅ Only allow .csv files
+				// Only allow .csv files
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Fichiers CSV (*.csv)", "csv");
 				fileChooser.setFileFilter(filter);
 

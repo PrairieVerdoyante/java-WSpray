@@ -45,7 +45,8 @@ public class DGommageLigne extends DGommage implements Dessin_I
 			}
 
 		// Numerical erasure along the line
-		applyNumericalGomme(x1, y1, x2, y2, calque, strokeList);
+		// applyNumericalGomme(x1, y1, x2, y2, calque, strokeList);
+		gommeNumerique.apply(x2, y2, calque, strokeList);
 		}
 
 	@Override

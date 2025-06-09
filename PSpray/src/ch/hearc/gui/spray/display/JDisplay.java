@@ -144,6 +144,9 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				currentStroke.add(gommeCercle);
 				break;
 			case GOMMELIGNE:
+				//DGommageLigne gommeLigne = new DGommageLigne(currentTaille, currentNbGouttes, 0,0, currentDimension, currentShape, ligneEpaisseur);
+				//gommeLigne.apply(x, y, currentCalque, null);
+				//currentStroke.add(gommeLigne);
 				break;
 			case NUMERIQUE:
 				DGommageNumerique gommeNum = new DGommageNumerique(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
@@ -232,6 +235,70 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			repaint();
 			}
 		}
+
+	@Override
+	public void removeCurrentCalque()
+		{
+		if (currentCalque != null && calques.size() > 1)
+			{
+			calques.remove(currentCalque);
+
+			// Sélectionner un autre calque (le précédent par exemple)
+			currentCalque = calques.get(calques.size() - 1);
+
+			if (jCalques != null)
+				{
+				jCalques.resetCalques();
+				}
+
+			repaint();
+			}
+		}
+
+	@Override
+
+	public void removeCalque(DCalque calque)
+		{
+		if (calque != null && calques.size() > 1 && calques.contains(calque))
+			{
+			boolean wasCurrent = (currentCalque == calque);
+
+			calques.remove(calque);
+
+			// Réassigner currentCalque uniquement si le calque supprimé était celui en cours
+			if (wasCurrent)
+				{
+				if (!calques.isEmpty())
+					{
+					// Prendre soit le précédent si possible, soit le dernier
+					int index = Math.min(calques.size() - 1, Math.max(0, calques.size() - 1));
+					currentCalque = calques.get(index);
+					}
+				else
+					{
+					currentCalque = null;
+					}
+				}
+
+			// Met à jour undoRedo uniquement si on a un calque courant valide
+			if (currentCalque != null)
+				{
+				this.undoRedo = new UndoRedo(currentCalque);
+				}
+			else
+				{
+				this.undoRedo = null;
+				}
+
+			if (jCalques != null)
+				{
+				jCalques.resetCalques();
+				}
+
+			repaint();
+			}
+		}
+
 
 	/*----------------------------------*\
 	|*				Get/set				*|
