@@ -333,7 +333,6 @@ public class JOptionsMenu extends Box
 	// Inputs
 
 	// Tools
-	// TODO: ajouter autres options
 	private JMenuBar menuBar;
 	private JMenu tools;
 	private JMenu file;
