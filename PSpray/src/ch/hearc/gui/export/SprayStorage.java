@@ -92,7 +92,7 @@ public class SprayStorage
 			}
 		}
 
-	public static void exportToCsv(List<Sprayage> sprays, String fileName, boolean data) throws IOException
+	public static void exportToCsv(List<Sprayage> sprays, String fileName, boolean data, boolean labelized) throws IOException
 		{
 		FileWriter fw = new FileWriter(fileName);
 		BufferedWriter writer = new BufferedWriter(fw);
@@ -104,18 +104,24 @@ public class SprayStorage
 
 			for(Point p:spray.getPoints())
 				{
-				if (data) // sans taille (pour ID)
+				if (labelized)
 					{
+					// On n'écrit que les coordonnées (labelized = true)
+					writer.write(p.x + ";" + p.y);
+					}
+				else if (data)
+					{
+					// Sans taille, avec couleur
 					writer.write(p.x + ";" + p.y + ";" + colorName);
 					}
-				else // avec taille (pour IL)
+				else
 					{
+					// Avec taille et couleur
 					writer.write(p.x + ";" + p.y + ";" + taille + ";" + colorName);
-
 					}
+
 				writer.newLine();
 				}
-
 			}
 
 		writer.close();
@@ -126,43 +132,58 @@ public class SprayStorage
 	public static List<Sprayage> importFromCsv(String fileName) throws IOException
 		{
 		List<Sprayage> sprays = new ArrayList<>();
-		int defaultTaille = 5; // fixed size for gouttelettes without taille
+		int defaultTaille = 5;
+		Color defaultColor = Color.BLACK;
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(fileName)))
+		FileReader fr = new FileReader(fileName);
+		BufferedReader reader = new BufferedReader(fr);
+
+		String line;
+		while((line = reader.readLine()) != null)
 			{
-			String line;
-			while((line = reader.readLine()) != null)
+			String[] parts = line.split(";");
+
+			if (parts.length < 2 || parts.length > 4)
 				{
-				String[] parts = line.split(";");
-				if (parts.length != 3 && parts.length != 4)
-					{
-					continue;
-					}
-
-				int x = Integer.parseInt(parts[0].trim());
-				int y = Integer.parseInt(parts[1].trim());
-				Color color;
-				int taille;
-
-				if (parts.length == 3)
-					{
-					taille = defaultTaille;
-					color = parseColor(parts[2].trim());
-					}
-				else // parts.length == 4
-					{
-					taille = Integer.parseInt(parts[2].trim());
-					color = parseColor(parts[3].trim());
-					}
-
-				List<Point> points = new ArrayList<>();
-				points.add(new Point(x, y));
-
-				sprays.add(new Sprayage(new PointXY(x, y), points, color, taille));
+				continue;
 				}
+
+			int x = Integer.parseInt(parts[0].trim());
+			int y = Integer.parseInt(parts[1].trim());
+
+			int taille;
+			Color color;
+
+			if (parts.length == 2)
+				{
+				// Labelized : seulement x ; y
+				taille = defaultTaille;
+				color = defaultColor;
+				}
+			else if (parts.length == 3)
+				{
+				// Data : x ; y ; color
+				taille = defaultTaille;
+				color = parseColor(parts[2].trim());
+				}
+			else // parts.length == 4
+				{
+				// Complet : x ; y ; taille ; color
+				taille = Integer.parseInt(parts[2].trim());
+				color = parseColor(parts[3].trim());
+				}
+
+			List<Point> points = new ArrayList<>();
+			points.add(new Point(x, y));
+
+			sprays.add(new Sprayage(new PointXY(x, y), points, color, taille));
 			}
 
+		reader.close();
+		fr.close();
+
 		return sprays;
+
 		}
 
 	public static void exportToPng(List<Sprayage> sprays, String fileName) throws IOException

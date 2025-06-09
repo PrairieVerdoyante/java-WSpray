@@ -15,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
@@ -203,15 +204,18 @@ public class JOptionsMenu extends Box
 					try
 						{
 						int result = JOptionPane.showConfirmDialog(null, "Voulez-vous le rayon ?", "Confirmation", JOptionPane.YES_NO_OPTION);
-
 						boolean data = !(result == JOptionPane.YES_OPTION);
+
+						int labelized = JOptionPane.showConfirmDialog(null, "Souhaitez-vous un dataset labelisé? (retourne un dataset sans la couleur)");
+						boolean isLabelized = (labelized == JOptionPane.YES_OPTION);
 
 						String filePath = fileToSave.getAbsolutePath();
 						if (!filePath.toLowerCase().endsWith(".csv"))
 							{
 							filePath += ".csv";
 							}
-						SprayStorage.exportToCsv(allSprays, filePath, data);
+
+						SprayStorage.exportToCsv(allSprays, filePath, data, isLabelized);
 						}
 					catch (IOException e1)
 						{
@@ -228,16 +232,27 @@ public class JOptionsMenu extends Box
 		return new ActionListener()
 			{
 
-			@Override
 			public void actionPerformed(ActionEvent e)
 				{
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setDialogTitle("Importer un fichier CSV");
+
+				// ✅ Only allow .csv files
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Fichiers CSV (*.csv)", "csv");
+				fileChooser.setFileFilter(filter);
+
 				int userSelection = fileChooser.showOpenDialog(null);
 
 				if (userSelection == JFileChooser.APPROVE_OPTION)
 					{
 					File selectedFile = fileChooser.getSelectedFile();
+
+					if (!selectedFile.getName().toLowerCase().endsWith(".csv"))
+						{
+						JOptionPane.showMessageDialog(null, "Veuillez sélectionner un fichier CSV valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
+						return;
+						}
+
 					try
 						{
 						List<Sprayage> importedSprays = SprayStorage.importFromCsv(selectedFile.getAbsolutePath());
@@ -247,12 +262,12 @@ public class JOptionsMenu extends Box
 
 						String name = "Import CSV - " + (JDisplay.getInstance().getCalques().size() + 1);
 						JDisplay.getInstance().addCalque(name, importedSprays);
-						JDisplay.getInstance().getJCalques().resetCalques(); // to update the checkboxes in JCalques
-
+						JDisplay.getInstance().getJCalques().resetCalques(); // update checkboxes
 						}
 					catch (IOException ex)
 						{
 						ex.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Erreur lors de l'importation du fichier.", "Erreur", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				}
