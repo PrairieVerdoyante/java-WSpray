@@ -85,4 +85,6 @@ public interface JSprayConfigurable_I
 
 	public int getLigneEpaisseur();
 
+	public void refreshDisplay();
+
 	}

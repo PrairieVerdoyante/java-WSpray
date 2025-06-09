@@ -262,6 +262,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		initBuffer();
 		}
 
+	@Override
 	public void refreshDisplay()
 		{
 		updateBuffer();
@@ -364,49 +365,51 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		}
 
 	@Override
-
 	public void removeCalque(DCalque calque)
 		{
-		if (calque != null && calques.size() > 1 && calques.contains(calque))
+		if (calque == null || calques.size() <= 1 || !calques.contains(calque))
+			{ return; }
+
+		boolean wasCurrent = (currentCalque == calque);
+
+		// Trouver l'index du calque à supprimer
+		int removedIndex = calques.indexOf(calque);
+
+		// Supprimer le calque
+		calques.remove(calque);
+
+		if (wasCurrent)
 			{
-			boolean wasCurrent = (currentCalque == calque);
-
-			calques.remove(calque);
-
-			// Réassigner currentCalque uniquement si le calque supprimé était celui en cours
-			if (wasCurrent)
+			if (!calques.isEmpty())
 				{
-				if (!calques.isEmpty())
-					{
-					// Prendre soit le précédent si possible, soit le dernier
-					int index = Math.min(calques.size() - 1, Math.max(0, calques.size() - 1));
-					currentCalque = calques.get(index);
-					}
-				else
-					{
-					currentCalque = null;
-					}
-				}
-
-			// Met à jour undoRedo uniquement si on a un calque courant valide
-			if (currentCalque != null)
-				{
-				this.undoRedo = new UndoRedo(currentCalque);
+				// Choisir calque précédent si possible, sinon le premier calque
+				int newIndex = Math.max(removedIndex - 1, 0);
+				currentCalque = calques.get(newIndex);
 				}
 			else
 				{
-				this.undoRedo = null;
+				currentCalque = null;
 				}
-
-			if (jCalques != null)
-				{
-				jCalques.resetCalques();
-				}
-
-			repaint();
 			}
-		}
 
+		// Mettre à jour undoRedo
+		if (currentCalque != null)
+			{
+			undoRedo = new UndoRedo(currentCalque, this);
+			}
+		else
+			{
+			undoRedo = null;
+			}
+
+		if (jCalques != null)
+			{
+			jCalques.resetCalques();
+			}
+
+		initBuffer();
+		repaint();
+		}
 
 	/*----------------------------------*\
 	|*				Get/set				*|
