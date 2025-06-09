@@ -262,6 +262,12 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		initBuffer();
 		}
 
+	public void refreshDisplay()
+		{
+		updateBuffer();
+		repaint();
+		}
+
 	/*------------------------------------------------------------------*\
 	|*						JSprayConfigurable_I Impl					*|
 	\*------------------------------------------------------------------*/
@@ -310,7 +316,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		DCalque calque = new DCalque(name);
 		this.calques.add(calque);
 		this.currentCalque = calque;
-		this.undoRedo = new UndoRedo(currentCalque);
+		this.undoRedo = new UndoRedo(currentCalque, this);
 		initBuffer();
 		repaint();
 		}
