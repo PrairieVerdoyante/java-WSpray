@@ -2,13 +2,16 @@
 package ch.hearc.gui.export;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -17,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.dessin.points.PointXY;
@@ -87,7 +92,6 @@ public class SprayStorage
 			}
 		}
 
-	// Export to CSV
 	public static void exportToCsv(List<Sprayage> sprays, String fileName, boolean data) throws IOException
 		{
 		FileWriter fw = new FileWriter(fileName);
@@ -147,6 +151,29 @@ public class SprayStorage
 			}
 
 		return sprays;
+		}
+
+	public static void exportToPng(List<Sprayage> sprays, String fileName) throws IOException
+		{
+		int width = 1000;
+		int height = 1000;
+
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = image.createGraphics();
+
+		// Optional: white background
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(0, 0, width, height);
+
+		for(Sprayage spray:sprays)
+			{
+			spray.draw(g2d, 0, 0);
+			}
+
+		g2d.dispose();
+
+		File outputFile = new File(fileName);
+		ImageIO.write(image, "png", outputFile);
 		}
 
 	// Color name → String

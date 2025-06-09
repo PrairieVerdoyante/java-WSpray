@@ -48,9 +48,10 @@ public class JOptionsMenu extends Box
 		this.fileNew = new JMenuItem("Nouveau");
 		this.fileSave = new JMenuItem("Sauvegarder");
 		this.fileSaveAs = new JMenuItem("Sauvegarder sous...");
-		// TODO: p17 PDF
+		// TODO: p17 PDF, transparence couleurs
 		this.fileImportCSV = new JMenuItem("Importer un fichier CSV...");
 		this.fileExportCSV = new JMenuItem("Exporter au format CSV");
+		this.fileExportPNG = new JMenuItem("Exporter au format PNG...");
 
 		this.calqueDelete = new JMenuItem("Supprimer le calque sélectionné");
 		this.calqueAdd = new JMenuItem("Ajouter un calque");
@@ -68,6 +69,8 @@ public class JOptionsMenu extends Box
 		this.file.addSeparator();
 		this.file.add(this.fileExportCSV);
 		this.file.add(this.fileImportCSV);
+		this.file.addSeparator();
+		this.file.add(this.fileExportPNG);
 
 		this.calque = new JMenu("Calque(s)");
 		this.calque.add(this.calqueDelete);
@@ -149,6 +152,7 @@ public class JOptionsMenu extends Box
 
 		this.fileExportCSV.addActionListener(exportCSVListener());
 		this.fileImportCSV.addActionListener(importCSVListener());
+		this.fileExportPNG.addActionListener(exportPNGListener());
 
 		this.calqueAdd.addActionListener(new ActionListener()
 			{
@@ -255,6 +259,49 @@ public class JOptionsMenu extends Box
 			};
 		}
 
+	private ActionListener exportPNGListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				List<Sprayage> allSprays = new ArrayList<>();
+				for(DCalque calque:JDisplay.getInstance().getCalques())
+					{
+					if (calque.isVisible())
+						{
+						allSprays.addAll(calque.getSprays());
+						}
+					}
+
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Choisir l'emplacement");
+				int userSelection = fileChooser.showSaveDialog(null);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION)
+					{
+					File fileToSave = fileChooser.getSelectedFile();
+					try
+						{
+						String filePath = fileToSave.getAbsolutePath();
+						if (!filePath.toLowerCase().endsWith(".png"))
+							{
+							filePath += ".png";
+							}
+						SprayStorage.exportToPng(allSprays, filePath);
+						}
+					catch (IOException e1)
+						{
+						e1.printStackTrace();
+						}
+					}
+				}
+			};
+
+		}
+
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
@@ -274,6 +321,7 @@ public class JOptionsMenu extends Box
 	private JMenuItem fileSaveAs;
 	private JMenuItem fileImportCSV;
 	private JMenuItem fileExportCSV;
+	private JMenuItem fileExportPNG;
 
 	private JMenuItem calqueDelete;
 	private JMenuItem calqueAdd;
