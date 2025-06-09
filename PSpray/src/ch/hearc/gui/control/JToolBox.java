@@ -59,7 +59,6 @@ public class JToolBox extends Box
 
 		itemSprayage = new JMenuItem("Ecrasement par Sprayage");
 		itemForme = new JMenuItem("Écrasement par Forme");
-		itemNumerique = new JMenuItem("Numérique");
 
 		itemFormeCercle = new JMenuItem("Cercle");
 		itemFormeLigne = new JMenuItem("Ligne");
@@ -68,7 +67,6 @@ public class JToolBox extends Box
 		// choix de type de gommage
 		gommeMenu.add(itemSprayage);
 		gommeMenu.add(itemForme);
-		gommeMenu.add(itemNumerique);
 
 		// choix de la forme
 		gommageFormeMenu.add(itemFormeCercle);
@@ -175,33 +173,6 @@ public class JToolBox extends Box
 				}
 			});
 
-		itemNumerique.addActionListener(new ActionListener()
-			{
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-				{
-				String inputNum = JOptionPane.showInputDialog(null, "Rayon du gommage numérique :", "Entrée", JOptionPane.QUESTION_MESSAGE);
-				int rayon;
-
-				try
-					{
-					if (inputNum == null || inputNum.trim().isEmpty())
-						{
-						throw new NumberFormatException(); // on force une exception pour tomber dans le catch
-						}
-					rayon = Integer.parseInt(inputNum.trim());
-					}
-				catch (NumberFormatException e2)
-					{
-					rayon = 10; // valeur par défaut
-					}
-				JDisplay.getInstance().setGommeRayon(rayon);
-				JDisplay.getInstance().setModeGomme(ModeGomme.NUMERIQUE);
-
-				}
-			});
-
 		itemFormeCercle.addActionListener(new ActionListener()
 			{
 
@@ -251,7 +222,6 @@ public class JToolBox extends Box
 					epaisseur = 10; // valeur par défaut
 					}
 
-
 				JDisplay.getInstance().setLigneEpaisseur(epaisseur);
 				JDisplay.getInstance().setModeGomme(ModeGomme.GOMMELIGNE);
 				}
@@ -288,7 +258,6 @@ public class JToolBox extends Box
 	private JPopupMenu gommeMenu;
 	private JMenuItem itemSprayage;
 	private JMenuItem itemForme;
-	private JMenuItem itemNumerique;
 	private JPopupMenu gommageFormeMenu;
 	private JMenuItem itemFormeCercle;
 	private JMenuItem itemFormeLigne;

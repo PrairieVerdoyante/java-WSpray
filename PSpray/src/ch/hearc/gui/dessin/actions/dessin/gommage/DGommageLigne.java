@@ -19,7 +19,7 @@ public class DGommageLigne extends DGommage implements Dessin_I
 	public DGommageLigne(int taille, int nbGouttes, int dimension, SprayShape shape, int epaisseur)
 		{
 		super(taille, nbGouttes, dimension, shape);
-		this.gommeNumerique = new DGommageNumerique(taille, nbGouttes, dimension, shape, dimension);
+		this.gommeNumerique = new DGommageNumerique(taille, nbGouttes, dimension, shape, epaisseur);
 		this.epaisseur = epaisseur;
 		}
 

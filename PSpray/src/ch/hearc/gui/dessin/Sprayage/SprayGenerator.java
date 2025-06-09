@@ -86,7 +86,7 @@ public class SprayGenerator
 
 		PointXY origin = new PointXY(x1, y1); // could use center instead
 		Color color = Color.WHITE; // or pass it as a parameter
-		return new Sprayage(origin, points, color, x2-x1);
+		return new Sprayage(origin, points, color, epaisseur);
 		}
 
 	/*------------------------------*\
