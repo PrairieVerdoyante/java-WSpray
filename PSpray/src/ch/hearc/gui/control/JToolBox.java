@@ -19,6 +19,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
 import ch.hearc.gui.dessin.actions.dessin.ModeGomme;
+import ch.hearc.gui.dessin.image.ImageShop;
 import ch.hearc.gui.spray.display.JDisplay;
 
 public class JToolBox extends Box
@@ -48,14 +49,14 @@ public class JToolBox extends Box
 		gommeMenu = new JPopupMenu();
 		gommageFormeMenu = new JPopupMenu();
 		// Chargement des images comme icônes
-		buttonSpray = new JToggleButton("Spray");//createToolButton("spray.png"); // Image pour le spray
-		buttonGomme = new JToggleButton("Gomme");//createToolButton("gomme.png"); // Image pour la gomme
+		buttonSpray = new JToggleButton(ImageShop.SPRAY); // Image pour le spray
+		buttonGomme = new JToggleButton(ImageShop.GOMME); // Image pour la gomme
 		//buttonGommeEcrasementSprayage = new JToggleButton("Effacer par sprayage");
 		//buttonGommeEcrasementForme = new JToggleButton("Effacer par ecrasement de forme");
 		//buttonGommeNumerique = new JToggleButton("Gomme numérique");
 
-		buttonSelectionner = new JToggleButton("Create");//createToolButton("selectionner.png"); // Image pour sélectionner
-		buttonDeplacer = new JToggleButton("Deplacer");//createToolButton("deplacer.png"); // Image pour déplacer
+		buttonSelectionner = new JToggleButton(ImageShop.SELECTIONNER);//createToolButton("selectionner.png"); // Image pour sélectionner
+		buttonDeplacer = new JToggleButton(ImageShop.DEPLACER);//createToolButton("deplacer.png"); // Image pour déplacer
 
 		itemSprayage = new JMenuItem("Ecrasement par Sprayage");
 		itemForme = new JMenuItem("Écrasement par Forme");
