@@ -90,7 +90,7 @@ public class JSprayParameters extends Box
 		this.add(labelDimension);
 		this.add(panelDimension);
 
-		this.sliderTaille = new JSlider(1, 30, 5);
+		this.sliderTaille = new JSlider(2, 30, 5);
 		sliderTaille.setOpaque(false);
 
 		JLabel labelTaille = new JLabel("Taille des gouttelettes");

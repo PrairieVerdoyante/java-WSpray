@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		geometry();
 		control();
 		appearance();
+		initBuffer();
 		}
 
 	public static synchronized JDisplay getInstance()
@@ -65,18 +67,18 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	protected void paintComponent(Graphics g)
 		{
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D)g;
 
-		if (dComposition != null)
+		if (bufferImage != null)
 			{
-			dComposition.draw(g2d, currentDimension, currentDimension);
+			g.drawImage(bufferImage, 0, 0, null);
 			}
 
-		// Dessiner la prévisualisation
+		// Dessiner la prévisualisation (curseur)
+		Graphics2D g2d = (Graphics2D)g;
 		if (mouseX >= 0 && mouseY >= 0)
 			{
 			g2d.setColor(new Color(currentColor.getRed(), currentColor.getGreen(), currentColor.getBlue(), 128)); // semi-transparence
-			int size = (modeGomme == ModeGomme.GOMMECERCLE || modeGomme == ModeGomme.NUMERIQUE) ? rayonGomme : currentDimension * 2;
+			int size = (modeGomme == ModeGomme.GOMMECERCLE || modeGomme == ModeGomme.NUMERIQUE) ? rayonGomme * 2 + currentTaille : currentDimension * 2 + currentTaille;
 
 			switch(currentShape)
 				{
@@ -170,6 +172,48 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		setBackground(Color.WHITE);
 		}
 
+	/**
+	 * Initialise le tampon bufferImage en fonction de la taille actuelle du JPanel.
+	 */
+	private void initBuffer()
+		{
+		int w = getWidth();
+		int h = getHeight();
+		if (w <= 0 || h <= 0)
+			{
+			return; // éviter erreurs si taille non définie
+			}
+
+		bufferImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		updateBuffer();
+		}
+
+	/**
+	 * Met à jour le contenu du tampon bufferImage en redessinant la composition.
+	 */
+	private void updateBuffer()
+		{
+		if (bufferImage == null)
+			{ return; }
+
+		Graphics2D g2 = bufferImage.createGraphics();
+
+		// Activation de l'antialiasing
+		g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// Effacer l'ancien contenu avec fond blanc
+		g2.setColor(Color.WHITE);
+		g2.fillRect(0, 0, bufferImage.getWidth(), bufferImage.getHeight());
+
+		// Dessiner la composition
+		if (dComposition != null)
+			{
+			dComposition.draw(g2, currentDimension, currentDimension);
+			}
+
+		g2.dispose();
+		}
+
 	private void addSprayAtAsync(int x, int y, boolean logImmediately)
 		{
 		switch(modeGomme)
@@ -199,7 +243,20 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 
 				break;
 			}
+
+		// Mise à jour du buffer après modification
+		updateBuffer();
 		repaint();
+		}
+
+	/**
+	 * Override pour gérer le redimensionnement et recréer le buffer.
+	 */
+	@Override
+	public void invalidate()
+		{
+		super.invalidate();
+		initBuffer();
 		}
 
 	/*------------------------------------------------------------------*\
@@ -240,6 +297,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			jCalques.resetCalques();
 			}
 
+		initBuffer();
 		repaint();
 		}
 
@@ -250,6 +308,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		this.calques.add(calque);
 		this.currentCalque = calque;
 		this.undoRedo = new UndoRedo(currentCalque);
+		initBuffer();
 		repaint();
 		}
 
@@ -260,6 +319,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		newCalque.getSprays().addAll(sprays);
 		this.calques.add(newCalque);
 		this.currentCalque = newCalque;
+		initBuffer();
 		repaint();
 		}
 
@@ -270,6 +330,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			{
 			calques.remove(calques.size() - 1);
 			currentCalque = calques.get(calques.size() - 1);
+			initBuffer();
 			repaint();
 			}
 		}
@@ -316,6 +377,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			if (calque.getName().equals(name))
 				{
 				calque.setVisible(visible);
+				initBuffer();
 				repaint();
 				break;
 				}
@@ -328,6 +390,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		this.calques = calques != null ? calques : new ArrayList<>();
 		this.dComposition.setCalques(this.calques);
 		this.currentCalque = !this.calques.isEmpty() ? this.calques.get(this.calques.size() - 1) : null;
+		initBuffer();
 		repaint();
 		}
 
@@ -467,5 +530,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	private int mouseX = -1;
 	private int mouseY = -1;
 	private boolean isDrawing = false;
+
+	private BufferedImage bufferImage;
 
 	}
