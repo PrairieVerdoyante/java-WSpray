@@ -114,7 +114,7 @@ public class JOptionsMenu extends Box
 			});
 
 		this.fileSave.addActionListener(fileSaveListener());
-		this.fileSave.addActionListener(fileSaveAsListener());
+		this.fileSaveAs.addActionListener(fileSaveAsListener());
 		this.fileOpen.addActionListener(fileOpenListener());
 
 		this.toolsUndo.addActionListener(new ActionListener()
@@ -213,17 +213,27 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				try
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Choisir l'emplacement");
+				int userSelection = fileChooser.showSaveDialog(null);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION)
 					{
-					JDisplay.getInstance().load("Dessin 1");
-					}
-				catch (ClassNotFoundException e1)
-					{
-					e1.printStackTrace();
-					}
-				catch (IOException e1)
-					{
-					e1.printStackTrace();
+					File fileToSave = fileChooser.getSelectedFile();
+					try
+						{
+						String filePath = fileToSave.getAbsolutePath();
+
+						JDisplay.getInstance().load(filePath);
+						}
+					catch (ClassNotFoundException e1)
+						{
+						e1.printStackTrace();
+						}
+					catch (IOException e1)
+						{
+						e1.printStackTrace();
+						}
 					}
 				}
 			};
@@ -237,14 +247,28 @@ public class JOptionsMenu extends Box
 			@Override
 			public void actionPerformed(ActionEvent e)
 				{
-				try
+
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Choisir l'emplacement");
+				int userSelection = fileChooser.showSaveDialog(null);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION)
 					{
-					JDisplay.getInstance().save("Dessin 1");
+					File fileToSave = fileChooser.getSelectedFile();
+					try
+						{
+
+						String filePath = fileToSave.getAbsolutePath();
+
+						JDisplay.getInstance().save(filePath);
+
+						}
+					catch (IOException e1)
+						{
+						e1.printStackTrace();
+						}
 					}
-				catch (IOException e1)
-					{
-					e1.printStackTrace();
-					}
+
 				}
 			};
 
