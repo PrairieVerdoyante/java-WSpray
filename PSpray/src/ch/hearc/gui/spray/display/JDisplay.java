@@ -495,6 +495,36 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		}
 
 	@Override
+	public void previewCurrentCalque()
+		{
+		if (!hasClicked)
+			{
+			for(DCalque calque:this.calques)
+				{
+				if (!calque.getName().equals(this.currentCalque.getName()))
+					{
+					calque.setVisible(false);
+					}
+				}
+			hasClicked = true;
+			}
+		else
+			{
+			for(DCalque calque:this.calques)
+				{
+				if (!calque.getName().equals(this.currentCalque.getName()))
+					{
+					calque.setVisible(true);
+					}
+				hasClicked = false;
+				}
+			}
+
+		updateBuffer();
+		repaint();
+		}
+
+	@Override
 	public DCalque getCurrentCalque()
 		{
 		return this.currentCalque;
@@ -606,6 +636,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	private int mouseX = -1;
 	private int mouseY = -1;
 	private boolean isDrawing = false;
+	private static boolean hasClicked = false;
 
 	private BufferedImage bufferImage;
 

@@ -49,7 +49,6 @@ public class JOptionsMenu extends Box
 		this.fileNew = new JMenuItem("Nouveau");
 		this.fileSave = new JMenuItem("Sauvegarder");
 		this.fileSaveAs = new JMenuItem("Sauvegarder sous...");
-		// TODO: p17 PDF, transparence couleurs
 		this.fileImportCSV = new JMenuItem("Importer un fichier CSV...");
 		this.fileExportCSV = new JMenuItem("Exporter au format CSV");
 		this.fileExportPNG = new JMenuItem("Exporter au format PNG...");
@@ -112,23 +111,8 @@ public class JOptionsMenu extends Box
 
 			});
 
-		this.fileSave.addActionListener(new ActionListener()
-			{
-			// TODO: file stream
+		this.fileSave.addActionListener(fileSaveListener());
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-				{
-				/*
-				for(DCalque calque:JDisplay.getInstance().getSelectedCalques())
-					{
-					// calque.getSprays();
-					}
-
-				}*/
-				}
-
-			});
 		this.toolsUndo.addActionListener(new ActionListener()
 			{
 
@@ -179,11 +163,44 @@ public class JOptionsMenu extends Box
 				JDisplay.getInstance().removeCurrentCalque();
 				}
 			});
+
+		this.calquePreview.addActionListener(new ActionListener()
+				{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().previewCurrentCalque();
+				}
+				});
 		}
 
 	private void appearance()
 		{
 		// rien
+		}
+
+	private ActionListener fileSaveListener()
+		{
+		// TODO: file stream
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				/*
+				for(DCalque calque:JDisplay.getInstance().getSelectedCalques())
+					{
+					// calque.getSprays();
+					}
+
+				}*/
+
+
+
+				}
+			};
+
 		}
 
 	private ActionListener exportCSVListener()

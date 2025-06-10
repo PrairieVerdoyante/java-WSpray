@@ -55,6 +55,8 @@ public interface JSprayConfigurable_I
 
 	public JCalques getJCalques();
 
+	public void previewCurrentCalque();
+
 	/* Actions */
 
 	public void reset();
