@@ -43,7 +43,6 @@ public class DGommage extends Geste implements Dessin_I
 		if (strokeList != null)
 			{
 			strokeList.add(spray);
-
 			}
 
 		}

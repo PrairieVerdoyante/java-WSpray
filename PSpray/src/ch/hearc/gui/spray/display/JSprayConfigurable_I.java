@@ -15,6 +15,8 @@ import ch.hearc.gui.utils.SprayShape;
 public interface JSprayConfigurable_I
 	{
 
+	/* init */
+
 	public void setColor(Color color);
 
 	public void setNbGouttes(int nbGouttes);
@@ -25,11 +27,17 @@ public interface JSprayConfigurable_I
 
 	public void setForme(SprayShape shape);
 
+	/* Calques */
+
 	public void addCalque(String name);
 
 	public void addCalque(String name, List<Sprayage> sprays);
 
 	public void removeLastCalque();
+
+	public void removeCurrentCalque();
+
+	public void removeCalque(DCalque calque);
 
 	public void setCalqueVisible(String name, boolean visible);
 
@@ -43,11 +51,13 @@ public interface JSprayConfigurable_I
 
 	public void setCurrentCalque(DCalque currentCalque);
 
-	public void reset();
-
 	public void setJCalques(JCalques jCalques);
 
 	public JCalques getJCalques();
+
+	/* Actions */
+
+	public void reset();
 
 	public UndoRedo getUndoRedo();
 
@@ -63,6 +73,8 @@ public interface JSprayConfigurable_I
 
 	public void setLigneEpaisseur(int epaisseur);
 
+	/* getters propriétés sprays */
+
 	public int getCurrentNbGouttes();
 
 	public int getCurrentTaille();
@@ -72,5 +84,7 @@ public interface JSprayConfigurable_I
 	public SprayShape getCurrentShape();
 
 	public int getLigneEpaisseur();
+
+	public void refreshDisplay();
 
 	}

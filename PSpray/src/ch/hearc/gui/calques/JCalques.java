@@ -4,8 +4,8 @@ package ch.hearc.gui.calques;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,10 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import ch.hearc.gui.spray.display.JSprayConfigurable_I;
@@ -62,39 +65,18 @@ public class JCalques extends Box
 
 		// add a base calque
 		addNewCalque();
-
 		}
 
 	private void control()
 		{
+		this.buttonAdd.addActionListener(e -> addNewCalque());
 
-		this.buttonAdd.addActionListener(new ActionListener()
-			{
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-				{
-				addNewCalque();
-				}
-			});
-
-		this.buttonRemove.addActionListener(new ActionListener()
-			{
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-				{
-				removeLastCalque();
-				}
-			});
-
+		this.buttonRemove.addActionListener(e -> removeLastCalque());
 		}
 
 	private void appearance()
 		{
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Calques", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 14), Color.WHITE));
-
-		// debug
 		setOpaque(true);
 		setBackground(new Color(71, 71, 71, 255));
 
@@ -104,33 +86,71 @@ public class JCalques extends Box
 
 	private void addNewCalque()
 		{
-		// adds the first default layer
 		this.calqueCounter++;
-
 		String name = "Calque " + this.calqueCounter;
 
-		JCheckBox cb = new JCheckBox(name);
-		cb.setOpaque(false);
-		cb.setForeground(Color.WHITE);
-		this.calqueCheckBoxes.add(cb);
-
 		spray.addCalque(name);
-
-		cb.addActionListener(new ActionListener()
-			{
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-				{
-				spray.setCalqueVisible(name, cb.isSelected());
-				}
-			});
-
-		cb.setSelected(true);
+		JCheckBox cb = createCheckBoxForCalque(name);
+		this.calqueCheckBoxes.add(cb);
 		this.panelCheckBoxes.add(cb);
 
 		revalidate();
 		repaint();
+		}
+
+	private JCheckBox createCheckBoxForCalque(String name)
+		{
+		JCheckBox cb = new JCheckBox(name);
+		cb.setOpaque(false);
+		cb.setForeground(Color.WHITE);
+		cb.setSelected(true);
+
+		cb.addActionListener(e -> spray.setCalqueVisible(name, cb.isSelected()));
+
+		cb.addMouseListener(new MouseAdapter()
+			{
+
+			@Override
+			public void mouseClicked(MouseEvent e)
+				{
+				if (SwingUtilities.isRightMouseButton(e))
+					{
+					JPopupMenu menu = new JPopupMenu();
+					JMenuItem itemSupprimer = new JMenuItem("Supprimer");
+					JMenuItem itemSelectionner = new JMenuItem("Selectionner ce calque");
+
+					itemSupprimer.addActionListener(ev -> {
+					List<DCalque> copy = new ArrayList<>(spray.getCalques());
+					for(DCalque calque:copy)
+						{
+						if (calque.getName().equals(name))
+							{
+							spray.removeCalque(calque);
+							break;
+							}
+						}
+					resetCalques();
+					});
+
+					itemSelectionner.addActionListener(ev -> {
+					for(DCalque calque:spray.getCalques())
+						{
+						if (calque.getName().equals(name))
+							{
+							spray.setCurrentCalque(calque);
+							break;
+							}
+						}
+					});
+
+					menu.add(itemSupprimer);
+					menu.add(itemSelectionner);
+					menu.show(cb, e.getX(), e.getY());
+					}
+				}
+			});
+
+		return cb;
 		}
 
 	private void removeLastCalque()
@@ -138,15 +158,12 @@ public class JCalques extends Box
 		if (!this.calqueCheckBoxes.isEmpty() && this.calqueCounter > 1)
 			{
 			JCheckBox cb = this.calqueCheckBoxes.remove(this.calqueCheckBoxes.size() - 1);
-
-			// remove calque
 			this.panelCheckBoxes.remove(cb);
 			spray.removeLastCalque();
+			this.calqueCounter--;
 
 			revalidate();
 			repaint();
-
-			this.calqueCounter--;
 			}
 		}
 
@@ -156,34 +173,19 @@ public class JCalques extends Box
 
 	public void resetCalques()
 		{
-		this.removeAll(); // remove everything including buttons, layout
 		this.panelCheckBoxes.removeAll();
 		this.calqueCheckBoxes.clear();
 		this.calqueCounter = 0;
 
-		// Rebuild layout structure (just like geometry())
-		add(Box.createHorizontalStrut(10));
-		add(this.panelCheckBoxes);
-		add(this.panelBoutons);
-
-		// Rebuild checkboxes from display's calques
 		List<DCalque> calques = spray.getCalques();
 
 		for(DCalque calque:calques)
 			{
-			String name = calque.getName();
-
-			JCheckBox cb = new JCheckBox(name);
-			cb.setOpaque(false);
-			cb.setForeground(Color.WHITE);
+			this.calqueCounter++;
+			JCheckBox cb = createCheckBoxForCalque(calque.getName());
 			cb.setSelected(calque.isVisible());
-
-			cb.addActionListener(e -> spray.setCalqueVisible(name, cb.isSelected()));
-
 			this.calqueCheckBoxes.add(cb);
 			this.panelCheckBoxes.add(cb);
-
-			this.calqueCounter++;
 			}
 
 		revalidate();
@@ -194,10 +196,8 @@ public class JCalques extends Box
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
 
-	// Inputs
 	private JSprayConfigurable_I spray;
 
-	// Tools
 	private List<JCheckBox> calqueCheckBoxes;
 	private JPanel panelBoutons;
 	private Box panelCheckBoxes;
@@ -205,6 +205,4 @@ public class JCalques extends Box
 	private JButton buttonRemove;
 
 	private int calqueCounter;
-	private JCalques calques; // Add this field
-
 	}

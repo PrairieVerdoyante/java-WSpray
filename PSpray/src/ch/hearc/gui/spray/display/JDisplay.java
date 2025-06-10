@@ -231,6 +231,9 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				currentStroke.add(gommeCercle);
 				break;
 			case GOMMELIGNE:
+				//DGommageLigne gommeLigne = new DGommageLigne(currentTaille, currentNbGouttes, 0,0, currentDimension, currentShape, ligneEpaisseur);
+				//gommeLigne.apply(x, y, currentCalque, null);
+				//currentStroke.add(gommeLigne);
 				break;
 			case NUMERIQUE:
 				DGommageNumerique gommeNum = new DGommageNumerique(currentTaille, currentNbGouttes, currentDimension, currentShape, rayonGomme);
@@ -261,6 +264,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		initBuffer();
 		}
 
+	@Override
 	public void refreshDisplay()
 		{
 		updateBuffer();
@@ -341,6 +345,72 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			initBuffer();
 			repaint();
 			}
+		}
+
+	@Override
+	public void removeCurrentCalque()
+		{
+		if (currentCalque != null && calques.size() > 1)
+			{
+			calques.remove(currentCalque);
+
+			// Sélectionner un autre calque (le précédent par exemple)
+			currentCalque = calques.get(calques.size() - 1);
+
+			if (jCalques != null)
+				{
+				jCalques.resetCalques();
+				}
+
+			repaint();
+			}
+		}
+
+	@Override
+	public void removeCalque(DCalque calque)
+		{
+		if (calque == null || calques.size() <= 1 || !calques.contains(calque))
+			{ return; }
+
+		boolean wasCurrent = (currentCalque == calque);
+
+		// Trouver l'index du calque à supprimer
+		int removedIndex = calques.indexOf(calque);
+
+		// Supprimer le calque
+		calques.remove(calque);
+
+		if (wasCurrent)
+			{
+			if (!calques.isEmpty())
+				{
+				// Choisir calque précédent si possible, sinon le premier calque
+				int newIndex = Math.max(removedIndex - 1, 0);
+				currentCalque = calques.get(newIndex);
+				}
+			else
+				{
+				currentCalque = null;
+				}
+			}
+
+		// Mettre à jour undoRedo
+		if (currentCalque != null)
+			{
+			undoRedo = new UndoRedo(currentCalque, this);
+			}
+		else
+			{
+			undoRedo = null;
+			}
+
+		if (jCalques != null)
+			{
+			jCalques.resetCalques();
+			}
+
+		initBuffer();
+		repaint();
 		}
 
 	/*----------------------------------*\
