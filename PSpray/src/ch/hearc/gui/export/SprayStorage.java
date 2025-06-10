@@ -17,9 +17,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.imageio.ImageIO;
 
@@ -208,11 +212,48 @@ public class SprayStorage
 		File outputFile = new File(fileName);
 		ImageIO.write(image, "png", outputFile);
 		}
+
 	//
 	//	private void copyToClipboard(List<Sprays> sprays)
 	//	{
 	//
 	//	}
+
+	public static void fileSave(String fileName, Object objectToSave) throws IOException
+		{
+
+		FileOutputStream fos = new FileOutputStream(fileName);
+		GZIPOutputStream gos = new GZIPOutputStream(fos);
+		BufferedOutputStream bos = new BufferedOutputStream(gos);
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+		oos.writeObject(objectToSave);
+
+		oos.close();
+		bos.close();
+		gos.close();
+		fos.close();
+
+		}
+
+	public static Object fileLoad(String fileName) throws IOException, ClassNotFoundException
+		{
+
+		FileInputStream fis = new FileInputStream(fileName);
+		GZIPInputStream gis = new GZIPInputStream(fis);
+		BufferedInputStream bis = new BufferedInputStream(gis);
+		ObjectInputStream ois = new ObjectInputStream(bis);
+
+		Object obj = ois.readObject();
+
+		ois.close();
+		bis.close();
+		gis.close();
+		fis.close();
+
+		return obj;
+
+		}
 
 	// Color name → String
 	private static String getColorName(Color color)

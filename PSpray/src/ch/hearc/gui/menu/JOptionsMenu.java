@@ -50,9 +50,9 @@ public class JOptionsMenu extends Box
 		this.menuBar = new JMenuBar();
 
 		this.fileNew = new JMenuItem("Nouveau");
+		this.fileOpen = new JMenuItem("Ouvrir...");
 		this.fileSave = new JMenuItem("Sauvegarder");
 		this.fileSaveAs = new JMenuItem("Sauvegarder sous...");
-		// TODO: p17 PDF, transparence couleurs
 		this.fileImportCSV = new JMenuItem("Importer un fichier CSV...");
 		this.fileExportCSV = new JMenuItem("Exporter au format CSV");
 		this.fileExportPNG = new JMenuItem("Exporter au format PNG...");
@@ -68,6 +68,7 @@ public class JOptionsMenu extends Box
 
 		this.file = new JMenu("Fichier");
 		this.file.add(this.fileNew);
+		this.file.add(this.fileOpen);
 		this.file.add(this.fileSave);
 		this.file.add(this.fileSaveAs);
 		this.file.addSeparator();
@@ -123,23 +124,10 @@ public class JOptionsMenu extends Box
 
 			});
 
-		this.fileSave.addActionListener(new ActionListener()
-			{
-			// TODO: file stream
+		this.fileSave.addActionListener(fileSaveListener());
+		this.fileSaveAs.addActionListener(fileSaveAsListener());
+		this.fileOpen.addActionListener(fileOpenListener());
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-				{
-				/*
-				for(DCalque calque:JDisplay.getInstance().getSelectedCalques())
-					{
-					// calque.getSprays();
-					}
-
-				}*/
-				}
-
-			});
 		this.toolsUndo.addActionListener(new ActionListener()
 			{
 
@@ -239,11 +227,111 @@ public class JOptionsMenu extends Box
 		}).start();
 		});
 
+
+		this.calquePreview.addActionListener(new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JDisplay.getInstance().previewCurrentCalque();
+				}
+			});
 		}
 
 	private void appearance()
 		{
 		// rien
+		}
+
+	private ActionListener fileSaveListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				try
+					{
+					JDisplay.getInstance().save("Dessin 1");
+					}
+				catch (IOException e1)
+					{
+					e1.printStackTrace();
+					}
+				}
+			};
+
+		}
+
+	private ActionListener fileOpenListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Choisir l'emplacement");
+				int userSelection = fileChooser.showSaveDialog(null);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION)
+					{
+					File fileToSave = fileChooser.getSelectedFile();
+					try
+						{
+						String filePath = fileToSave.getAbsolutePath();
+
+						JDisplay.getInstance().load(filePath);
+						}
+					catch (ClassNotFoundException e1)
+						{
+						e1.printStackTrace();
+						}
+					catch (IOException e1)
+						{
+						e1.printStackTrace();
+						}
+					}
+				}
+			};
+		}
+
+	private ActionListener fileSaveAsListener()
+		{
+		return new ActionListener()
+			{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+				{
+
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Choisir l'emplacement");
+				int userSelection = fileChooser.showSaveDialog(null);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION)
+					{
+					File fileToSave = fileChooser.getSelectedFile();
+					try
+						{
+
+						String filePath = fileToSave.getAbsolutePath();
+
+						JDisplay.getInstance().save(filePath);
+
+						}
+					catch (IOException e1)
+						{
+						e1.printStackTrace();
+						}
+					}
+
+				}
+			};
+
 		}
 
 	private ActionListener exportCSVListener()
@@ -401,6 +489,7 @@ public class JOptionsMenu extends Box
 	private JMenu networkMenu;
 
 	private JMenuItem fileNew;
+	private JMenuItem fileOpen;
 	private JMenuItem fileSave;
 	private JMenuItem fileSaveAs;
 	private JMenuItem fileImportCSV;
