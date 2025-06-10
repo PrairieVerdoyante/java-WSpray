@@ -81,8 +81,8 @@ public class JToolBox extends Box
 		this.add(buttonSpray);
 		this.add(buttonGomme);
 
-		this.add(buttonSelectionner);
-		this.add(buttonDeplacer);
+		// this.add(buttonSelectionner);
+		// this.add(buttonDeplacer);
 
 		}
 

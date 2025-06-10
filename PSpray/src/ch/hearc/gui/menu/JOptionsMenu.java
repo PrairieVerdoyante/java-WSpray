@@ -99,7 +99,7 @@ public class JOptionsMenu extends Box
 		this.menuBar.add(this.file);
 		this.menuBar.add(this.calque);
 		this.menuBar.add(this.tools);
-		this.menuBar.add(imgToGoutelette);
+		// this.menuBar.add(imgToGoutelette);
 		this.menuBar.add(networkMenu);
 
 		add(menuBar);
