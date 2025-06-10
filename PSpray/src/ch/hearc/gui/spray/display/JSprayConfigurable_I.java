@@ -2,6 +2,7 @@
 package ch.hearc.gui.spray.display;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.List;
 
 import ch.hearc.gui.calques.DCalque;
@@ -74,6 +75,10 @@ public interface JSprayConfigurable_I
 	public void setGommeRayon(int rayon);
 
 	public void setLigneEpaisseur(int epaisseur);
+
+	public void save(String fileName) throws IOException;
+
+	public void load(String fileName) throws ClassNotFoundException, IOException;
 
 	/* getters propriétés sprays */
 

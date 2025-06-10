@@ -2,12 +2,13 @@
 package ch.hearc.gui.calques;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
 
-public class DCalque implements DCalque_I
+public class DCalque implements DCalque_I, Serializable
 	{
 
 	/*------------------------------------------------------------------*\

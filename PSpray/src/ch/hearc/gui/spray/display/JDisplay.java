@@ -25,6 +25,7 @@ import ch.hearc.gui.dessin.actions.dessin.sprayage.DSprayage;
 import ch.hearc.gui.dessin.actions.lineClickManager.LigneClickManager;
 import ch.hearc.gui.dessin.actions.undoRedo.UndoRedo;
 import ch.hearc.gui.dessin.composition.DComposition;
+import ch.hearc.gui.export.SprayStorage;
 import ch.hearc.gui.utils.SprayShape;
 
 public class JDisplay extends JPanel implements JSprayConfigurable_I
@@ -606,6 +607,43 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	public int getLigneEpaisseur()
 		{
 		return this.ligneEpaisseur;
+		}
+
+	@SuppressWarnings("unchecked") // sauvegarde tous les calques
+	@Override
+	public void save(String fileName) throws IOException
+		{
+
+		SprayStorage.fileSave(fileName, this.calques); // Only save the data
+		System.out.println("Saved successfully to: " + fileName);
+
+		}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void load(String fileName) throws ClassNotFoundException, IOException
+		{
+		Object result = SprayStorage.fileLoad(fileName);
+
+		if (result instanceof List<?>)
+			{
+			List<?> list = (List<?>)result;
+
+			if (!list.isEmpty() && list.get(0) instanceof DCalque)
+				{
+				List<DCalque> calques = (List<DCalque>)list;
+				this.setCalques(calques);
+				this.jCalques.resetCalques();
+				}
+			else
+				{
+				System.err.println("Les éléments de la liste ne sont pas des DCalque.");
+				}
+			}
+		else
+			{
+			System.err.println("Le fichier ne contient pas une List.");
+			}
 		}
 
 	/*------------------------------------------------------------------*\

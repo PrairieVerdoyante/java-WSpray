@@ -2,13 +2,14 @@
 package ch.hearc.gui.dessin.actions.dessin.geste;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
 
-public abstract class Geste
+public abstract class Geste implements Serializable
 	{
 
 	/*------------------------------------------------------------------*\

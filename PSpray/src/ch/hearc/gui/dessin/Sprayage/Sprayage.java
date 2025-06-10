@@ -4,6 +4,7 @@ package ch.hearc.gui.dessin.Sprayage;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 import ch.hearc.c_gui.z_tools.Dessin_I;
 import ch.hearc.gui.dessin.points.PointXY;
 
-public class Sprayage implements Dessin_I
+public class Sprayage implements Dessin_I, Serializable
 	{
 
 	/*------------------------------------------------------------------*\

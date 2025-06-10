@@ -219,53 +219,41 @@ public class SprayStorage
 	//
 	//	}
 
-	public static void fileSave(String fileName, Object objectToSave)
+	public static void fileSave(String fileName, Object objectToSave) throws IOException
 		{
-		try
-			{
-			FileOutputStream fos = new FileOutputStream(fileName);
-			GZIPOutputStream gos = new GZIPOutputStream(fos);
-			BufferedOutputStream bos = new BufferedOutputStream(gos);
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
 
-			oos.writeObject(objectToSave);
+		FileOutputStream fos = new FileOutputStream(fileName);
+		GZIPOutputStream gos = new GZIPOutputStream(fos);
+		BufferedOutputStream bos = new BufferedOutputStream(gos);
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
 
-			oos.close();
-			bos.close();
-			gos.close();
-			fos.close();
-			}
-		catch(IOException e)
-			{
-			e.printStackTrace();
-			}
+		oos.writeObject(objectToSave);
+
+		oos.close();
+		bos.close();
+		gos.close();
+		fos.close();
+
 		}
 
-	public static Object fileLoad(String fileName)
+	public static Object fileLoad(String fileName) throws IOException, ClassNotFoundException
 		{
-		try
-			{
-			FileInputStream fis = new FileInputStream(fileName);
-			GZIPInputStream gis = new GZIPInputStream(fis);
-			BufferedInputStream bis = new BufferedInputStream(gis);
-			ObjectInputStream ois = new ObjectInputStream(bis);
 
-			Object obj = ois.readObject();
+		FileInputStream fis = new FileInputStream(fileName);
+		GZIPInputStream gis = new GZIPInputStream(fis);
+		BufferedInputStream bis = new BufferedInputStream(gis);
+		ObjectInputStream ois = new ObjectInputStream(bis);
 
-			ois.close();
-			bis.close();
-			gis.close();
-			fis.close();
+		Object obj = ois.readObject();
 
-			return obj;
-			}
-		catch(IOException | ClassNotFoundException e)
-			{
-			e.printStackTrace();
-			return null;
-			}
+		ois.close();
+		bis.close();
+		gis.close();
+		fis.close();
+
+		return obj;
+
 		}
-
 
 	// Color name → String
 	private static String getColorName(Color color)
