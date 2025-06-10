@@ -17,9 +17,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import ch.hearc.e_socket.bin.a_tools.Ports;
 import ch.hearc.gui.calques.DCalque;
 import ch.hearc.gui.dessin.Sprayage.Sprayage;
 import ch.hearc.gui.export.SprayStorage;
+import ch.hearc.gui.socket.client.Client;
+import ch.hearc.gui.socket.server.Server;
 import ch.hearc.gui.spray.display.JDisplay;
 
 public class JOptionsMenu extends Box
@@ -85,10 +88,18 @@ public class JOptionsMenu extends Box
 
 		this.imgToGoutelette = new JMenu("transformer une image en goutelettes");
 
+		this.networkMenu = new JMenu("Client / Serveur");
+		this.beClient = new JMenuItem("Être Client");
+		this.beServer = new JMenuItem("Être Serveur");
+
+		this.networkMenu.add(beClient);
+		this.networkMenu.add(beServer);
+
 		this.menuBar.add(this.file);
 		this.menuBar.add(this.calque);
 		this.menuBar.add(this.tools);
 		this.menuBar.add(imgToGoutelette);
+		this.menuBar.add(networkMenu);
 
 		add(menuBar);
 
@@ -179,6 +190,55 @@ public class JOptionsMenu extends Box
 				JDisplay.getInstance().removeCurrentCalque();
 				}
 			});
+
+		this.beClient.addActionListener(e -> {
+
+		final String TITLE = "Spray App";
+		String IP = JOptionPane.showInputDialog(null, "Entrez l'adresse IP du serveur :", "Connexion Client", JOptionPane.QUESTION_MESSAGE);
+		// final String IP = System.getProperty("ip", "localhost");
+		final int PORT = Integer.parseInt(System.getProperty("port", "" + Ports.DEFAULT_PORT)); //  Ports.DEFAULT_PORT use as default
+
+		// debug
+			{
+			System.out.println("[Client] : " + TITLE);
+			System.out.println("serveur ip   = " + IP);
+			System.out.println("serveur port = " + PORT);
+			System.out.println();
+			}
+
+		try
+			{
+			Client.doSomething(IP, PORT, TITLE);
+			}
+		catch (IOException e1)
+			{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			}
+		catch (Exception e1)
+			{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			}
+
+		});
+
+		this.beServer.addActionListener(e -> {
+		new Thread(() -> {
+		try
+			{
+			final String TITLE = "Spray app";
+			final int PORT = Integer.parseInt(System.getProperty("port", "" + Ports.DEFAULT_PORT)); //  Ports.DEFAULT_PORT use as default
+
+			Server.start(TITLE, PORT);
+			}
+		catch (Exception e1)
+			{
+			e1.printStackTrace();
+			}
+		}).start();
+		});
+
 		}
 
 	private void appearance()
@@ -338,6 +398,7 @@ public class JOptionsMenu extends Box
 	private JMenu file;
 	private JMenu calque;
 	private JMenu imgToGoutelette;
+	private JMenu networkMenu;
 
 	private JMenuItem fileNew;
 	private JMenuItem fileSave;
@@ -353,5 +414,8 @@ public class JOptionsMenu extends Box
 
 	private JMenuItem toolsUndo;
 	private JMenuItem toolsRedo;
+
+	private JMenuItem beClient;
+	private JMenuItem beServer;
 
 	}
