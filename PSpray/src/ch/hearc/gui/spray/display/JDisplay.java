@@ -112,9 +112,8 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			@Override
 			public void mousePressed(MouseEvent e)
 				{
-				isDrawing = true; // → On commence à dessiner
+				isDrawing = true; // On commence à dessiner
 				currentStroke = new ArrayList<>();
-				addSprayAtAsync(e.getX(), e.getY(), false);
 
 				if (modeGomme == ModeGomme.GOMMELIGNE)
 					{
@@ -153,7 +152,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			@Override
 			public void mouseDragged(MouseEvent e)
 				{
-				mouseX = e.getX(); // → On continue de suivre la souris pendant le dessin
+				mouseX = e.getX(); // On continue de suivre la souris pendant le dessin
 				mouseY = e.getY();
 				addSprayAtAsync(e.getX(), e.getY(), false);
 				repaint();
