@@ -87,7 +87,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 					g2d.drawOval(mouseX - size / 2, mouseY - size / 2, size, size);
 					break;
 				case CARRE:
-					g2d.drawRect(mouseX - size / 2, mouseY - size / 2, size, size);
+				g2d.drawRect(mouseX - size / 4, mouseY - size / 4, size / 2, size / 2);
 					break;
 				default:
 					g2d.drawOval(mouseX - size / 2, mouseY - size / 2, size, size);
@@ -112,9 +112,8 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			@Override
 			public void mousePressed(MouseEvent e)
 				{
-				isDrawing = true; // → On commence à dessiner
+				isDrawing = true; // On commence à dessiner
 				currentStroke = new ArrayList<>();
-				addSprayAtAsync(e.getX(), e.getY(), false);
 
 				if (modeGomme == ModeGomme.GOMMELIGNE)
 					{
@@ -131,7 +130,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			@Override
 			public void mouseReleased(MouseEvent e)
 				{
-				isDrawing = false; // → On arrête de dessiner
+				isDrawing = false; // On arrête de dessiner
 				if (undoRedo != null && currentStroke != null)
 					{
 					undoRedo.addActions(currentStroke);
@@ -153,7 +152,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			@Override
 			public void mouseDragged(MouseEvent e)
 				{
-				mouseX = e.getX(); // → On continue de suivre la souris pendant le dessin
+				mouseX = e.getX(); // On continue de suivre la souris pendant le dessin
 				mouseY = e.getY();
 				addSprayAtAsync(e.getX(), e.getY(), false);
 				repaint();
