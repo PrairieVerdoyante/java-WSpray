@@ -362,7 +362,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				{
 				jCalques.resetCalques();
 				}
-
+			refreshDisplay();
 			repaint();
 			}
 		}
