@@ -124,6 +124,8 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 					{
 					addSprayAtAsync(e.getX(), e.getY(), false);
 					}
+				updateBuffer();
+				repaint();
 				}
 
 			@Override
