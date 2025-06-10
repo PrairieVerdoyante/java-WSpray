@@ -1,12 +1,7 @@
 
 package ch.hearc.gui.socket.client;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import ch.hearc.c_gui.z_tools.decorator.JFrameSimple;
 import ch.hearc.c_gui.z_tools.decorator.image.JImage;
@@ -15,9 +10,6 @@ import ch.hearc.e_socket.bin.a_tools.status.listener.StatusAdapter;
 import ch.hearc.e_socket.bin.a_tools.status.listener.StatusListener;
 import ch.hearc.e_socket.bin.a_tools.status.listener.error.ErrorEvent;
 import ch.hearc.e_socket.bin.b_api.client.SocketClient;
-import ch.hearc.gui.calques.DCalque;
-import ch.hearc.gui.dessin.Sprayage.Sprayage;
-import ch.hearc.gui.spray.display.JDisplay;
 
 /**
  * start server before!
@@ -97,33 +89,7 @@ public class Client
 	\*------------------------------------------------------------------*/
 	private static void exemple1(SocketClient<BImageSerializable, BImageSerializable> client) throws IOException, Exception
 		{
-		BufferedImage source = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = source.createGraphics();
-
-		// Optionnel: fond blanc
-		g2d.setColor(Color.WHITE);
-		g2d.fillRect(0, 0, 1000, 1000);
-
-		// Récupérer tous les sprays visibles
-		List<Sprayage> allSprays = new ArrayList<>();
-		for(DCalque calque:JDisplay.getInstance().getCalques())
-			{
-			if (calque.isVisible())
-				{
-				allSprays.addAll(calque.getSprays());
-				}
-			}
-
-		// Dessiner tous les sprays
-		for(Sprayage spray:allSprays)
-			{
-			spray.draw(g2d, 0, 0);
-			}
-
-		g2d.dispose();
-
-		BImageSerializable bImageSerializable = new BImageSerializable(source);
-		client.send(bImageSerializable);
+		client.send(null);
 		BImageSerializable response1 = client.waitResponse();
 		JImage image = new JImage(response1.bimage());
 		new JFrameSimple(image);
