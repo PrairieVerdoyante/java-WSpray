@@ -87,7 +87,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 					g2d.drawOval(mouseX - size / 2, mouseY - size / 2, size, size);
 					break;
 				case CARRE:
-				g2d.drawRect(mouseX - size / 4, mouseY - size / 4, size / 2, size / 2);
+					g2d.drawRect(mouseX - size / 4, mouseY - size / 4, size / 2, size / 2);
 					break;
 				default:
 					g2d.drawOval(mouseX - size / 2, mouseY - size / 2, size, size);
@@ -331,6 +331,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 		newCalque.getSprays().addAll(sprays);
 		this.calques.add(newCalque);
 		this.currentCalque = newCalque;
+		this.undoRedo = new UndoRedo(this.currentCalque, this);
 		initBuffer();
 		repaint();
 		}
@@ -342,6 +343,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 			{
 			calques.remove(calques.size() - 1);
 			currentCalque = calques.get(calques.size() - 1);
+			this.undoRedo = new UndoRedo(currentCalque, this);
 			initBuffer();
 			repaint();
 			}
@@ -361,6 +363,8 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 				{
 				jCalques.resetCalques();
 				}
+			this.undoRedo = new UndoRedo(currentCalque, this);
+
 			refreshDisplay();
 			repaint();
 			}
@@ -536,6 +540,7 @@ public class JDisplay extends JPanel implements JSprayConfigurable_I
 	public void setCurrentCalque(DCalque currentCalque)
 		{
 		this.currentCalque = currentCalque;
+		this.undoRedo = new UndoRedo(currentCalque, this);
 		}
 
 	@Override
