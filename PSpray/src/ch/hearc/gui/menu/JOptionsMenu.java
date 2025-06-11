@@ -59,7 +59,6 @@ public class JOptionsMenu extends Box
 
 		this.calqueDelete = new JMenuItem("Supprimer le calque sélectionné");
 		this.calqueAdd = new JMenuItem("Ajouter un calque");
-		this.calqueFusionner = new JMenuItem("Fusionner les calques sélectionnés");
 		this.calquePreview = new JMenuItem("Prévisualiser le calque");
 
 		this.toolsUndo = new JMenuItem("Annuler l'action");
@@ -79,7 +78,6 @@ public class JOptionsMenu extends Box
 		this.calque = new JMenu("Calque(s)");
 		this.calque.add(this.calqueDelete);
 		this.calque.add(this.calqueAdd);
-		this.calque.add(this.calqueFusionner);
 		this.calque.add(this.calquePreview);
 
 		this.tools = new JMenu("Outils");
@@ -490,7 +488,6 @@ public class JOptionsMenu extends Box
 
 	private JMenuItem calqueDelete;
 	private JMenuItem calqueAdd;
-	private JMenuItem calqueFusionner;
 	private JMenuItem calquePreview;
 
 	private JMenuItem toolsUndo;
