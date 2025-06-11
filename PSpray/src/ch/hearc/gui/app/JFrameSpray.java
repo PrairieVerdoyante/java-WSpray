@@ -7,6 +7,7 @@ import ch.hearc.c_gui.z_tools.decorator.JFrameSimple;
 
 public class JFrameSpray extends JFrame
 	{
+
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
 	\*------------------------------------------------------------------*/
