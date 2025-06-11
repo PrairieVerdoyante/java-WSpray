@@ -10,11 +10,11 @@ import java.util.Random;
 import ch.hearc.gui.dessin.points.PointXY;
 import ch.hearc.gui.utils.SprayShape;
 
+/*
+ * Classe utilitaire
+ */
 public class SprayGenerator
 	{
-	/*------------------------------------------------------------------*\
-	|*							Constructors							*|
-	\*------------------------------------------------------------------*/
 
 	/*------------------------------------------------------------------*\
 	|*							Methods Public							*|
@@ -72,8 +72,8 @@ public class SprayGenerator
 		int numPoints = (int)(distance); // one point per pixel, change for density
 		if (numPoints == 0)
 			{
-				numPoints = 1;
-				}
+			numPoints = 1;
+			}
 
 		for(int i = 0; i <= numPoints; i++)
 			{
@@ -88,17 +88,5 @@ public class SprayGenerator
 		Color color = Color.WHITE; // or pass it as a parameter
 		return new Sprayage(origin, points, color, epaisseur);
 		}
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
-	/*------------------------------------------------------------------*\
-	|*							Methods Private							*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------------------------------------------*\
-	|*							Attributes Private						*|
-	\*------------------------------------------------------------------*/
 
 	}

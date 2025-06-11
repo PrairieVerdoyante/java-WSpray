@@ -118,7 +118,7 @@ public class Sprayage implements Dessin_I, Serializable
 		}
 
 	/**
-	 * Adds the given points back to this spray.
+	 * rajoute les points au spray.
 	 */
 	public void addPoints(List<Point> pointsToAdd)
 		{
@@ -126,8 +126,7 @@ public class Sprayage implements Dessin_I, Serializable
 		}
 
 	/**
-	 * Removes the given points from this spray.
-	 * Uses equals() to match points.
+	 * enlève les points du spray.
 	 */
 	public void removePoints(List<Point> pointsToRemove)
 		{
@@ -137,7 +136,7 @@ public class Sprayage implements Dessin_I, Serializable
 	/*------------------------------------------------------------------*\
 	|*						Attributes private							*|
 	\*------------------------------------------------------------------*/
-
+	// inputs
 	private final List<Point> points;
 	private final Color color;
 	private final int taille;

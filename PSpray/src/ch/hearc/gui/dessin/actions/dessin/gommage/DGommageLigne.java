@@ -44,8 +44,7 @@ public class DGommageLigne extends DGommage implements Dessin_I
 			strokeList.add(ligneSpray);
 			}
 
-		// Numerical erasure along the line
-		// applyNumericalGomme(x1, y1, x2, y2, calque, strokeList);
+		// gommage numérique le long d'une ligne
 		gommeNumerique.apply(x2, y2, calque, strokeList);
 		}
 
@@ -77,18 +76,6 @@ public class DGommageLigne extends DGommage implements Dessin_I
 	/*------------------------------------------------------------------*\
 	|*							Methods Private							*|
 	\*------------------------------------------------------------------*/
-
-	private void applyNumericalGomme(int x1, int y1, int x2, int y2, DCalque calque, List<Sprayage> strokeList)
-		{
-		int steps = (int)(Math.hypot(x2 - x1, y2 - y1) / (getDimension() * 0.5)); // more dense points
-		for(int i = 0; i <= steps; i++)
-			{
-			double t = (double)i / steps;
-			int xi = (int)(x1 + t * (x2 - x1));
-			int yi = (int)(y1 + t * (y2 - y1));
-			gommeNumerique.apply(xi, yi, calque, strokeList);
-			}
-		}
 
 	/*------------------------------------------------------------------*\
 	|*							Attributes Private						*|

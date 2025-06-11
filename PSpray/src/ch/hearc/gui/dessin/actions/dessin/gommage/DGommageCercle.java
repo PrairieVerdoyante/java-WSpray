@@ -47,10 +47,8 @@ public class DGommageCercle extends DGommage implements Dessin_I
 	@Override
 	public void undo(DCalque calque)
 		{
-		// Undo the numeric erasing stored in DGommageNumerique
 		gommeNumerique.undo(calque);
 
-		// Undo this gesture’s visual spray if needed
 		super.undo(calque);
 		}
 

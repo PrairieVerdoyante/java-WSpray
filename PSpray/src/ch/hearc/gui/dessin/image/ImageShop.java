@@ -38,16 +38,4 @@ public class ImageShop
 	public static final ImageIcon SELECTIONNER = ImageLoader.loadSynchroneJar(PATH_IN_JAR + "selectionner.png");
 	public static final ImageIcon SPRAY = ImageLoader.loadSynchroneJar(PATH_IN_JAR + "spray.png");
 
-	/*------------------------------------------------------------------*\
-	|*		Version Assynchrone	(non bloquant)							*|
-	\*------------------------------------------------------------------*/
-
-	//		public static final ImageIcon WARNING_48 = ImageLoader.loadAsynchroneJar(PATH_IN_JAR+"warning48.png");
-	//		public static final ImageIcon SUN_48 = ImageLoader.loadAsynchroneJar(PATH_IN_JAR + "sun48.png");
-	//		public static final ImageIcon SUN_64 = ImageLoader.loadAsynchroneJar(PATH_IN_JAR + "sun64.png");
-	//
-	//		public static final ImageIcon JAVA = ImageLoader.loadAsynchroneJar(PATH_IN_JAR+"java.png");
-	//		public static final ImageIcon LINUX = ImageLoader.loadAsynchroneJar(PATH_IN_JAR+"linux.png");
-	//		public static final ImageIcon CERVIN = ImageLoader.loadAsynchroneJar(PATH_IN_JAR+"cervin.png");
-
 	}

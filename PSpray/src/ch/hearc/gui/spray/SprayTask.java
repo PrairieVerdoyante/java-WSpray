@@ -15,10 +15,10 @@ import ch.hearc.gui.utils.SprayShape;
 public abstract class SprayTask implements Runnable
 	{
 
-	private int x, y;
-	private DCalque calque;
-	private List<Sprayage> stroke;
-	private DSprayage spray;
+	/*------------------------------------------------------------------*\
+	|*							Constructors							*|
+	\*------------------------------------------------------------------*/
+
 
 	public SprayTask(int x, int y, Color color, int taille, int nbGouttes, int dimension, SprayShape shape, DCalque calque, List<Sprayage> stroke)
 		{
@@ -33,6 +33,12 @@ public abstract class SprayTask implements Runnable
 		this.calque = calque;
 		this.stroke = stroke;
 		}
+
+
+	/*------------------------------------------------------------------*\
+	|*							Methods public							*|
+	\*------------------------------------------------------------------*/
+
 
 	@Override
 	public void run()
@@ -54,10 +60,20 @@ public abstract class SprayTask implements Runnable
 
 	public abstract void onFailure(Exception e);
 
-	private DCalque currentCalque; // TODO: repetition code
+
+	/*------------------------------------------------------------------*\
+	|*						Attributes private							*|
+	\*------------------------------------------------------------------*/
+
+	// inputs
 	private Color currentColor;
 	private int currentNbGouttes;
 	private int currentTaille;
 	private int currentDimension;
 	private SprayShape currentShape;
+	private int x, y;
+	private DCalque calque;
+	private List<Sprayage> stroke;
+	// tools
+	private DSprayage spray;
 	}

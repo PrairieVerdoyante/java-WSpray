@@ -14,7 +14,7 @@ public class ColorToLevelgray implements Runnable
 	\*------------------------------------------------------------------*/
 
 	/**
-	 * in place, update bimage
+	 * mise a jour de l'image
 	 */
 	public ColorToLevelgray(BufferedImage bimage)
 		{

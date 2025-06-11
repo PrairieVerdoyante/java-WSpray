@@ -35,16 +35,16 @@ public class DGommageNumerique extends DGommage implements Dessin_I
 			{
 			Sprayage spray = it.previous();
 
-			// Remove points inside circle and get removed points
+			// enlever les points dans le cercle, les récupérer
 			List<Point> erasedPoints = spray.removePointsInCircleWithReturn(x, y, rayon);
 
 			if (!erasedPoints.isEmpty())
 				{
-				// Record erased points for undo/redo
+				// pour undo/redo
 				ErasedPointsRecord record = new ErasedPointsRecord(spray, erasedPoints);
 				erasedPointsRecords.add(record);
 
-				// Add spray to the current gesture (for redraw or tracking)
+				// Ajouter le spray au geste en cours
 				addSpray(spray);
 
 				if (strokeList != null)
@@ -53,7 +53,7 @@ public class DGommageNumerique extends DGommage implements Dessin_I
 					}
 				}
 
-			// Remove spray if empty after erasing points
+			// Enlever le spray s'il est vide
 			if (spray.isEmpty())
 				{
 				it.remove();
@@ -64,12 +64,12 @@ public class DGommageNumerique extends DGommage implements Dessin_I
 	@Override
 	public void undo(DCalque calque)
 		{
-		// Restore erased points
+		// Restorer les points effacés
 		for(ErasedPointsRecord record:erasedPointsRecords)
 			{
 			record.spray().addPoints(record.erasedPoints());
 
-			// make sure spray is in the calque.
+			// Le spray doit être dans le calque.
 			if (!calque.getSprays().contains(record.spray()))
 				{
 				calque.addSpray(record.spray());
@@ -80,12 +80,11 @@ public class DGommageNumerique extends DGommage implements Dessin_I
 	@Override
 	public void redo(DCalque calque)
 		{
-		// Remove points again
+		// Enlever les points
 		for(ErasedPointsRecord record:erasedPointsRecords)
 			{
 			record.spray().removePoints(record.erasedPoints());
 
-			// If spray became empty, remove it from calque
 			if (record.spray().isEmpty())
 				{
 				calque.removeSpray(record.spray());

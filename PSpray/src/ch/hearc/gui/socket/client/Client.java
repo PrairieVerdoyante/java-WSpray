@@ -87,6 +87,7 @@ public class Client
 	/*------------------------------------------------------------------*\
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
+
 	private static void exemple1(SocketClient<BImageSerializable, BImageSerializable> client) throws IOException, Exception
 		{
 		client.send(null);
@@ -99,14 +100,6 @@ public class Client
 		{
 		return new StatusAdapter()
 			{
-
-			//			@Override
-			//			public void onSuccess(SuccessEvent successEvent)
-			//				{
-			//				System.out.println();
-			//				System.out.println(successEvent);
-			//				System.out.println();
-			//				}
 
 			@Override
 			public void onError(ErrorEvent errorEvent)

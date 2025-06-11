@@ -28,7 +28,7 @@ public abstract class Geste implements Serializable
 	public abstract void apply(int x, int y, DCalque calque, List<Sprayage> strokeList);
 
 	/**
-	 * Add all generated spray to the calque (used for redo)
+	 * ajouter tous les sprays au calque (pour redo)
 	 */
 	public void redo(DCalque calque)
 		{
@@ -39,7 +39,7 @@ public abstract class Geste implements Serializable
 		}
 
 	/**
-	 * Remove all spray from the calque (used for undo)
+	 * Enlever tous les sprays du calque (undo)
 	 */
 	public void undo(DCalque calque)
 		{

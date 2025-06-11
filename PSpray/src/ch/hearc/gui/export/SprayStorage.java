@@ -33,7 +33,9 @@ import ch.hearc.gui.dessin.points.PointXY;
 public class SprayStorage
 	{
 
-	// Write Sprayages to a non compressed binary file
+	/*
+	 * Ecrit les sprayages dans un fichier binaire non compressé
+	 */
 	public static void write(List<Sprayage> sprays, String fileName) throws IOException
 		{
 		FileOutputStream fos = new FileOutputStream(fileName);
@@ -60,7 +62,7 @@ public class SprayStorage
 
 		}
 
-	// Read Sprayages from a non compressed binary file
+	// lire les sprayages depuis un fichier binaire non compressé
 	public static List<Sprayage> read(String fileName) throws IOException
 		{
 		List<Sprayage> sprays = new LinkedList<>();
@@ -132,7 +134,7 @@ public class SprayStorage
 		fw.close();
 		}
 
-	// Import basic CSV into Sprayages (one point per spray)
+	// Importer basique CSV dans Sprayages (un point par Spray)
 	public static List<Sprayage> importFromCsv(String fileName) throws IOException
 		{
 		List<Sprayage> sprays = new ArrayList<>();
@@ -213,12 +215,6 @@ public class SprayStorage
 		ImageIO.write(image, "png", outputFile);
 		}
 
-	//
-	//	private void copyToClipboard(List<Sprays> sprays)
-	//	{
-	//
-	//	}
-
 	public static void fileSave(String fileName, Object objectToSave) throws IOException
 		{
 
@@ -255,7 +251,8 @@ public class SprayStorage
 
 		}
 
-	// Color name → String
+
+	// Color name (String)
 	private static String getColorName(Color color)
 		{
 		if (color.equals(Color.RED))
@@ -281,7 +278,7 @@ public class SprayStorage
 		return String.format("rgb(%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue());
 		}
 
-	// String → Color
+	// String (Color)
 	private static Color parseColor(String name)
 		{
 		return switch(name.toLowerCase())

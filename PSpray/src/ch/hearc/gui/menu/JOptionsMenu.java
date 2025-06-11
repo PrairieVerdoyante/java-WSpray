@@ -61,7 +61,6 @@ public class JOptionsMenu extends Box
 		this.calqueAdd = new JMenuItem("Ajouter un calque");
 		this.calqueFusionner = new JMenuItem("Fusionner les calques sélectionnés");
 		this.calquePreview = new JMenuItem("Prévisualiser le calque");
-		// TODO: 8.3: déplacer tout le contenu du calque (calque -> sélectionner" puis déplacer)
 
 		this.toolsUndo = new JMenuItem("Annuler l'action");
 		this.toolsRedo = new JMenuItem("Refaire l'action");
@@ -87,8 +86,6 @@ public class JOptionsMenu extends Box
 		this.tools.add(this.toolsUndo);
 		this.tools.add(this.toolsRedo);
 
-		this.imgToGoutelette = new JMenu("transformer une image en goutelettes");
-
 		this.networkMenu = new JMenu("Client / Serveur");
 		this.beClient = new JMenuItem("Être Client");
 		this.beServer = new JMenuItem("Être Serveur");
@@ -99,7 +96,6 @@ public class JOptionsMenu extends Box
 		this.menuBar.add(this.file);
 		this.menuBar.add(this.calque);
 		this.menuBar.add(this.tools);
-		// this.menuBar.add(imgToGoutelette);
 		this.menuBar.add(networkMenu);
 
 		add(menuBar);
@@ -183,7 +179,6 @@ public class JOptionsMenu extends Box
 
 		final String TITLE = "Spray App";
 		String IP = JOptionPane.showInputDialog(null, "Entrez l'adresse IP du serveur :", "Connexion Client", JOptionPane.QUESTION_MESSAGE);
-		// final String IP = System.getProperty("ip", "localhost");
 		final int PORT = Integer.parseInt(System.getProperty("port", "" + Ports.DEFAULT_PORT)); //  Ports.DEFAULT_PORT use as default
 
 		// debug
@@ -200,12 +195,10 @@ public class JOptionsMenu extends Box
 			}
 		catch (IOException e1)
 			{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			}
 		catch (Exception e1)
 			{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			}
 
@@ -485,7 +478,6 @@ public class JOptionsMenu extends Box
 	private JMenu tools;
 	private JMenu file;
 	private JMenu calque;
-	private JMenu imgToGoutelette;
 	private JMenu networkMenu;
 
 	private JMenuItem fileNew;
